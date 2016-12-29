@@ -59,7 +59,7 @@ private static final String RESOURCE_ID = "rest_api";
 			.secret("12345")
 			.autoApprove(true)
 			.redirectUris("http://google.com/")
-			.resourceIds(RESOURCE_ID).scopes("Read");
+			.resourceIds(RESOURCE_ID).scopes("read","write","trust", "Read","Write","Trust");
 		
 		}
 		
