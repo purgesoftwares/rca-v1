@@ -1,0 +1,440 @@
+#imgInp {
+    display: none;
+}
+
+body.modal-open {
+    overflow: hidden;
+}
+
+#pictureToCrop {
+    max-width: 500px;
+    max-height: 500px
+}
+
+#profilePictureModel .modal-dialog {
+    left: 50%;
+    margin-left: -300px;
+}
+
+/* css to change the close icon of model box of profile picture */
+/* #profilePictureModel .close {
+  background: #333;
+  border-radius: 0 4px;
+  color: #fff;
+  float: right;
+  height: 30px;
+  line-height: 30px;
+  margin: 0;
+  opacity: 1;
+  position: absolute;
+  right: 0;
+  top: 0;
+  vertical-align: top;
+  width: 30px;
+}
+
+#profilePictureModel .close span {
+  display: inline;
+  line-height: 26px;
+  vertical-align: top;
+} */
+
+#pictureToCrop { /* width:450px;  */
+    margin: 0 auto;
+    display: block;
+}
+
+#profilePictureModel .modal-dialog .modal-body {
+    overflow: hidden
+}
+
+/* Elements that are clickable should show appropriate pointer. */
+.clickable:hover {
+    cursor: pointer;
+}
+
+.seat-map-cell {
+    width: 48px;
+    height: 48px;
+    text-align: center;
+}
+
+td[data-disabled=false].seat-map-cell:hover {
+    color: #428bca;
+    cursor: pointer;
+}
+
+/* Allows the seat map table to have the bus background. */
+.seat-map-table-container {
+    padding: 50px 10px 20px 10px;
+    background: url("/resources/images/bus.svg");
+    background-size: 100% 100%;
+    background-clip: padding-box;
+    margin: 10px auto;
+    display: inline-block;
+}
+
+.seat-map-table {
+    margin: auto;
+}
+
+/* Used to prevent clicks on Bootstrap Toggle checkboxes. */
+.no-click {
+    pointer-events: none;
+}
+
+/* Logo that goes on the nav-bar header. */
+.header-logo {
+    height: 40px;
+}
+
+/* Sticky Footer */
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px !important;
+    padding-bottom: 50px !important;
+    margin-top: 52px !important;
+    padding-top: 20px;
+    color: rgba(28, 4, 38, .8) !important;
+}
+
+.footer {
+    position: absolute;
+    text-align: center;
+    bottom: 0;
+    width: 100%;
+    padding-top: 20px;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+    background-color: rgba(28, 4, 38, .8);
+    color: white;
+}
+
+/* Header */
+header > nav.navbar {
+    border-top: 2px solid #C10079 !important;
+    border-bottom: none !important;
+    height: 52px !important;
+    background-color: rgba(255, 255, 255, 0.85) !important;
+}
+
+/* Panels */
+.card-header {
+    background-color: rgba(28, 4, 38, .8) !important;
+    border-color: rgba(28, 4, 38, .8) !important;
+    color: white !important;
+}
+.card.module {
+    border-color: rgba(28, 4, 38, .8) !important;
+}
+
+.card.module:hover {
+    border-color: rgba(28, 4, 38, .8) !important;
+    background-color: rgba(28, 4, 38, .8) !important;
+    color: white !important;
+}
+
+.card.module:hover a {
+    color: white !important;
+}
+
+/* Text */
+.text-primary {
+    color: rgba(28, 4, 38, .8) !important;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #a00064 !important;
+    border-color: #a00064 !important;
+}
+
+.tag-primary {
+    background-color: #a00064 !important;
+}
+
+/* Breadcrumbs */
+.breadcrumb {
+    background-color: rgba(28, 4, 38, .8) !important;
+    color: white;
+}
+
+.breadcrumb > .active {
+    color: #a0a0a0 !important;
+}
+
+.breadcrumb > li > a {
+    color: white;
+}
+
+a:hover {
+    color: #C10079;
+}
+
+/* Override Moment-Cell. */
+.backgrid .moment-cell {
+    text-align: left !important;
+}
+
+/* Add spacing between buttons in Bootbox as we are using Bootstrap 4. */
+.bootbox button {
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+/* Backgrid Alignment Classes for Cells */
+.backgrid-right-cell {
+    text-align: right !important;
+}
+.backgrid-left-cell {
+    text-align: left !important;
+}
+.backgrid-center-cell {
+    text-align: center !important;
+}
+
+/* Insert empty content to empty icon cell. */
+.fa-fw::before {
+    content: '\A0';
+}
+
+/* Booked seat color. */
+.booked {
+    color: #dddddd;
+}
+
+/* Selected seat color. */
+.selected {
+    color: #3c763d;
+}
+
+.selected:hover {
+    color: #2b542c;
+}
+
+.disable-segment, .disable-segment a {
+    pointer-events: none;
+    color: #777;
+}
+
+.disable-journey, .disable-journey a {
+    pointer-events: none;
+    color: #777;
+}
+
+/*
+ * TODO: Make sure that datetime picker renders correctly.
+ * http://bit.ly/1PT61JJ
+ * bit.ly/1XpEOQx
+ * bit.ly/242jhBW
+ */
+.datetime-picker-cell {
+    position: relative;
+    text-align: center;
+}
+
+.card.module {
+    height: 250px;
+}
+
+.card-block.module > p:first-child {
+    height: 40px;
+    overflow-y: hidden;
+}
+
+.table.no-border tr th, .table.no-border tr td {
+    border-color: transparent !important;
+}
+
+.select2-container .select2-choice .select2-arrow {
+    background: transparent !important;
+}
+
+/*
+ * Override Backgrid Select2 Cell alignment.
+ */
+.backgrid .select2-cell {
+    text-align: left !important;
+}
+
+.orange {
+    color: #8a6d3b;
+}
+
+.orange:hover {
+    color: #66512c;
+}
+
+.form-group.no-label {
+    padding-top: 25px;
+}
+
+input.has-danger {
+    color: #a94442;
+}
+
+.passenger .input-group .row {
+    margin-left: -5px;
+    margin-right: -5px;
+}
+
+.passenger .input-group .row > div {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.modal #seat-map-wrapper .render-floor {
+    width: 100%;
+}
+
+.modal #seat-map-wrapper .render-floor ~ div {
+    width: 100%;
+}
+
+.select2-container{width:100% !important;}
+
+
+
+.form-group .select2-container .select2-selection--single {
+  height: 34px;
+}
+
+.form-group .select2-container--default .select2-selection--single .select2-selection__rendered {
+  line-height: 34px;
+}
+
+.form-group .select2-container--default .select2-selection--single .select2-selection__arrow {
+  height: 32px;
+}
+
+.form-group.has-danger .select2-container .select2-selection {
+    border-color: #a94442;
+}
+
+.nav.journey-tabs{padding:0; list-style:none; margin-bottom: 15px;}
+.nav.journey-tabs li a{background: #f6f6f6;}
+.nav.journey-tabs li.active a{background: #fff;}
+
+
+.btn-round {
+    border-radius: 50% !important;
+    width: 50px;
+    height: 50px;
+}
+
+.days_row { margin: 0 -10px; }
+.col-md-1-7 { float: left; padding: 0 10px; width: 14.28%; }
+
+
+@media(max-width: 991px){
+  .col-md-1-7 { width: 100%; padding-bottom: 15px;}
+}
+
+.clickable-table tbody > tr:hover {
+    background-color: #a00064;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+/* Necessary for Backgrid table. */
+#passenger-details {
+    position: relative;
+}
+
+/* Override Backgrid table height behaviour. */
+.backgrid-container {
+    height: auto !important;
+}
+
+#back {
+    width: 100%;
+}
+@media only screen and (max-width: 1020px) {
+    #back {
+        height: 100vh;
+        width: auto;
+    }
+}
+
+/* Block Quotes. */
+blockquote.custom-comment {
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid #ccc;
+    border-left: 4px solid transparent;
+    padding: 15px;
+    font-size: 14px;
+    color: #666;
+    margin-top: -1px;
+    margin-bottom: 0;
+}
+
+blockquote.custom-comment p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 15px;
+    line-height: 20px;
+}
+
+blockquote.custom-comment:hover {
+    border-left-color: #1c0426;
+    background: #fff;
+}
+
+/* Make text area resizable only vertically. */
+textarea {
+    resize: vertical;
+}
+
+/* Seat numbers. */
+.seat-number {
+    font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif !important;
+    font-size: 0.8em !important;
+    font-weight: bold !important;
+}
+
+/* Match colors for social sign in buttons. */
+.btn-facebook {
+    color: white;
+    background-color: #4c69ba;
+}
+.btn-facebook:hover {
+    color: white !important;
+    background-color: #3d4385;
+}
+.btn-google {
+    color: white;
+    background-color: #dd4b39;
+}
+.btn-google:hover {
+    color: white !important;
+    background-color: #b04331;
+}
+
+a.link-primary.silent,
+a.link-primary.silent:hover,
+a.link-primary.silent:focus {
+    color: rgba(28, 4, 38, .8);
+    text-decoration: none;
+}
+
+/* Override Bootstrap and align elements in middle of table. */
+.table td {
+    vertical-align: middle;
+}
+
+form tr.empty > td {
+    color: #a94442;
+}
+
+span.required {
+    color: #a94442;
+}
+
+.seat-icon-selected {
+    background-color: rgb(246, 206, 227);
+}
