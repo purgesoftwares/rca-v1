@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
 import com.siv.model.payment.PaymentDetails;
 import com.siv.repository.payment.PaymentDetailsRepository;
 
@@ -47,9 +48,25 @@ public class PaymentDetailsController {
 	@PUT
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public PaymentDetails update(PaymentDetails paymentDetails){
+	public PaymentDetails update(@PathParam(value="id")String id, PaymentDetails paymentDetails){
+		PaymentDetails prePayment = paymentDetailsRepository.findOne(id);
+		paymentDetails.setId(id);
+		paymentDetails.setCreateDate(prePayment.getCreateDate());
 		paymentDetails.setLastUpdate(new Date());
-		return paymentDetailsRepository.save(paymentDetails);
+		
+		if(paymentDetails.getAccountNumber() == null) {
+			paymentDetails.setAccountNumber(prePayment.getAccountNumber());
+		} else if(paymentDetails.getBankCode() ==null) {
+			paymentDetails.setBankCode(prePayment.getBankCode());
+		} else if(paymentDetails.getBankName() == null) {
+			paymentDetails.setBankName(prePayment.getBankName());
+		} else if(paymentDetails.getPaymentType() == null) {
+			paymentDetails.setPaymentType(prePayment.getPaymentType());
+		} else if(paymentDetails.getUsername() == null) {
+			paymentDetails.setUsername(prePayment.getUsername());
+		}
+		
+			return paymentDetailsRepository.save(paymentDetails);
 	}
 	
 	@DELETE

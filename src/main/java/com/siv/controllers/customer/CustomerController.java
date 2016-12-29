@@ -51,6 +51,25 @@ public class CustomerController {
 		customer.setId(id);
 		customer.setCreateDate(preCustomer.getCreateDate());
 		customer.setLastUpdate(new Date());
+		
+		if(customer.getFirstName() == null) {
+			customer.setFirstName(preCustomer.getFirstName());
+		} else if(customer.getLastName() == null) {
+			customer.setLastName(preCustomer.getLastName());
+		} else if(customer.getAddressId() == null) {
+			customer.setAddressId(preCustomer.getAddressId());
+		} else if(customer.getDob() == null) {
+			customer.setDob(preCustomer.getDob());
+		} else if(customer.getFullName() == null) {
+			customer.setFullName(preCustomer.getFullName());
+		} else if(customer.getGender() == null) {
+			customer.setGender(preCustomer.getGender());
+		} else if(customer.getMainEmail() == null) {
+			customer.setMainEmail(preCustomer.getMainEmail());
+		} else if(customer.getSecondaryEmail() == null) {
+			customer.setSecondaryEmail(preCustomer.getSecondaryEmail());
+		}
+		
 		return customerRepository.save(customer);
 	}
 	

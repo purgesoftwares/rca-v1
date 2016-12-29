@@ -10,9 +10,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
 import com.siv.model.provider.ProviderInformation;
 import com.siv.repository.provider.ProviderInformationRepository;
 
@@ -47,8 +49,18 @@ public class ProviderInformationController {
 	@PUT
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public ProviderInformation update(ProviderInformation providerInformation){
+	public ProviderInformation update(@PathParam(value="id")String id, ProviderInformation providerInformation){
+		ProviderInformation preInfo = providerInformationRepository.findOne(id);
+		providerInformation.setId(id);
+		providerInformation.setCreateDate(preInfo.getCreateDate());
 		providerInformation.setLastUpdate(new Date());
+		
+		if(providerInformation.getPlaceInfo() == null) {
+			providerInformation.setPlaceInfo(preInfo.getPlaceInfo());
+		} else if(providerInformation.getTypesOfProductDetail() == null) {
+			providerInformation.setTypesOfProductDetail(preInfo.getTypesOfProductDetail());
+		}
+		
 		return providerInformationRepository.save(providerInformation);
 	}
 	

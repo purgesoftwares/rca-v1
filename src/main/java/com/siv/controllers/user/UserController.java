@@ -59,8 +59,27 @@ public class UserController {
 	@PUT
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public User update(User user){
+	public User update(@PathParam(value="id")String id, User user){
+		PasswordEncoder encoder = new BCryptPasswordEncoder();
+		
+		User preUser = userRepository.findOne(id);
+		user.setId(id);
+		user.setCreateDate(preUser.getCreateDate());
 		user.setLastUpdate(new Date());
+		user.setEnabled(true);
+		user.setIsActive(true);
+		user.setRole("SuperAdmin");
+		
+		if(user.getCustomerId() == null) {
+			user.setCustomerId(preUser.getCustomerId());
+		} else if(user.getUsername() == null){
+			user.setUsername(preUser.getUsername());
+		} else if(user.getNewPassword() != null) {
+			user.setPassword(encoder.encode(user.getNewPassword()));
+		} else if(user.getNewPassword() == null) {
+			user.setPassword(preUser.getPassword());
+		}
+		
 		return userRepository.save(user);
 	}
 	

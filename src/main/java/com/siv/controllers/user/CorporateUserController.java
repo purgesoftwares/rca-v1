@@ -49,8 +49,15 @@ public class CorporateUserController {
 	@PUT
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public CorporateUser update(CorporateUser user){
+	public CorporateUser update(@PathParam(value="id")String id, CorporateUser user){
+		CorporateUser preUser = corporateUserRepository.findOne(id);
+		user.setId(id);
+		user.setCreateDate(preUser.getCreateDate());
 		user.setLastUpdate(new Date());
+		
+		if(user.getAdminPassword() == null) {
+			
+		}
 		return corporateUserRepository.save(user);
 	}
 	

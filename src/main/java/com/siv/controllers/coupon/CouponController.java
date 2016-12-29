@@ -54,6 +54,12 @@ public class CouponController {
 		coupon.setId(id);
 		coupon.setCreateDate(preCoupon.getCreateDate());
 		coupon.setLastUpdate(new Date());
+		
+		if(coupon.getCouponCode() == null){
+			coupon.setCouponCode(preCoupon.getCouponCode());
+		} else if(coupon.getCouponNumber() == null){
+			coupon.setCouponNumber(preCoupon.getCouponNumber());
+		}
 		return couponRepository.save(coupon);	
 	}
 	

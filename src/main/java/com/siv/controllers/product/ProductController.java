@@ -45,7 +45,17 @@ public class ProductController {
 	@PUT
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Product update(Product product){
+	public Product update(@PathParam(value="id")String id, Product product){
+		Product preProduct = productRepository.findOne(id);
+		product.setId(preProduct.getId());
+		
+		if(product.getPrice() == null) {
+			product.setPrice(preProduct.getPrice());
+		} else if(product.getProductName() == null) {
+			product.setProductName(preProduct.getProductName());
+		} else if(product.getProductType() == null) {
+			product.setProductName(preProduct.getProductName());
+		}
 		return productRepository.save(product);
 	}
 	

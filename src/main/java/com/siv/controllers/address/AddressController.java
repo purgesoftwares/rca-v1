@@ -48,8 +48,27 @@ public class AddressController {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Address update(@PathParam(value="id")String id, Address address){
+		
+		Address preAddress = addressRepository.findOne(id);
 		address.setId(id);
 		address.setLastUpdate(new Date());
+		address.setCreateDate(preAddress.getCreateDate());
+		
+		if(address.getAddress1() == null){
+			address.setAddress1(preAddress.getAddress1());
+		} else if(address.getAddress2() == null) {
+			address.setAddress2(preAddress.getAddress2());
+		} else if(address.getCity() == null) {
+			address.setCity(preAddress.getCity());
+		} else if(address.getDistrict() == null) {
+			address.setDistrict(preAddress.getDistrict());
+		} else if(address.getHomePhone() == null) {
+			address.setHomePhone(preAddress.getHomePhone());
+		} else if(address.getPostalCode() == null) {
+			address.setPostalCode(preAddress.getPostalCode());
+		} else if(address.getPhone() == null) {
+			address.setPhone(preAddress.getPhone());
+		}
 		return addressRepository.save(address);
 	}
 	
