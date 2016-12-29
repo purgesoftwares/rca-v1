@@ -54,7 +54,7 @@ private static final String RESOURCE_ID = "rest_api";
 		public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 			clients.inMemory().withClient("test_client")
 			.authorities("SuperAdmin")
-			.accessTokenValiditySeconds(60)
+			.accessTokenValiditySeconds(6000000000)
 			.authorizedGrantTypes("password")
 			.secret("12345")
 			.autoApprove(true)
