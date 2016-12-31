@@ -12,8 +12,6 @@ import javax.ws.rs.core.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.PathVariable;
-
 import com.siv.model.product.Product;
 import com.siv.repository.product.ProductRepository;
 
@@ -55,6 +53,8 @@ public class ProductController {
 			product.setProductName(preProduct.getProductName());
 		} else if(product.getProductType() == null) {
 			product.setProductName(preProduct.getProductName());
+		} else if(product.getDescription() == null) {
+			product.setDescription(preProduct.getDescription());
 		}
 		return productRepository.save(product);
 	}

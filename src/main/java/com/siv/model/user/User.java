@@ -24,6 +24,7 @@ public class User {
 	private String username;
 	
 	@Transient
+	@JsonIgnore
 	private String newPassword;
 	
 	@NotNull(message = "Password should not be blank.")
@@ -50,6 +51,10 @@ public class User {
 	private boolean enabled;
 	
 	private String role;
+	
+	@JsonIgnore
+	@NotNull(message = "Confirm Password should not be blank.")
+	private String confirmPassword;
 
 	public String getId() {
 		return id;
@@ -145,6 +150,14 @@ public class User {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	public String getConfirmPassword() {
+		return confirmPassword;
+	}
+
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
 	}
 		
 
