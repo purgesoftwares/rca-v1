@@ -23,7 +23,7 @@ import com.siv.exceptions.PasswordDidNotMatchException;
 import com.siv.model.user.User;
 import com.siv.repository.user.UserRepository;
 
-@Path("/user")
+@Path("/secured/user")
 public class UserController {
 	
 	@Autowired

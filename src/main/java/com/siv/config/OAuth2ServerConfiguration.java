@@ -84,7 +84,7 @@ private static final String RESOURCE_ID = "rest_api";
 		@Override
 		public void configure(HttpSecurity http) throws Exception {
 			http
-            .requestMatchers().antMatchers("/api/**")
+            .requestMatchers().antMatchers("/secured/**")
             .and()
             .authorizeRequests()
             .anyRequest().access("#oauth2.hasScope('read')");
