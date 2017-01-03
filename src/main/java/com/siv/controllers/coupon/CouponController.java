@@ -15,11 +15,13 @@ import javax.ws.rs.core.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Component;
 
 import com.siv.model.coupon.Coupon;
 import com.siv.repository.coupon.CouponRepository;
 
 @Path("/coupon")
+@Component
 public class CouponController {
 	
 	@Autowired

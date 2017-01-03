@@ -81,28 +81,23 @@
 	    <artifactId>jersey-mvc-mustache</artifactId>
 	    <version>2.25</version>
 	</dependency>
-     
-   <!--   <dependency>
-		    <groupId>org.springframework.security.oauth</groupId>
-		    <artifactId>spring-security-oauth2</artifactId>
-	</dependency> -->
 	
-		<!--Spring Security  --> 	
-		<dependency>
-			<groupId>org.springframework.social</groupId>
-			<artifactId>spring-social-security</artifactId>
-			<version>1.1.4.RELEASE</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
-		
-		<dependency>
-		    <groupId>org.springframework.security.oauth</groupId>
-		    <artifactId>spring-security-oauth2</artifactId>
-		</dependency>
+	<!--Spring Security  --> 	
+	<dependency>
+		<groupId>org.springframework.social</groupId>
+		<artifactId>spring-social-security</artifactId>
+		<version>1.1.4.RELEASE</version>
+	</dependency>
+	
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-security</artifactId>
+	</dependency>
+	
+	<dependency>
+	    <groupId>org.springframework.security.oauth</groupId>
+	    <artifactId>spring-security-oauth2</artifactId>
+	</dependency>
  
   </dependencies>
   
