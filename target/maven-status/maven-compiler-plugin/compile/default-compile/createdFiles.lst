@@ -43,6 +43,7 @@ com/siv/repository/coupon/CouponUserAssignment.class
 com/siv/config/OAuth2ServerConfiguration$ResourceServerConfiguration.class
 com/siv/exceptions/AllPropertyRequiredException.class
 com/siv/repository/address/AddressRepository.class
+com/siv/config/CorsFeature.class
 com/siv/config/CROSFilter.class
 com/siv/controllers/opening/OpeningDaysController.class
 com/siv/repository/customer/CustomerRepository.class

@@ -1,4 +1,3 @@
-*/target/**
 *.java.hsp
 *.sonarj
 *.sw*
@@ -23,7 +22,6 @@ classes/
 buildSrc/build
 /spring-*/build
 /src/asciidoc/build
-target/
 
 # Eclipse artifacts, including WTP generated manifests
 .classpath
@@ -39,3 +37,4 @@ out
 test-output
 atlassian-ide-plugin.xml
 .gradletasknamecache
+target
