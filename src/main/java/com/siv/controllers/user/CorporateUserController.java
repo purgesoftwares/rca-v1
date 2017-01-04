@@ -55,13 +55,13 @@ public class CorporateUserController {
 		
 		if(user.getAdminPassword() == null) {
 			user.setAdminPassword(preUser.getAdminPassword());
-		} else if(user.getConfirmAdminPassword() == null) {
+		} if(user.getConfirmAdminPassword() == null) {
 			user.setConfirmAdminPassword(preUser.getConfirmAdminPassword());
-		} else if(user.getContactName() == null){
+		} if(user.getContactName() == null){
 			user.setContactName(preUser.getContactName());
-		} else if(user.getName() == null) {
+		} if(user.getName() == null) {
 			user.setName(preUser.getName());
-		} else if(user.getUserId() == null) {
+		} if(user.getUserId() == null) {
 			user.setUserId(preUser.getUserId());
 		}
 		return corporateUserRepository.save(user);

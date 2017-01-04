@@ -54,19 +54,19 @@ public class CustomerController {
 		
 		if(customer.getFirstName() == null) {
 			customer.setFirstName(preCustomer.getFirstName());
-		} else if(customer.getLastName() == null) {
+		} if(customer.getLastName() == null) {
 			customer.setLastName(preCustomer.getLastName());
-		} else if(customer.getAddressId() == null) {
+		} if(customer.getAddressId() == null) {
 			customer.setAddressId(preCustomer.getAddressId());
-		} else if(customer.getDob() == null) {
+		} if(customer.getDob() == null) {
 			customer.setDob(preCustomer.getDob());
-		} else if(customer.getFullName() == null) {
+		} if(customer.getFullName() == null) {
 			customer.setFullName(preCustomer.getFullName());
-		} else if(customer.getGender() == null) {
+		} if(customer.getGender() == null) {
 			customer.setGender(preCustomer.getGender());
-		} else if(customer.getMainEmail() == null) {
+		} if(customer.getMainEmail() == null) {
 			customer.setMainEmail(preCustomer.getMainEmail());
-		} else if(customer.getSecondaryEmail() == null) {
+		} if(customer.getSecondaryEmail() == null) {
 			customer.setSecondaryEmail(preCustomer.getSecondaryEmail());
 		}
 		

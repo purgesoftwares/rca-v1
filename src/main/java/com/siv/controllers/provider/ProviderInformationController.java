@@ -57,7 +57,7 @@ public class ProviderInformationController {
 		
 		if(providerInformation.getPlaceInfo() == null) {
 			providerInformation.setPlaceInfo(preInfo.getPlaceInfo());
-		} else if(providerInformation.getTypesOfProductDetail() == null) {
+		} if(providerInformation.getTypesOfProductDetail() == null) {
 			providerInformation.setTypesOfProductDetail(preInfo.getTypesOfProductDetail());
 		}
 		

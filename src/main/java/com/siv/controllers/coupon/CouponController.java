@@ -55,8 +55,14 @@ public class CouponController {
 		
 		if(coupon.getCouponCode() == null){
 			coupon.setCouponCode(preCoupon.getCouponCode());
-		} else if(coupon.getCouponNumber() == null){
+		} if(coupon.getCouponNumber() == null){
 			coupon.setCouponNumber(preCoupon.getCouponNumber());
+		} if(coupon.getAvailability() == null){
+			coupon.setAvailability(preCoupon.getAvailability());
+		} if(coupon.getPrice() == null) {
+			coupon.setPrice(preCoupon.getPrice());
+		} if(coupon.getUsed() == null) {
+			coupon.setUsed(preCoupon.getUsed());
 		}
 		return couponRepository.save(coupon);	
 	}

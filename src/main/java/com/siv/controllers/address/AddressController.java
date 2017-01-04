@@ -56,17 +56,17 @@ public class AddressController {
 		
 		if(address.getAddress1() == null){
 			address.setAddress1(preAddress.getAddress1());
-		} else if(address.getAddress2() == null) {
+		} if(address.getAddress2() == null) {
 			address.setAddress2(preAddress.getAddress2());
-		} else if(address.getCity() == null) {
+		} if(address.getCity() == null) {
 			address.setCity(preAddress.getCity());
-		} else if(address.getDistrict() == null) {
+		} if(address.getDistrict() == null) {
 			address.setDistrict(preAddress.getDistrict());
-		} else if(address.getHomePhone() == null) {
+		} if(address.getHomePhone() == null) {
 			address.setHomePhone(preAddress.getHomePhone());
-		} else if(address.getPostalCode() == null) {
+		} if(address.getPostalCode() == null) {
 			address.setPostalCode(preAddress.getPostalCode());
-		} else if(address.getPhone() == null) {
+		} if(address.getPhone() == null) {
 			address.setPhone(preAddress.getPhone());
 		}
 		return addressRepository.save(address);

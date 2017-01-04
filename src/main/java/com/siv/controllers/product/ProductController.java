@@ -49,11 +49,11 @@ public class ProductController {
 		
 		if(product.getPrice() == null) {
 			product.setPrice(preProduct.getPrice());
-		} else if(product.getProductName() == null) {
+		} if(product.getProductName() == null) {
 			product.setProductName(preProduct.getProductName());
-		} else if(product.getProductType() == null) {
+		} if(product.getProductType() == null) {
 			product.setProductName(preProduct.getProductName());
-		} else if(product.getDescription() == null) {
+		} if(product.getDescription() == null) {
 			product.setDescription(preProduct.getDescription());
 		}
 		return productRepository.save(product);

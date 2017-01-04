@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.siv.controllers.address.AddressController;
 import com.siv.controllers.coupon.CouponController;
-import com.siv.controllers.coupon.SelectedCouponController;
+import com.siv.controllers.coupon.CollectedCouponController;
 import com.siv.controllers.customer.CustomerController;
 import com.siv.controllers.opening.OpeningDaysController;
 import com.siv.controllers.payment.PaymentDetailsController;
@@ -18,6 +18,7 @@ import com.siv.controllers.product.ProductTypeController;
 import com.siv.controllers.provider.ProviderController;
 import com.siv.controllers.provider.ProviderInformationController;
 import com.siv.controllers.user.UserController;
+import com.siv.publicapi.PublicApiController;
 
 @Component
 public class JerseyConfig extends ResourceConfig {
@@ -35,8 +36,10 @@ public class JerseyConfig extends ResourceConfig {
         		PaymentDetailsController.class,
         		ProviderController.class,
         		OpeningDaysController.class,
-        		SelectedCouponController.class,
-        		CROSFilter.class);
+        		CollectedCouponController.class,
+        		CROSFilter.class,
+        		PublicApiController.class,
+        		CollectedCouponController.class);
         
         register(JspMvcFeature.class);
         property(JspMvcFeature.TEMPLATES_BASE_PATH, "/WEB-INF/jsp");

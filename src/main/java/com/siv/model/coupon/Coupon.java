@@ -1,5 +1,6 @@
 package com.siv.model.coupon;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.validation.constraints.NotNull;
@@ -19,6 +20,16 @@ public class Coupon {
 	
 	@NotEmpty(message="Coupon Number is required.")
 	private Long couponNumber;
+	
+	@NotEmpty
+	private String providerId;
+	
+	@NotNull
+	private BigDecimal price;
+	
+	private String availability;
+	
+	private String used;
 	
 	@NotNull
 	private Date createDate;
@@ -74,6 +85,38 @@ public class Coupon {
 
 	public void setLastUpdate(Date lastUpdate) {
 		this.lastUpdate = lastUpdate;
+	}
+
+	public String getProviderId() {
+		return providerId;
+	}
+
+	public void setProviderId(String providerId) {
+		this.providerId = providerId;
+	}
+
+	public BigDecimal getPrice() {
+		return price;
+	}
+
+	public void setPrice(BigDecimal price) {
+		this.price = price;
+	}
+
+	public String getAvailability() {
+		return availability;
+	}
+
+	public void setAvailability(String availability) {
+		this.availability = availability;
+	}
+
+	public String getUsed() {
+		return used;
+	}
+
+	public void setUsed(String used) {
+		this.used = used;
 	}
 
 

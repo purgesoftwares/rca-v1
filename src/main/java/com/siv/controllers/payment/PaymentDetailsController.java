@@ -56,13 +56,13 @@ public class PaymentDetailsController {
 		
 		if(paymentDetails.getAccountNumber() == null) {
 			paymentDetails.setAccountNumber(prePayment.getAccountNumber());
-		} else if(paymentDetails.getBankCode() ==null) {
+		} if(paymentDetails.getBankCode() ==null) {
 			paymentDetails.setBankCode(prePayment.getBankCode());
-		} else if(paymentDetails.getBankName() == null) {
+		} if(paymentDetails.getBankName() == null) {
 			paymentDetails.setBankName(prePayment.getBankName());
-		} else if(paymentDetails.getPaymentType() == null) {
+		} if(paymentDetails.getPaymentType() == null) {
 			paymentDetails.setPaymentType(prePayment.getPaymentType());
-		} else if(paymentDetails.getUsername() == null) {
+		} if(paymentDetails.getUsername() == null) {
 			paymentDetails.setUsername(prePayment.getUsername());
 		}
 		

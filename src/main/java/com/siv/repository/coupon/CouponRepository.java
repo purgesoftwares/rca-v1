@@ -1,5 +1,7 @@
 package com.siv.repository.coupon;
 
+import java.util.List;
+
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
@@ -11,5 +13,5 @@ import com.siv.model.coupon.Coupon;
 public interface CouponRepository extends MongoRepository<Coupon, String>, CrudRepository<Coupon, String> {
 
 	@Transactional
-	public Coupon findByCouponCode(String couponCode);
+	public List<Coupon> findByProviderId(String providerId);
 }
