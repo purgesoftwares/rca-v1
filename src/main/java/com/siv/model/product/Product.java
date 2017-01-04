@@ -1,6 +1,8 @@
 package com.siv.model.product;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
@@ -23,6 +25,8 @@ public class Product {
 	private BigDecimal price;
 	
 	private String description;
+	
+	private List<ProductCategory> productCategory = new ArrayList<ProductCategory>();
 
 	public String getId() {
 		return id;
@@ -62,6 +66,14 @@ public class Product {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public List<ProductCategory> getProductCategory() {
+		return productCategory;
+	}
+
+	public void setProductCategory(List<ProductCategory> productCategory) {
+		this.productCategory = productCategory;
 	}
 	
 

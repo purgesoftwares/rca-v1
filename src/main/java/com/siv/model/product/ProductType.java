@@ -2,11 +2,9 @@ package com.siv.model.product;
 
 public enum ProductType {
 	
-	EAT("EAT"),
 	DRINK("DRINK"),
 	DESERT("DESERT"),
-	MAIN("MAIN"),
-	LOVE("LOVE");
+	MAIN("MAIN");
 	
 	private final String name;
 	
