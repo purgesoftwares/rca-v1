@@ -2,6 +2,7 @@ package com.siv.config;
 
 import javax.annotation.PostConstruct;
 
+import com.siv.controllers.provider.ProviderController;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.mvc.jsp.JspMvcFeature;
 import org.glassfish.jersey.servlet.ServletProperties;
@@ -29,8 +30,9 @@ public class JerseyConfig extends ResourceConfig {
         		ProductController.class,
         		ProductTypeController.class,
         		ProviderInformationController.class,
-        		PaymentDetailsController.class);
-        
+        		PaymentDetailsController.class,
+				ProviderController.class);
+
         register(JspMvcFeature.class);
         property(JspMvcFeature.TEMPLATES_BASE_PATH, "/WEB-INF/jsp");
         property(ServletProperties.FILTER_FORWARD_ON_404, true);
