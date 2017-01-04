@@ -19,7 +19,7 @@ import com.siv.exceptions.AllPropertyRequiredException;
 import com.siv.model.payment.BankDetails;
 import com.siv.repository.payment.BankDetailsRepository;
 
-@Path("/bank-detail")
+@Path("/secured/bank-detail")
 public class BankDetailsController {
 	
 	@Autowired

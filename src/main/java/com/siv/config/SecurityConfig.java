@@ -30,10 +30,6 @@ import com.siv.dao.AuthenticationSuccessHandlerImpl;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
-	private static final int FOURTEEN_DAYS_IN_SECONDS = 1209600; 
-	
-	//private final Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
 	@Qualifier("userDetailsService")
@@ -62,10 +58,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		http
 			.authorizeRequests()
-				.antMatchers("/secured/**")
+				.antMatchers("/api/secured/**")
 				.authenticated()
-				.antMatchers("/api/**")
-				.permitAll()
 				.and()
 				
 			.formLogin()

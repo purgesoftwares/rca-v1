@@ -18,7 +18,7 @@ import org.springframework.data.domain.Pageable;
 import com.siv.model.payment.PaymentDetails;
 import com.siv.repository.payment.PaymentDetailsRepository;
 
-@Path("/payment-detail")
+@Path("/secured/payment-detail")
 public class PaymentDetailsController {
 	
 	@Autowired

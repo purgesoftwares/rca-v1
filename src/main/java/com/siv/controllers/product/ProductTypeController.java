@@ -8,7 +8,7 @@ import javax.ws.rs.Produces;
 import org.springframework.web.bind.annotation.PathVariable;
 import com.siv.model.product.ProductType;
 
-@Path("/product-type")
+@Path("/secured/product-type")
 public class ProductTypeController {
 	
 	@GET

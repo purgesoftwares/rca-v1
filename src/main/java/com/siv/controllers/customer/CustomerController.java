@@ -16,7 +16,7 @@ import org.springframework.data.domain.Pageable;
 import com.siv.model.customer.Customer;
 import com.siv.repository.customer.CustomerRepository;
 
-@Path("/customer")
+@Path("/secured/customer")
 public class CustomerController {
 	
 	@Autowired

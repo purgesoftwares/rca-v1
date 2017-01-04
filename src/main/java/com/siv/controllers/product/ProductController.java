@@ -15,7 +15,7 @@ import org.springframework.data.domain.Pageable;
 import com.siv.model.product.Product;
 import com.siv.repository.product.ProductRepository;
 
-@Path("/product")
+@Path("/secured/product")
 public class ProductController {
 	
 	@Autowired

@@ -11,15 +11,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
 import com.siv.model.coupon.Coupon;
 import com.siv.repository.coupon.CouponRepository;
 
-@Path("/coupon")
+@Path("/secured/coupon")
 public class CouponController {
 	
 	@Autowired

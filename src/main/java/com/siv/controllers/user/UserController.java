@@ -18,12 +18,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.siv.exceptions.PasswordDidNotMatchException;
 import com.siv.model.user.User;
 import com.siv.repository.user.UserRepository;
 
-@Path("/secured/user")
+@Path("/user")
 public class UserController {
 	
 	@Autowired
@@ -55,7 +56,9 @@ public class UserController {
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
+	//@CrossOrigin(origins="http://192.168.1.118:5555/")
 	public Page<User> findAll(Pageable pageble){
+		System.out.println("fadfdf");
 		return userRepository.findAll(pageble);
 	}
 	

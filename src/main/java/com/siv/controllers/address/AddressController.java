@@ -17,7 +17,7 @@ import org.springframework.data.domain.Pageable;
 import com.siv.model.address.Address;
 import com.siv.repository.address.AddressRepository;
 
-@Path("/address")
+@Path("/secured/address")
 public class AddressController {
 	
 	@Autowired

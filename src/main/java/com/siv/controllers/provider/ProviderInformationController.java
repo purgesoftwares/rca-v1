@@ -19,7 +19,7 @@ import com.siv.model.provider.ProviderInformation;
 import com.siv.repository.provider.ProviderInformationRepository;
 
 
-@Path("/provider-information")
+@Path("/secured/provider-information")
 public class ProviderInformationController {
 	
 	@Autowired

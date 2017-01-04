@@ -17,7 +17,7 @@ import org.springframework.data.domain.Pageable;
 import com.siv.model.user.CorporateUser;
 import com.siv.repository.user.CorporateUserRepository;
 
-@Path("/corporate-user")
+@Path("/secured/corporate-user")
 public class CorporateUserController {
 	
 	@Autowired
