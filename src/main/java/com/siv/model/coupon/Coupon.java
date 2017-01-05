@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
@@ -16,9 +17,11 @@ public class Coupon {
 	private String id;
 	
 	@NotNull(message="Coupon code should not be blank")
+	@Indexed(unique=true)
 	private String couponCode;
 	
 	@NotEmpty(message="Coupon Number is required.")
+	@Indexed(unique=true)
 	private Long couponNumber;
 	
 	@NotEmpty

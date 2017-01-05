@@ -7,6 +7,7 @@ import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -20,7 +21,7 @@ import com.siv.repository.coupon.CollectedCouponRepository;
 import com.siv.repository.coupon.CouponRepository;
 import com.siv.repository.provider.ProviderRepository;
 
-@Path("/secured/select-coupon")
+@Path("/secured/collect-coupon")
 public class CollectedCouponController {
 	
 	@Autowired
@@ -53,6 +54,13 @@ public class CollectedCouponController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Page<CollectedCoupon> findAll(Pageable pageble){
 		return collCouponRepository.findAll(pageble);
+	}
+	
+	@GET
+	@Path("/{couponCode}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Coupon getCouponByCode(@PathParam("couponCode")String couponCode){
+		return couponRepository.findByCouponCode(couponCode);
 	}
 
 }
