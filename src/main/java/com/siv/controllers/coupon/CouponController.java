@@ -63,6 +63,8 @@ public class CouponController {
 			coupon.setPrice(preCoupon.getPrice());
 		} if(coupon.getUsed() == null) {
 			coupon.setUsed(preCoupon.getUsed());
+		} if(coupon.getProviderId() == null){
+			coupon.setProviderId(preCoupon.getProviderId());
 		}
 		return couponRepository.save(coupon);	
 	}
