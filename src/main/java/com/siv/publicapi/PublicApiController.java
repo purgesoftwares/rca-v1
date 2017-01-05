@@ -1,6 +1,5 @@
 package com.siv.publicapi;
 
-import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -13,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.siv.exceptions.PasswordDidNotMatchException;
 import com.siv.model.user.User;
+import com.siv.model.user.UserRequest;
 import com.siv.repository.user.UserRepository;
 
 @Path("/public/user")
@@ -24,16 +24,15 @@ public class PublicApiController {
 	@POST
 	@Path("/reset-password")
 	@Produces(MediaType.APPLICATION_JSON)
-	public User resetPassword(@HeaderParam(value="email")String email, 
-			@HeaderParam(value="newPassword")String newPassword,
-			@HeaderParam(value="confirmPassword")String confirmPassword) {
+	public User resetPassword(UserRequest userRequest) {
 		
-		User preUser = userRepository.findByUsername(email);
+		User preUser = userRepository.findByUsername(userRequest.getEmail());
 		PasswordEncoder encoder = new BCryptPasswordEncoder();
 		
 		if(preUser != null) {
-			if(newPassword != null && newPassword.equals(confirmPassword)) {
-				preUser.setPassword(encoder.encode(newPassword));
+			if(userRequest.getNewPassword() != null 
+					&& userRequest.getNewPassword().equals(userRequest.getConfirmPassword())) {
+				preUser.setPassword(encoder.encode(userRequest.getNewPassword()));
 			} else {
 				throw new PasswordDidNotMatchException("Password did not match.");
 			}
@@ -49,16 +48,15 @@ public class PublicApiController {
 	@POST
 	@Path("/forget-password")
 	@Produces(MediaType.APPLICATION_JSON)
-	public User forgetPassword(@HeaderParam(value="email")String email,
-			@HeaderParam(value="newPassword")String newPassword,
-			@HeaderParam(value="confirmPassword")String confirmPassword) {
+	public User forgetPassword(UserRequest userRequest) {
 		
-		User preUser = userRepository.findByUsername(email);
+		User preUser = userRepository.findByUsername(userRequest.getEmail());
 		PasswordEncoder encoder = new BCryptPasswordEncoder();
 		
 		if(preUser != null) {
-			if(newPassword != null && newPassword.equals(confirmPassword)) {
-				preUser.setPassword(encoder.encode(newPassword));
+			if(userRequest.getNewPassword() != null 
+					&& userRequest.getNewPassword().equals(userRequest.getConfirmPassword())) {
+				preUser.setPassword(encoder.encode(userRequest.getNewPassword()));
 			} else {
 				throw new PasswordDidNotMatchException("Password did not match.");
 			}
