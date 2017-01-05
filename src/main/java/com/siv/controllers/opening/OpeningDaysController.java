@@ -8,12 +8,17 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import com.siv.exceptions.RequestedIdIsNotExists;
 import com.siv.model.openings.OpeningDays;
 import com.siv.model.openings.OpeningTime;
+import com.siv.model.provider.Provider;
 import com.siv.repository.opening.OpeningDaysRepository;
+import com.siv.repository.provider.ProviderRepository;
 
 @Path("/secured/opening-day")
 public class OpeningDaysController {
@@ -21,13 +26,23 @@ public class OpeningDaysController {
 	@Autowired
 	private OpeningDaysRepository openingDaysRepository;
 	
+	@Autowired
+	private ProviderRepository providerRepository;
+	
 	@POST
 	@Produces("application/json")
 	public OpeningDays create(OpeningDays days){
 		
+		Provider provider = providerRepository.findOne(days.getProviderId());
+		if(provider == null) {
+			throw new RequestedIdIsNotExists("This Provider is not exits,please enter differne one.");
+		}
+
 		for(OpeningTime day : days.getDays()) {
-			days.setDay(day);
-			openingDaysRepository.save(days);
+			OpeningDays openingDays = new OpeningDays();
+			openingDays.setDay(day);
+			openingDays.setProviderId(days.getProviderId());
+			openingDaysRepository.save(openingDays);
 		}
 		
 		return days;		
