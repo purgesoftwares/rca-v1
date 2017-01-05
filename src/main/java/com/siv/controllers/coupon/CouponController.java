@@ -26,8 +26,8 @@ public class CouponController {
 	@POST
 	@Produces("application/json")
 	public Coupon create(Coupon coupon){
-		coupon.setCreateDate(new Date());
-		coupon.setLastUpdate(new Date());		
+		coupon.setStartTime(new Date());
+		coupon.setEndTime(new Date());		
 		return couponRepository.save(coupon);		
 	}
 	
@@ -50,8 +50,8 @@ public class CouponController {
 	public Coupon update(@PathParam(value="id")String id, @Valid Coupon coupon){
 		Coupon preCoupon = couponRepository.findOne(id);
 		coupon.setId(id);
-		coupon.setCreateDate(preCoupon.getCreateDate());
-		coupon.setLastUpdate(new Date());
+		coupon.setStartTime(preCoupon.getStartTime());
+		coupon.setEndTime(new Date());
 		
 		if(coupon.getCouponCode() == null){
 			coupon.setCouponCode(preCoupon.getCouponCode());

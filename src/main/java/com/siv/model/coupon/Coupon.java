@@ -30,15 +30,15 @@ public class Coupon {
 	@NotNull
 	private BigDecimal price;
 	
-	private String availability;
+	private Integer availability;
 	
-	private String used;
-	
-	@NotNull
-	private Date createDate;
+	private Integer used;
 	
 	@NotNull
-	private Date lastUpdate;
+	private Date startTime;
+	
+	@NotNull
+	private Date endTime;
 	
 	public Coupon(){
 	    
@@ -74,22 +74,6 @@ public class Coupon {
 		this.couponNumber = couponNumber;
 	}
 
-	public Date getCreateDate() {
-		return createDate;
-	}
-
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
-
-	public Date getLastUpdate() {
-		return lastUpdate;
-	}
-
-	public void setLastUpdate(Date lastUpdate) {
-		this.lastUpdate = lastUpdate;
-	}
-
 	public String getProviderId() {
 		return providerId;
 	}
@@ -106,21 +90,38 @@ public class Coupon {
 		this.price = price;
 	}
 
-	public String getAvailability() {
+	public Integer getAvailability() {
 		return availability;
 	}
 
-	public void setAvailability(String availability) {
+	public void setAvailability(Integer availability) {
 		this.availability = availability;
 	}
 
-	public String getUsed() {
+	public Integer getUsed() {
 		return used;
 	}
 
-	public void setUsed(String used) {
+	public void setUsed(Integer used) {
 		this.used = used;
 	}
+
+	public Date getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
+
+	public Date getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
+	}
+	
 
 
 }
