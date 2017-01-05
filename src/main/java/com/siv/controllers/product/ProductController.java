@@ -52,7 +52,7 @@ public class ProductController {
 		} if(product.getProductName() == null) {
 			product.setProductName(preProduct.getProductName());
 		} if(product.getProductType() == null) {
-			product.setProductName(preProduct.getProductName());
+			product.setProductType(preProduct.getProductType());
 		} if(product.getDescription() == null) {
 			product.setDescription(preProduct.getDescription());
 		} if(product.getProductCategory() == null){
