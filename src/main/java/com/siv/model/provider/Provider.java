@@ -1,8 +1,14 @@
 package com.siv.model.provider;
 
 import java.util.Date;
+
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
+import org.jvnet.hk2.config.Units;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 
@@ -12,7 +18,8 @@ public class Provider {
 	@Id
 	private String id;
 	
-	@NotBlank(message="Provier Name is required.")
+	@NotNull(message="Provier Name is required.")
+	@Indexed(unique=true)
 	private String providerName;
 	
 	@NotBlank(message="Address Id is required.")
@@ -21,9 +28,13 @@ public class Provider {
 	@NotBlank(message="Contact Name is required.")
 	private String contactName;	
 	
-	@NotBlank(message="Main Email is required.")
+	@NotNull(message="Main Email is required.")
+	@Email
+	@Indexed(unique=true)
 	private String mainEmail;
 	
+	@Email
+	@Indexed(unique=true)
 	private String secondaryEmail;
 	
 	@NotBlank(message="User Id is required.")

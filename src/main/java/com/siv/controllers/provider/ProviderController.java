@@ -1,17 +1,23 @@
 package com.siv.controllers.provider;
 
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.common.exceptions.UserDeniedAuthorizationException;
+
 import com.siv.exceptions.PasswordDidNotMatchException;
+import com.siv.exceptions.UsernameIsNotAnEmailException;
 import com.siv.model.address.Address;
 import com.siv.model.provider.Provider;
 import com.siv.model.provider.ProviderRequest;
@@ -35,7 +41,7 @@ public class ProviderController {
 	@POST
 	@Produces("application/json")
 	@Path("/signup")
-	public Provider create(ProviderRequest providerRequest){
+	public Provider create(ProviderRequest providerRequest) throws UsernameIsNotAnEmailException{
 		
 		if(!(providerRequest.getAddress() != null && providerRequest.getCity() != null 
 				&& providerRequest.getConfirmPassword() != null
@@ -45,7 +51,12 @@ public class ProviderController {
 			throw new UserDeniedAuthorizationException("Please fill all the required information.");
 		}
 		
-		Provider provider = new Provider();
+		boolean isValid = checkStringIsEmamil(providerRequest.getMainEmail());
+		boolean isSecondayEmailValid = checkStringIsEmamil(providerRequest.getSecondaryEmail());
+		if(!isValid || !isSecondayEmailValid){
+			throw new UsernameIsNotAnEmailException("Please input correct email type.");
+		}
+ 		Provider provider = new Provider();
 		
 		Address address = new Address();
 		address.setAddress1(providerRequest.getAddress());
@@ -81,6 +92,16 @@ public class ProviderController {
 		provider.setLastUpdate(new Date());	
 		
 		return providerRepository.save(provider);		
+	}
+	
+	private boolean checkStringIsEmamil(String username) {
+		Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
+		Matcher m = p.matcher(username);
+		boolean matchFound = m.matches();
+		if (matchFound) {
+		    return true;
+		}
+		return false;
 	}
 	
 	@GET
