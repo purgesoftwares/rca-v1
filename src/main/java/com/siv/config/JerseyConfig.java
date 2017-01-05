@@ -3,6 +3,7 @@ package com.siv.config;
 import javax.annotation.PostConstruct;
 
 import com.siv.controllers.provider.ProviderController;
+
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.mvc.jsp.JspMvcFeature;
 import org.glassfish.jersey.servlet.ServletProperties;
@@ -13,6 +14,7 @@ import com.siv.controllers.coupon.CouponController;
 import com.siv.controllers.coupon.CollectedCouponController;
 import com.siv.controllers.customer.CustomerController;
 import com.siv.controllers.opening.OpeningDaysController;
+import com.siv.controllers.payment.BankDetailsController;
 import com.siv.controllers.payment.PaymentDetailsController;
 import com.siv.controllers.product.ProductController;
 import com.siv.controllers.product.ProductTypeController;
@@ -39,7 +41,9 @@ public class JerseyConfig extends ResourceConfig {
         		CollectedCouponController.class,
         		CROSFilter.class,
         		PublicApiController.class,
-        		CollectedCouponController.class);
+        		CollectedCouponController.class,
+        		BankDetailsController.class);
+        
         register(JspMvcFeature.class);
         property(JspMvcFeature.TEMPLATES_BASE_PATH, "/WEB-INF/jsp");
         property(ServletProperties.FILTER_FORWARD_ON_404, true);
