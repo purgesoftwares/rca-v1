@@ -1,7 +1,9 @@
 package com.siv.model.openings;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
@@ -22,9 +24,9 @@ public class OpeningDays {
 	@Transient
 	private List<OpeningTime> days = new ArrayList<OpeningTime>();
 	
-	private String openingTime;
+	private Date openingTime;
 	
-	private String endTime;
+	private Date endTime;
 
 	public String getId() {
 		return id;
@@ -42,19 +44,19 @@ public class OpeningDays {
 		this.providerId = providerId;
 	}
 
-	public String getOpeningTime() {
+	public Date getOpeningTime() {
 		return openingTime;
 	}
 
-	public void setOpeningTime(String openingTime) {
+	public void setOpeningTime(Date openingTime) {
 		this.openingTime = openingTime;
 	}
 
-	public String getEndTime() {
+	public Date getEndTime() {
 		return endTime;
 	}
 
-	public void setEndTime(String endTime) {
+	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
 	}
 

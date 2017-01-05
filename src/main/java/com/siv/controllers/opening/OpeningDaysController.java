@@ -67,6 +67,7 @@ public class OpeningDaysController {
 	public OpeningDays update(@PathParam(value="providerId")String providerId, OpeningDays days){
 		OpeningDays preOpenDays = openingDaysRepository.findByProviderIdAndDay(providerId, days.getDay());
 		days.setId(preOpenDays.getId());
+		days.setProviderId(providerId);
 		
 		return openingDaysRepository.save(days);
 	}
