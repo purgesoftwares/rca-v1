@@ -15,7 +15,7 @@ public class ExcludedTime {
 	
 	private String endExcludedTime;
 	
-	private String lable;
+	private String label;
 
 	public String getOpeningId() {
 		return openingId;
@@ -26,11 +26,11 @@ public class ExcludedTime {
 	}
 
 	public String getLable() {
-		return lable;
+		return label;
 	}
 
 	public void setLable(String lable) {
-		this.lable = lable;
+		this.label = lable;
 	}
 
 	public String getId() {

@@ -11,9 +11,12 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+
 import com.siv.model.coupon.Coupon;
 import com.siv.repository.coupon.CouponRepository;
 
@@ -41,7 +44,8 @@ public class CouponController {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Page<Coupon> findAll(Pageable pageble){
-		return couponRepository.findAll(pageble);
+		
+		return new PageImpl<Coupon>(couponRepository.findAll(pageble).getContent(), pageble, 20);
 	}
 	
 	@PUT
