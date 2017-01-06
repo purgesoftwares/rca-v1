@@ -31,6 +31,7 @@ public class BankDetailsController {
 		
 		if(!(bankDetails.getAccountNumber() !=null && bankDetails.getBankName() != null
 				&& bankDetails.getBeneficiaryAddress() != null
+				&& bankDetails.getProviderId() != null
 				&& bankDetails.getBeneficiaryName() != null
 				&& bankDetails.getBranchNumber() != null)) {
 			throw new AllPropertyRequiredException("Please fill all the information.");
@@ -47,7 +48,15 @@ public class BankDetailsController {
 	public BankDetails findOne(@PathParam(value="id")String id){
 		return bankDetailsRepository.findOne(id);
 	}
-	
+
+	@GET
+	@Path("/get-bankdetail/{providerId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public BankDetails getBankDetailByProviderID(@PathParam(value="providerId")String providerId){
+		return bankDetailsRepository.findByProviderId(providerId);
+	}
+
+
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Page<BankDetails> findAll(Pageable pageble){
@@ -61,6 +70,7 @@ public class BankDetailsController {
 		BankDetails preDetail = bankDetailsRepository.findOne(id);
 		bankDetails.setId(id);
 		bankDetails.setCreateDate(preDetail.getCreateDate());
+		bankDetails.setProviderId(preDetail.getProviderId());
 		bankDetails.setLastUpdate(new Date());
 		
 		if(bankDetails.getAccountNumber() == null) {

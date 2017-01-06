@@ -16,6 +16,9 @@ public class BankDetails {
 	
 	@NotBlank
 	private String beneficiaryName;
+
+	@NotBlank
+	private String providerId;
 	
 	@NotBlank
 	private String beneficiaryAddress;
@@ -97,6 +100,14 @@ public class BankDetails {
 
 	public void setAccountNumber(String accountNumber) {
 		this.accountNumber = accountNumber;
+	}
+
+	public String getProviderId() {
+		return providerId;
+	}
+
+	public void setProviderId(String providerId) {
+		this.providerId = providerId;
 	}
 	
 	
