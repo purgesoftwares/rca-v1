@@ -1,17 +1,15 @@
 package com.siv.model.product;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document
 public class ProductTypes {
 	
 	@Id
 	private String id;
 	
-	private String drink;
-	
-	private String desert;
-	
-	private String main;
+	private String name;
 
 	public String getId() {
 		return id;
@@ -21,28 +19,12 @@ public class ProductTypes {
 		this.id = id;
 	}
 
-	public String getDrink() {
-		return drink;
+	public String getName() {
+		return name;
 	}
 
-	public void setDrink(String drink) {
-		this.drink = drink;
-	}
-
-	public String getDesert() {
-		return desert;
-	}
-
-	public void setDesert(String desert) {
-		this.desert = desert;
-	}
-
-	public String getMain() {
-		return main;
-	}
-
-	public void setMain(String main) {
-		this.main = main;
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 

@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -109,6 +110,48 @@ public class ProviderController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Provider findOne(@PathParam(value="id")String id){
 		return providerRepository.findOne(id);
+	}
+	
+	@PUT
+	@Path("/signup/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Provider update(@PathParam(value="id")String id, ProviderRequest providerRequest) throws UsernameIsNotAnEmailException{
+		Provider preProduct = providerRepository.findOne(id);
+		User preUser = userRepository.findOne(preProduct.getUserId());
+		Address address = addressRepository.findOne(preProduct.getAddressId());
+		
+		boolean isValid = checkStringIsEmamil(providerRequest.getMainEmail());
+		boolean isSecondayEmailValid = checkStringIsEmamil(providerRequest.getSecondaryEmail());
+		if(!isValid || !isSecondayEmailValid){
+			throw new UsernameIsNotAnEmailException("Please input correct email type.");
+		}
+		
+		preProduct.setLastUpdate(new Date());
+
+		if(providerRequest.getAddress() != null){
+			address.setAddress1(providerRequest.getAddress());
+		} if(providerRequest.getCity() != null){
+			address.setCity(providerRequest.getCity());
+		} if(providerRequest.getCountry() != null){
+			address.setCountry(providerRequest.getCountry());
+		} if(providerRequest.getContactName() !=null) {
+			preProduct.setContactName(providerRequest.getContactName());
+		} if(providerRequest.getProviderName() != null){
+			preProduct.setProvider_name(providerRequest.getProviderName());
+		} if(providerRequest.getMainEmail() != null){
+			preProduct.setMainEmail(providerRequest.getMainEmail());
+			preUser.setUsername(providerRequest.getMainEmail());
+		} if(providerRequest.getSecondaryEmail() != null){
+			preProduct.setSecondaryEmail(providerRequest.getSecondaryEmail());
+		} if(providerRequest.getPassword() != null && providerRequest.getPassword().equals(providerRequest.getConfirmPassword())){
+			PasswordEncoder encoder = new BCryptPasswordEncoder();
+			preUser.setPassword(encoder.encode(providerRequest.getPassword()));
+		}
+		
+		addressRepository.save(address);
+		userRepository.save(preUser);
+		
+		return providerRepository.save(preProduct);
 	}
 
 }
