@@ -6,7 +6,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import com.siv.model.user.User;
 	
-	@RepositoryRestResource
+@RepositoryRestResource
 public interface UserRepository extends CrudRepository<User, String>, MongoRepository<User, String>{
 
 	public User findByUsername(String username);
