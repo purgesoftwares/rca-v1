@@ -26,7 +26,7 @@ public class OpeningDays {
 	
 	private Date openingTime;
 	
-	private Date endTime;
+	private Date endingTime;
 
 	public String getId() {
 		return id;
@@ -52,14 +52,6 @@ public class OpeningDays {
 		this.openingTime = openingTime;
 	}
 
-	public Date getEndTime() {
-		return endTime;
-	}
-
-	public void setEndTime(Date endTime) {
-		this.endTime = endTime;
-	}
-
 	public List<OpeningTime> getDays() {
 		return days;
 	}
@@ -74,6 +66,14 @@ public class OpeningDays {
 
 	public void setDay(OpeningTime day) {
 		this.day = day;
+	}
+
+	public Date getEndingTime() {
+		return endingTime;
+	}
+
+	public void setEndingTime(Date endingTime) {
+		this.endingTime = endingTime;
 	}
 	
 	

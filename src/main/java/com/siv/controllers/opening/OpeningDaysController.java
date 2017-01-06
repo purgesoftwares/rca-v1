@@ -13,10 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.siv.exceptions.AllPropertyRequiredException;
 import com.siv.exceptions.RequestedIdIsNotExists;
+import com.siv.model.openings.ExcludedTime;
 import com.siv.model.openings.OpeningDays;
+import com.siv.model.openings.OpeningExcludedRequest;
 import com.siv.model.openings.OpeningTime;
 import com.siv.model.provider.Provider;
+import com.siv.repository.opening.ExcludedTimeRepository;
 import com.siv.repository.opening.OpeningDaysRepository;
 import com.siv.repository.provider.ProviderRepository;
 
@@ -28,6 +32,9 @@ public class OpeningDaysController {
 	
 	@Autowired
 	private ProviderRepository providerRepository;
+	
+	@Autowired
+	private ExcludedTimeRepository excludedTimeRepository;
 	
 	@POST
 	@Produces("application/json")
@@ -64,12 +71,29 @@ public class OpeningDaysController {
 	@PUT
 	@Path("/{providerId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public OpeningDays update(@PathParam(value="providerId")String providerId, OpeningDays days){
-		OpeningDays preOpenDays = openingDaysRepository.findByProviderIdAndDay(providerId, days.getDay());
-		days.setId(preOpenDays.getId());
-		days.setProviderId(providerId);
+	public OpeningDays update(@PathParam(value="providerId")String providerId, 
+			OpeningExcludedRequest openingExcludedRequest){
 		
-		return openingDaysRepository.save(days);
+		if(openingExcludedRequest.getOpeningTime() == null && openingExcludedRequest.getEndingTime() ==null
+				&& openingExcludedRequest.getDay() == null){
+			throw new AllPropertyRequiredException("Day, startingTime and Ending time is required,fill it properly.");
+		}
+		
+		
+		OpeningDays preOpenDays = openingDaysRepository.findByProviderIdAndDay(providerId, openingExcludedRequest.getDay());
+		preOpenDays.setProviderId(providerId);
+		preOpenDays.setOpeningTime(openingExcludedRequest.getOpeningTime());
+		preOpenDays.setEndingTime(openingExcludedRequest.getEndingTime());
+		openingDaysRepository.save(preOpenDays);
+		
+		ExcludedTime excludedTime = new ExcludedTime();
+		excludedTime.setOpeningId(preOpenDays.getId());
+		excludedTime.setStartExcludedTime(openingExcludedRequest.getStartExcludedTime());
+		excludedTime.setEndExcludedTime(openingExcludedRequest.getEndExcludedTime());
+		excludedTime.setLable(openingExcludedRequest.getLable());
+		excludedTimeRepository.save(excludedTime);
+		
+		return preOpenDays;
 	}
 	
 	@DELETE
