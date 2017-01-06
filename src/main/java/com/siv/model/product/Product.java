@@ -19,14 +19,14 @@ public class Product {
 	private String productName;
 	
 	@NotNull(message="One Product Type is required")
-	private ProductType productType;
+	private String productType;
 	
 	@NotNull(message="Price is required")
 	private BigDecimal price;
 	
 	private String description;
 	
-	private List<ProductCategory> productCategory = new ArrayList<ProductCategory>();
+	private List<String> productCategory = new ArrayList<String>();
 
 	public String getId() {
 		return id;
@@ -44,11 +44,11 @@ public class Product {
 		this.productName = productName;
 	}
 
-	public ProductType getProductType() {
+	public String getProductType() {
 		return productType;
 	}
 
-	public void setProductType(ProductType productType) {
+	public void setProductType(String productType) {
 		this.productType = productType;
 	}
 
@@ -68,11 +68,11 @@ public class Product {
 		this.description = description;
 	}
 
-	public List<ProductCategory> getProductCategory() {
+	public List<String> getProductCategory() {
 		return productCategory;
 	}
 
-	public void setProductCategory(List<ProductCategory> productCategory) {
+	public void setProductCategory(List<String> productCategory) {
 		this.productCategory = productCategory;
 	}
 	
