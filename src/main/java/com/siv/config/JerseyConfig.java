@@ -20,6 +20,7 @@ import com.siv.controllers.product.ProductController;
 import com.siv.controllers.product.ProductTypeController;
 import com.siv.controllers.provider.ProviderInformationController;
 import com.siv.controllers.user.UserController;
+import com.siv.exceptions.DuplicateKeyFoundMapper;
 import com.siv.publicapi.PublicApiController;
 
 @Component
@@ -42,7 +43,8 @@ public class JerseyConfig extends ResourceConfig {
         		CROSFilter.class,
         		PublicApiController.class,
         		CollectedCouponController.class,
-        		BankDetailsController.class);
+        		BankDetailsController.class,
+        		DuplicateKeyFoundMapper.class);
         
         register(JspMvcFeature.class);
         property(JspMvcFeature.TEMPLATES_BASE_PATH, "/WEB-INF/jsp");
