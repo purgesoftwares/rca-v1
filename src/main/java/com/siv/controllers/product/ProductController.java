@@ -1,5 +1,7 @@
 package com.siv.controllers.product;
 
+import java.util.List;
+
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -11,7 +13,9 @@ import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+
 import com.siv.model.product.Product;
 import com.siv.repository.product.ProductRepository;
 
@@ -37,7 +41,8 @@ public class ProductController {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Page<Product> findAll(Pageable pageble){
-		return productRepository.findAll(pageble);
+		
+		return new PageImpl<Product>(productRepository.findAll(pageble).getContent(), pageble, 20);
 	}
 	
 	@PUT
