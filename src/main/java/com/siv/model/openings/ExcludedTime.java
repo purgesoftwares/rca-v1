@@ -25,12 +25,12 @@ public class ExcludedTime {
 		this.openingId = openingId;
 	}
 
-	public String getLable() {
+	public String getLabel() {
 		return label;
 	}
 
-	public void setLable(String lable) {
-		this.label = lable;
+	public void setLabel(String label) {
+		this.label = label;
 	}
 
 	public String getId() {

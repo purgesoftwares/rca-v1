@@ -2,6 +2,7 @@ package com.siv.config;
 
 import javax.annotation.PostConstruct;
 
+import com.siv.controllers.provider.ExcludedTimeController;
 import com.siv.controllers.provider.ProviderController;
 
 import org.glassfish.jersey.server.ResourceConfig;
@@ -44,6 +45,7 @@ public class JerseyConfig extends ResourceConfig {
         		PublicApiController.class,
         		CollectedCouponController.class,
         		BankDetailsController.class,
+				ExcludedTimeController.class,
         		DuplicateKeyFoundMapper.class);
         
         register(JspMvcFeature.class);
