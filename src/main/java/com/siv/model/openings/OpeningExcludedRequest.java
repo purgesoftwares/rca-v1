@@ -1,35 +1,23 @@
 package com.siv.model.openings;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
 public class OpeningExcludedRequest {
-	
-	@NotNull
-	private String startExcludedTime;
-	
-	@NotNull
-	private String endExcludedTime;
-	
-	private String lable;
-	
+
 	@NotNull
 	private OpeningTime day;
-	
-	@NotNull
-	private Date openingTime;
-	
-	@NotNull
-	private Date endingTime;
 
-	public String getLable() {
-		return lable;
-	}
+	@NotNull
+	private String openingTime;
 
-	public void setLable(String lable) {
-		this.lable = lable;
-	}
+	@NotNull
+	private String endingTime;
+
+	private List<ExcludedTime> excludedTimeList	= new ArrayList<ExcludedTime>();
 
 	public OpeningTime getDay() {
 		return day;
@@ -39,38 +27,27 @@ public class OpeningExcludedRequest {
 		this.day = day;
 	}
 
-	public Date getOpeningTime() {
+	public String getOpeningTime() {
 		return openingTime;
 	}
 
-	public void setOpeningTime(Date openingTime) {
+	public void setOpeningTime(String openingTime) {
 		this.openingTime = openingTime;
 	}
 
-	public Date getEndingTime() {
+	public String getEndingTime() {
 		return endingTime;
 	}
 
-	public void setEndingTime(Date endingTime) {
+	public void setEndingTime(String endingTime) {
 		this.endingTime = endingTime;
 	}
 
-	public String getStartExcludedTime() {
-		return startExcludedTime;
+	public List<ExcludedTime> getExcludedTimeList() {
+		return excludedTimeList;
 	}
 
-	public void setStartExcludedTime(String startExcludedTime) {
-		this.startExcludedTime = startExcludedTime;
+	public void setExcludedTimeList(List<ExcludedTime> excludedTimeList) {
+		this.excludedTimeList = excludedTimeList;
 	}
-
-	public String getEndExcludedTime() {
-		return endExcludedTime;
-	}
-
-	public void setEndExcludedTime(String endExcludedTime) {
-		this.endExcludedTime = endExcludedTime;
-	}
-	
-	
-	
 }

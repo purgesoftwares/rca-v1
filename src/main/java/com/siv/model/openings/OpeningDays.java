@@ -23,10 +23,25 @@ public class OpeningDays {
 	@NotEmpty
 	@Transient
 	private List<OpeningTime> days = new ArrayList<OpeningTime>();
+
+	@Override
+	public String toString() {
+		return "OpeningDays{" +
+				"id='" + id + '\'' +
+				", providerId='" + providerId + '\'' +
+				", day=" + day +
+				", days=" + days +
+				", openingTime=" + openingTime +
+				", endingTime=" + endingTime +
+				", status=" + status +
+				'}';
+	}
+
+	private String openingTime;
 	
-	private Date openingTime;
-	
-	private Date endingTime;
+	private String endingTime;
+
+	private Integer status;
 
 	public String getId() {
 		return id;
@@ -44,11 +59,11 @@ public class OpeningDays {
 		this.providerId = providerId;
 	}
 
-	public Date getOpeningTime() {
+	public String getOpeningTime() {
 		return openingTime;
 	}
 
-	public void setOpeningTime(Date openingTime) {
+	public void setOpeningTime(String openingTime) {
 		this.openingTime = openingTime;
 	}
 
@@ -68,14 +83,20 @@ public class OpeningDays {
 		this.day = day;
 	}
 
-	public Date getEndingTime() {
+	public String getEndingTime() {
 		return endingTime;
 	}
 
-	public void setEndingTime(Date endingTime) {
+	public void setEndingTime(String endingTime) {
 		this.endingTime = endingTime;
 	}
-	
-	
 
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
 }

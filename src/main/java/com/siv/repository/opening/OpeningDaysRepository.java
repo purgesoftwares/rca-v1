@@ -10,9 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.siv.model.openings.OpeningDays;
 import com.siv.model.openings.OpeningTime;
 
+import java.util.List;
+
 @RepositoryRestResource
 public interface OpeningDaysRepository extends MongoRepository<OpeningDays, String>, CrudRepository<OpeningDays, String>{
 	
 	@Transactional
 	public OpeningDays findByProviderIdAndDay(@PathParam("providerId")String providerId, OpeningTime day);
+
+    public List<OpeningDays> findByProviderId(@PathParam("providerId") String providerId);
 }

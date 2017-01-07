@@ -24,6 +24,11 @@ import com.siv.repository.opening.ExcludedTimeRepository;
 import com.siv.repository.opening.OpeningDaysRepository;
 import com.siv.repository.provider.ProviderRepository;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
 @Path("/secured/opening-day")
 public class OpeningDaysController {
 	
@@ -44,16 +49,77 @@ public class OpeningDaysController {
 		if(provider == null) {
 			throw new RequestedIdIsNotExists("This Provider is not exits,please enter differne one.");
 		}
+		List<OpeningDays> openingsDays = openingDaysRepository.findByProviderId(provider.getId());
+
+		List<OpeningTime> existingOpeningTime = new ArrayList<OpeningTime>();
+
+		for(OpeningDays day : openingsDays){
+			System.out.println(day.getDay());
+			if(!days.getDays().contains(day.getDay())){
+				day.setStatus(0);
+				openingDaysRepository.save(day);
+			}
+
+			existingOpeningTime.add(
+					day.getDay());
+		}
 
 		for(OpeningTime day : days.getDays()) {
-			OpeningDays openingDays = new OpeningDays();
-			openingDays.setDay(day);
-			openingDays.setProviderId(days.getProviderId());
-			openingDaysRepository.save(openingDays);
+			System.out.println(day.toString());
+			if(!existingOpeningTime.contains(day)){
+				OpeningDays openingDays = new OpeningDays();
+				openingDays.setDay(day);
+				openingDays.setStatus(1);
+				openingDays.setOpeningTime("10:00 AM");
+				openingDays.setEndingTime("06:00 PM");
+				openingDays.setProviderId(days.getProviderId());
+				openingDaysRepository.save(openingDays);
+			}
 		}
-		
+
 		return days;		
 	}
+
+	@PUT
+	@Produces("application/json")
+	public OpeningDays update(OpeningDays days){
+
+		Provider provider = providerRepository.findOne(days.getProviderId());
+		if(provider == null) {
+			throw new RequestedIdIsNotExists("This Provider is not exits, please use existing provider.");
+		}
+
+		List<OpeningDays> openingsDays = openingDaysRepository.findByProviderId(provider.getId());
+
+		List<OpeningTime> existingOpeningTime = new ArrayList<OpeningTime>();
+
+		for(OpeningDays day : openingsDays){
+			System.out.println(day.getDay());
+			if(!Arrays.asList(days.getDays()).contains(day.getDay())){
+				day.setStatus(0);
+				openingDaysRepository.save(day);
+			}
+
+			existingOpeningTime.add(
+					day.getDay());
+		}
+
+		for(OpeningTime day : days.getDays()) {
+			System.out.println(day.toString());
+			if(!Arrays.asList(existingOpeningTime).contains(day)){
+				OpeningDays openingDays = new OpeningDays();
+				openingDays.setDay(day);
+				openingDays.setStatus(1);
+				openingDays.setOpeningTime("10:00 AM");
+				openingDays.setEndingTime("06:00 PM");
+				openingDays.setProviderId(days.getProviderId());
+				openingDaysRepository.save(openingDays);
+			}
+		}
+
+		return days;
+	}
+
 	
 	@GET
 	@Path("/{id}")
@@ -67,7 +133,14 @@ public class OpeningDaysController {
 	public Page<OpeningDays> findAll(Pageable pageble){
 		return openingDaysRepository.findAll(pageble);
 	}
-	
+
+	@GET
+	@Path("/get-by-provider/{providerId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<OpeningDays> findByProviderId(@PathParam(value = "providerId") String providerId){
+		return openingDaysRepository.findByProviderId(providerId);
+	}
+
 	@PUT
 	@Path("/{providerId}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -85,17 +158,16 @@ public class OpeningDaysController {
 		preOpenDays.setOpeningTime(openingExcludedRequest.getOpeningTime());
 		preOpenDays.setEndingTime(openingExcludedRequest.getEndingTime());
 		openingDaysRepository.save(preOpenDays);
-		
-		ExcludedTime excludedTime = new ExcludedTime();
-		excludedTime.setOpeningId(preOpenDays.getId());
-		excludedTime.setStartExcludedTime(openingExcludedRequest.getStartExcludedTime());
-		excludedTime.setEndExcludedTime(openingExcludedRequest.getEndExcludedTime());
-		excludedTime.setLable(openingExcludedRequest.getLable());
-		excludedTimeRepository.save(excludedTime);
-		
+
+		for (ExcludedTime excludedTime: openingExcludedRequest.getExcludedTimeList() ) {
+			excludedTime.setOpeningId(preOpenDays.getId());
+			excludedTimeRepository.save(excludedTime);
+		}
+
 		return preOpenDays;
 	}
-	
+
+
 	@DELETE
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
