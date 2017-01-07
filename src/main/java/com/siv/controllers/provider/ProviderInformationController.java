@@ -39,6 +39,12 @@ public class ProviderInformationController {
 	public ProviderInformation findOne(@PathParam(value="id")String id){
 		return providerInformationRepository.findOne(id);
 	}
+	@GET
+	@Path("/get-information/{providerId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ProviderInformation findByProviderId(@PathParam(value="providerId")String providerId){
+		return providerInformationRepository.findByProviderId(providerId);
+	}
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)

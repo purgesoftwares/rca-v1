@@ -11,7 +11,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -97,6 +98,13 @@ public class ProviderController {
 		return providerRepository.save(provider);		
 	}
 	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Page<Provider> findAll(Pageable pageble){
+		
+		return providerRepository.findAll(pageble);
+	}
+
 	private boolean checkStringIsEmamil(String username) {
 		Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
 		Matcher m = p.matcher(username);

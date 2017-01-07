@@ -15,6 +15,21 @@ public class ProviderInformation {
 	private String typesOfProductDetail;
 	
 	private String placeInfo;
+
+	@Override
+	public String toString() {
+		return "ProviderInformation{" +
+				"id='" + id + '\'' +
+				", typesOfProductDetail='" + typesOfProductDetail + '\'' +
+				", placeInfo='" + placeInfo + '\'' +
+				", providerId='" + providerId + '\'' +
+				", createDate=" + createDate +
+				", lastUpdate=" + lastUpdate +
+				'}';
+	}
+
+	@NotNull
+	private String providerId;
 	
 	@NotNull
 	private Date createDate;
@@ -62,4 +77,11 @@ public class ProviderInformation {
 		this.lastUpdate = lastUpdate;
 	}
 
+	public String getProviderId() {
+		return providerId;
+	}
+
+	public void setProviderId(String providerId) {
+		this.providerId = providerId;
+	}
 }
