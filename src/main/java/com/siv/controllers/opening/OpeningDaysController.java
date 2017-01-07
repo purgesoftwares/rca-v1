@@ -54,7 +54,7 @@ public class OpeningDaysController {
 		List<OpeningTime> existingOpeningTime = new ArrayList<OpeningTime>();
 
 		for(OpeningDays day : openingsDays){
-			System.out.println(day.getDay());
+
 			if(!days.getDays().contains(day.getDay())){
 				day.setStatus(0);
 				openingDaysRepository.save(day);
@@ -65,7 +65,7 @@ public class OpeningDaysController {
 		}
 
 		for(OpeningTime day : days.getDays()) {
-			System.out.println(day.toString());
+
 			if(!existingOpeningTime.contains(day)){
 				OpeningDays openingDays = new OpeningDays();
 				openingDays.setDay(day);
@@ -94,7 +94,7 @@ public class OpeningDaysController {
 		List<OpeningTime> existingOpeningTime = new ArrayList<OpeningTime>();
 
 		for(OpeningDays day : openingsDays){
-			System.out.println(day.getDay());
+
 			if(!Arrays.asList(days.getDays()).contains(day.getDay())){
 				day.setStatus(0);
 				openingDaysRepository.save(day);
@@ -105,7 +105,7 @@ public class OpeningDaysController {
 		}
 
 		for(OpeningTime day : days.getDays()) {
-			System.out.println(day.toString());
+
 			if(!Arrays.asList(existingOpeningTime).contains(day)){
 				OpeningDays openingDays = new OpeningDays();
 				openingDays.setDay(day);

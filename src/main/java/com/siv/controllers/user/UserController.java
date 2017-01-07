@@ -11,9 +11,13 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.siv.exceptions.NoCurrentProviderException;
+import com.siv.model.provider.Provider;
+import com.siv.repository.provider.ProviderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import com.siv.model.user.User;
@@ -24,6 +28,9 @@ public class UserController {
 	
 	@Autowired
 	UserRepository userRepository;
+
+	@Autowired
+	private ProviderRepository providerRepository;
 	
 	@POST
 	@Produces("application/json")
@@ -82,6 +89,25 @@ public class UserController {
 		}
 		
 		return userRepository.save(user);
+	}
+
+	@GET
+	@Path("/current-provider")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Provider findCurrentProvider(){
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		User activeUser = userRepository.findByUsername(username);
+		Provider provider = null;
+
+		if(!username.equals("anonymousUser")) {
+
+			provider = providerRepository.findByUserId(activeUser.getId());
+		} else {
+			throw new NoCurrentProviderException("There is no current provider, please first login.");
+		}
+
+
+		return provider;
 	}
 	
 	@DELETE
