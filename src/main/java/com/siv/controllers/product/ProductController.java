@@ -42,7 +42,15 @@ public class ProductController {
 		
 		return new PageImpl<Product>(productRepository.findAll(pageble).getContent(), pageble, 20);
 	}
-	
+
+	@GET
+	@Path("/provider-products/{providerId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Page<Product> findAllByProviderId(@PathParam("providerId") String providerId, Pageable pageable){
+
+		return new PageImpl<Product>(productRepository.findAll(pageable).getContent(), pageable, 20);
+	}
+
 	@PUT
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)

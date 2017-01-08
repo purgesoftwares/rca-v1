@@ -11,21 +11,23 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 public class Product {
-	
 	@Id
 	private String id;
-	
+
 	@NotNull(message="Product name should not be blank")
 	private String productName;
-	
+
+	@NotNull
+	private String providerId;
+
 	@NotNull(message="One Product Type is required")
 	private String productType;
-	
+
 	@NotNull(message="Price is required")
 	private BigDecimal price;
-	
+
 	private String description;
-	
+
 	private List<String> productCategory = new ArrayList<String>();
 
 	public String getId() {
@@ -75,6 +77,26 @@ public class Product {
 	public void setProductCategory(List<String> productCategory) {
 		this.productCategory = productCategory;
 	}
-	
 
+	public String getProviderId() {
+		return providerId;
+	}
+
+
+	public void setProviderId(String providerId) {
+		this.providerId = providerId;
+	}
+
+	@Override
+	public String toString() {
+		return "Product{" +
+				"id='" + id + '\'' +
+				", productName='" + productName + '\'' +
+				", providerId='" + providerId + '\'' +
+				", productType='" + productType + '\'' +
+				", price=" + price +
+				", description='" + description + '\'' +
+				", productCategory=" + productCategory +
+				'}';
+	}
 }

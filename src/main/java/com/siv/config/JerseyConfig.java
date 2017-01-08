@@ -5,6 +5,7 @@ import javax.annotation.PostConstruct;
 import com.siv.controllers.provider.ExcludedTimeController;
 import com.siv.controllers.provider.ProviderController;
 
+import com.siv.repository.opening.ExcludedTimeRepository;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.mvc.jsp.JspMvcFeature;
 import org.glassfish.jersey.servlet.ServletProperties;
@@ -46,6 +47,7 @@ public class JerseyConfig extends ResourceConfig {
         		CollectedCouponController.class,
         		BankDetailsController.class,
 				ExcludedTimeController.class,
+				ExcludedTimeRepository.class,
         		DuplicateKeyFoundMapper.class);
         
         register(JspMvcFeature.class);
