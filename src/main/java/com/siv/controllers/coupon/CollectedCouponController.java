@@ -10,6 +10,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.siv.exceptions.NoCurrentProviderException;
+import com.siv.model.coupon.ProviderCollectedCouponResponse;
 import org.omg.CosNaming.NamingContextPackage.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -69,7 +71,7 @@ public class CollectedCouponController {
 				&& (now.compareTo(coupon.getEndTime()) <= 0)*/){
 			return Response.ok(coupon).build();
 		}else{
-			throw new CustomNotFoundException("Coupon not found");
+			throw new NoCurrentProviderException("Coupon code is not valid.");
 
 		}
 	}
@@ -85,6 +87,15 @@ public class CollectedCouponController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Coupon getCouponByCode(@PathParam("couponCode")String couponCode){
 		return couponRepository.findByCouponCode(couponCode);
+	}
+
+	@GET
+	@Path("/by-provider/{providerId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ProviderCollectedCouponResponse getCollectedCouponByProviderId(@PathParam("providerId")String providerId){
+		ProviderCollectedCouponResponse providerCollectedCouponResponse = new ProviderCollectedCouponResponse();
+		providerCollectedCouponResponse.setCollectedCouponList(collCouponRepository.findByProviderId(providerId));
+		return providerCollectedCouponResponse;
 	}
 
 
