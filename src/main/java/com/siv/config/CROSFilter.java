@@ -22,6 +22,7 @@ public class CROSFilter implements ContainerResponseFilter {
         headers.add("ACCESS_CONTROL_ALLOW_CREDENTIALS", "true");
         headers.add("ACCESS_CONTROL_ALLOW_METHODS", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
         headers.add("ACCESS_CONTROL_MAX_AGE", ACCESS_CONTROL_MAX_AGE_IN_SECONDS);
+        headers.add("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, X-Codingpedia");
 
     }
 }
