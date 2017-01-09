@@ -1,19 +1,44 @@
 package com.siv.model.product;
 
-public enum ProductCategory {
+import javax.validation.constraints.NotNull;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document
+public class ProductCategory {
 	
-	EAT("EAT"),
-	DRINK("DRINK"),
-	LOVE("LOVE");
+	@Id
+	private String id;
 	
-	private final String name;
+	@NotNull
+	private String name;
 	
-	ProductCategory(String name) {
-		this.name = name;
+	private String description;
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getName() {
 		return name;
 	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
 
 }
