@@ -15,6 +15,7 @@ import com.siv.controllers.address.AddressController;
 import com.siv.controllers.coupon.CouponController;
 import com.siv.controllers.coupon.CollectedCouponController;
 import com.siv.controllers.customer.CustomerController;
+import com.siv.controllers.enquiry.ContactUsEnquiryController;
 import com.siv.controllers.opening.OpeningDaysController;
 import com.siv.controllers.pages.CMSPagesController;
 import com.siv.controllers.payment.BankDetailsController;
@@ -52,7 +53,8 @@ public class JerseyConfig extends ResourceConfig {
 				ExcludedTimeRepository.class,
         		DuplicateKeyFoundMapper.class,
         		ProductCategoryController.class,
-        		CMSPagesController.class);
+        		CMSPagesController.class,
+        		ContactUsEnquiryController.class);
         
         register(JspMvcFeature.class);
         property(JspMvcFeature.TEMPLATES_BASE_PATH, "/WEB-INF/jsp");
