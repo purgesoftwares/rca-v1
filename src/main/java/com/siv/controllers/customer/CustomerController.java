@@ -1,6 +1,8 @@
 package com.siv.controllers.customer;
 
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -10,9 +12,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import com.siv.exceptions.AllPropertyRequiredException;
+import com.siv.exceptions.UsernameIsNotAnEmailException;
 import com.siv.model.customer.Customer;
 import com.siv.repository.customer.CustomerRepository;
 
@@ -24,10 +30,30 @@ public class CustomerController {
 	
 	@POST
 	@Produces("application/json")
-	public Customer create(Customer customer){
+	public Customer create(Customer customer) throws UsernameIsNotAnEmailException{
+		
+		if(customer.getFirstName() == null || customer.getGender() == null || customer.getMainEmail() == null) {
+			throw new AllPropertyRequiredException("First name, gender and main email is required.");
+		}
+		
+		boolean isValid = checkStringIsEmail(customer.getMainEmail());
+		if(!isValid){
+			throw new UsernameIsNotAnEmailException("Please input correct email type.");
+		}
+		
 		customer.setCreateDate(new Date());
 		customer.setLastUpdate(new Date());
 		return customerRepository.save(customer);		
+	}
+	
+	private boolean checkStringIsEmail(String username) {
+		Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
+		Matcher m = p.matcher(username);
+		boolean matchFound = m.matches();
+		if (matchFound) {
+		    return true;
+		}
+		return false;
 	}
 	
 	@GET
@@ -66,8 +92,6 @@ public class CustomerController {
 			customer.setGender(preCustomer.getGender());
 		} if(customer.getMainEmail() == null) {
 			customer.setMainEmail(preCustomer.getMainEmail());
-		} if(customer.getSecondaryEmail() == null) {
-			customer.setSecondaryEmail(preCustomer.getSecondaryEmail());
 		}
 		
 		return customerRepository.save(customer);

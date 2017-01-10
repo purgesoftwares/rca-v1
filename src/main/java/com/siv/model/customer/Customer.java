@@ -38,9 +38,6 @@ public class Customer {
 	@NotEmpty(message="Email should not be blank")
 	private String mainEmail;
 	
-	@Email
-	private String secondaryEmail;
-	
 	@NotNull
 	private Date createDate;
 	
@@ -120,14 +117,6 @@ public class Customer {
 
 	public void setMainEmail(String mainEmail) {
 		this.mainEmail = mainEmail;
-	}
-
-	public String getSecondaryEmail() {
-		return secondaryEmail;
-	}
-
-	public void setSecondaryEmail(String secondaryEmail) {
-		this.secondaryEmail = secondaryEmail;
 	}
 
 	public Date getCreateDate() {
