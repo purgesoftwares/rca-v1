@@ -7,10 +7,8 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import com.siv.model.address.Address;
 
 @Document
 public class Customer {
@@ -28,14 +26,10 @@ public class Customer {
 	
 	@NotNull
 	private String addressId;
-	
-	private String dob;
-	
-	@NotNull(message="Gender should not be blank")
-	private String gender;
-	
+
 	@Email
 	@NotEmpty(message="Email should not be blank")
+	@Indexed(unique=true)
 	private String mainEmail;
 	
 	@NotNull
@@ -43,18 +37,9 @@ public class Customer {
 	
 	@NotNull
 	private Date lastUpdate;
-	
-	@DBRef
-	private Address address;
-	
-	public Address getAddress() {
-		return address;
-	}
 
-	public void setAddress(Address address) {
-		this.address = address;
-	}
-
+	private String userId;
+	
 	public String getId() {
 		return id;
 	}
@@ -95,22 +80,6 @@ public class Customer {
 		this.addressId = addressId;
 	}
 
-	public String getDob() {
-		return dob;
-	}
-
-	public void setDob(String dob) {
-		this.dob = dob;
-	}
-
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-
 	public String getMainEmail() {
 		return mainEmail;
 	}
@@ -133,6 +102,14 @@ public class Customer {
 
 	public void setLastUpdate(Date lastUpdate) {
 		this.lastUpdate = lastUpdate;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 	
 

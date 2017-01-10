@@ -29,7 +29,7 @@ public class CMSPagesController {
 	@Produces("application/json")
 	public CMSPages create(CMSPages pages){
 		
-		if(pages.getTitle() == null || pages.getStatus() == null || pages.getContentText() == null){
+		if(pages.getTitle() == null || pages.getStatus() == null || pages.getContent() == null){
 			throw new AllPropertyRequiredException("Title ,Context text and status is required.");
 		}
 		pages.setCreateDate(new Date());
@@ -63,8 +63,8 @@ public class CMSPagesController {
 			pages.setTitle(preProduct.getTitle());
 		} if(pages.getStatus() == null){
 			pages.setStatus(preProduct.getStatus());
-		} if(pages.getContentText() == null) {
-			pages.setContentText(preProduct.getContentText());
+		} if(pages.getContent() == null) {
+			pages.setContent(preProduct.getContent());
 		}
 		return cmsRepository.save(pages);
 	}

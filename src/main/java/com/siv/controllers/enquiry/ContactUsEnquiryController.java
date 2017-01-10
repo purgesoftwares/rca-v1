@@ -98,6 +98,8 @@ public class ContactUsEnquiryController {
 			enquiry.setStatus(preEnquiry.getStatus());
 		} if(enquiry.getUserEmail() == null){
 			enquiry.setUserEmail(preEnquiry.getUserEmail());
+		} if(enquiry.getSubject() == null){
+			enquiry.setSubject(preEnquiry.getSubject());
 		}
 		return enquiryRepository.save(enquiry);
 	}

@@ -13,7 +13,7 @@ public class CMSPages {
 	
 	private String title;
 	
-	private String contentText;
+	private String content;
 	
 	private String status;
 	
@@ -35,14 +35,6 @@ public class CMSPages {
 
 	public void setTitle(String title) {
 		this.title = title;
-	}
-
-	public String getContentText() {
-		return contentText;
-	}
-
-	public void setContentText(String contentText) {
-		this.contentText = contentText;
 	}
 
 	public String getStatus() {
@@ -67,6 +59,14 @@ public class CMSPages {
 
 	public void setLastUpdate(Date lastUpdate) {
 		this.lastUpdate = lastUpdate;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
 	}
 	
 	

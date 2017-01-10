@@ -27,6 +27,7 @@ import com.siv.controllers.provider.ProviderInformationController;
 import com.siv.controllers.user.UserController;
 import com.siv.exceptions.DuplicateKeyFoundMapper;
 import com.siv.publicapi.PublicApiController;
+import com.siv.publicapi.PublicCustomerApiController;
 
 @Component
 public class JerseyConfig extends ResourceConfig {
@@ -54,7 +55,8 @@ public class JerseyConfig extends ResourceConfig {
         		DuplicateKeyFoundMapper.class,
         		ProductCategoryController.class,
         		CMSPagesController.class,
-        		ContactUsEnquiryController.class);
+        		ContactUsEnquiryController.class,
+        		PublicCustomerApiController.class);
         
         register(JspMvcFeature.class);
         property(JspMvcFeature.TEMPLATES_BASE_PATH, "/WEB-INF/jsp");

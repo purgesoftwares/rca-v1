@@ -14,12 +14,10 @@ import javax.ws.rs.core.MediaType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.common.exceptions.UserDeniedAuthorizationException;
 
-import com.siv.exceptions.NoCurrentProviderException;
 import com.siv.exceptions.PasswordDidNotMatchException;
 import com.siv.exceptions.UsernameIsNotAnEmailException;
 import com.siv.model.address.Address;
@@ -164,22 +162,5 @@ public class ProviderController {
 		return providerRepository.save(preProduct);
 	}
 
-	@GET
-	@Path("/current-provider")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Provider findCurrentProvider(){
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		User activeUser = userRepository.findByUsername(username);
-		Provider provider = null;
-		
-		if(!username.equals("anonymousUser")) {
-			provider = providerRepository.findByUserId(activeUser.getId());
-		} else {
-			throw new NoCurrentProviderException("There is no current provider, please first login.");
-		}
-	
-		
-		return provider;
-	}
 	
 }

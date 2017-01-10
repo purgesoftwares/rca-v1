@@ -49,7 +49,6 @@ public class UserDaoImpl implements UserDao {
 		final Customer customer = new Customer();
 		customer.setFirstName(customerDto.getFirstName());
 		customer.setLastName(customerDto.getLastName());
-		customer.setGender(customerDto.getGender());
 		
 		return cr.save(customer);
 		

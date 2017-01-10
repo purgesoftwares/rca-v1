@@ -57,6 +57,8 @@ public class ProductCategoryController {
 			product.setName(preProduct.getName());
 		} if(product.getDescription() == null){
 			product.setDescription(preProduct.getDescription());
+		} if(product.getStatus() == null){
+			product.setStatus(preProduct.getStatus());
 		}
 		return productCategoryRepository.save(product);
 	}

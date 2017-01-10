@@ -32,8 +32,8 @@ public class CustomerController {
 	@Produces("application/json")
 	public Customer create(Customer customer) throws UsernameIsNotAnEmailException{
 		
-		if(customer.getFirstName() == null || customer.getGender() == null || customer.getMainEmail() == null) {
-			throw new AllPropertyRequiredException("First name, gender and main email is required.");
+		if(customer.getFirstName() == null || customer.getMainEmail() == null) {
+			throw new AllPropertyRequiredException("First name and main email is required.");
 		}
 		
 		boolean isValid = checkStringIsEmail(customer.getMainEmail());
@@ -84,12 +84,8 @@ public class CustomerController {
 			customer.setLastName(preCustomer.getLastName());
 		} if(customer.getAddressId() == null) {
 			customer.setAddressId(preCustomer.getAddressId());
-		} if(customer.getDob() == null) {
-			customer.setDob(preCustomer.getDob());
 		} if(customer.getFullName() == null) {
 			customer.setFullName(preCustomer.getFullName());
-		} if(customer.getGender() == null) {
-			customer.setGender(preCustomer.getGender());
 		} if(customer.getMainEmail() == null) {
 			customer.setMainEmail(preCustomer.getMainEmail());
 		}

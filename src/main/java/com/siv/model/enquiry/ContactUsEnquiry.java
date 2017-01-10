@@ -24,6 +24,8 @@ public class ContactUsEnquiry {
 	private Date createDate;
 	
 	private Date lastUpdate;
+	
+	private String subject;
 
 	public String getId() {
 		return id;
@@ -79,6 +81,14 @@ public class ContactUsEnquiry {
 
 	public void setLastUpdate(Date lastUpdate) {
 		this.lastUpdate = lastUpdate;
+	}
+
+	public String getSubject() {
+		return subject;
+	}
+
+	public void setSubject(String subject) {
+		this.subject = subject;
 	}
 	
 	
