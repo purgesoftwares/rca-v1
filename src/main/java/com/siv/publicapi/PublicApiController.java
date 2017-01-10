@@ -1,5 +1,9 @@
 package com.siv.publicapi;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.mail.MessagingException;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -14,6 +18,7 @@ import com.siv.exceptions.PasswordDidNotMatchException;
 import com.siv.model.user.User;
 import com.siv.model.user.UserRequest;
 import com.siv.repository.user.UserRepository;
+import com.siv.services.EmailService;
 
 @Path("/public/user")
 public class PublicApiController {
@@ -21,13 +26,26 @@ public class PublicApiController {
 	@Autowired
 	private UserRepository userRepository;
 	
+	@Autowired
+	private EmailService emailService;
+	
 	@POST
 	@Path("/reset-password")
 	@Produces(MediaType.APPLICATION_JSON)
-	public User resetPassword(UserRequest userRequest) {
+	public User resetPassword(UserRequest userRequest) throws MessagingException {
 		
 		User preUser = userRepository.findByUsername(userRequest.getEmail());
 		PasswordEncoder encoder = new BCryptPasswordEncoder();
+		
+		 /*Map<String, String> processData = new HashMap<String, String>();
+	        
+	    processData.put("resetLink", "Hello");
+		
+		emailService.sendMailWithTemplate("Brad Pit",
+		"mamta.soni@xtreemsolution.com",
+		"RESET Pass",
+		"RESET Pas",
+		processData);	*/
 		
 		if(preUser != null) {
 			if(userRequest.getNewPassword() != null 

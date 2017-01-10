@@ -54,8 +54,15 @@ public class ProviderController {
 		}
 		
 		boolean isValid = checkStringIsEmamil(providerRequest.getMainEmail());
-		boolean isSecondayEmailValid = checkStringIsEmamil(providerRequest.getSecondaryEmail());
-		if(!isValid || !isSecondayEmailValid){
+		boolean isSecondayEmailValid = false;
+		
+		if(providerRequest.getSecondaryEmail() != null){
+			isSecondayEmailValid = checkStringIsEmamil(providerRequest.getSecondaryEmail());
+			if(!isSecondayEmailValid){
+				throw new UsernameIsNotAnEmailException("Please input correct email type.");
+			}
+		}
+		if(!isValid){
 			throw new UsernameIsNotAnEmailException("Please input correct email type.");
 		}
  		Provider provider = new Provider();
@@ -77,7 +84,7 @@ public class ProviderController {
 		PasswordEncoder encoder = new BCryptPasswordEncoder();
 		
 		if(!providerRequest.getPassword().equals(providerRequest.getConfirmPassword())) {
-			throw  new PasswordDidNotMatchException("Password not match.");
+			throw new PasswordDidNotMatchException("Password not match.");
 		}
 		user.setPassword(encoder.encode(providerRequest.getPassword()));
 		user.setEnabled(true);
