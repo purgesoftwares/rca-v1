@@ -1,6 +1,8 @@
 package com.siv.controllers.user;
 
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -12,14 +14,17 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.siv.exceptions.NoCurrentProviderException;
+import com.siv.exceptions.UsernameIsNotAnEmailException;
 import com.siv.model.provider.Provider;
 import com.siv.repository.provider.ProviderRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
 import com.siv.model.user.User;
 import com.siv.repository.user.UserRepository;
 
@@ -34,19 +39,34 @@ public class UserController {
 	
 	@POST
 	@Produces("application/json")
-	public User create(User user){
+	public User create(User user) throws UsernameIsNotAnEmailException{
 		user.setCreateDate(new Date());
 		user.setLastUpdate(new Date());	
 		
-		PasswordEncoder encoder = new BCryptPasswordEncoder();
+		boolean isValid = checkStringIsEmamil(user.getUsername());
+		if(!isValid){
+			throw new UsernameIsNotAnEmailException("Please input correct email type.");
+		}
 		
-		if(user.getNewPassword() != null) {
+		PasswordEncoder encoder = new BCryptPasswordEncoder();
+		if(user.getNewPassword() != null && user.getConfirmPassword() != null && user.getNewPassword().equals(user.getConfirmPassword())) {
 			user.setPassword(encoder.encode(user.getNewPassword()));
 		}
 		user.setEnabled(true);
 		user.setRole("SuperAdmin");
+		user.setIsActive(true);
 		
 		return userRepository.save(user);		
+	}
+	
+	private boolean checkStringIsEmamil(String username) {
+		Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
+		Matcher m = p.matcher(username);
+		boolean matchFound = m.matches();
+		if (matchFound) {
+		    return true;
+		}
+		return false;
 	}
 	
 	@GET
@@ -58,17 +78,20 @@ public class UserController {
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	//@CrossOrigin(origins="http://192.168.1.118:5555/")
 	public Page<User> findAll(Pageable pageble){
-		System.out.println("fadfdf");
 		return userRepository.findAll(pageble);
 	}
 	
 	@PUT
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public User update(@PathParam(value="id")String id, User user){
+	public User update(@PathParam(value="id")String id, User user) throws UsernameIsNotAnEmailException{
 		PasswordEncoder encoder = new BCryptPasswordEncoder();
+		
+		boolean isValid = checkStringIsEmamil(user.getUsername());
+		if(!isValid){
+			throw new UsernameIsNotAnEmailException("Please input correct email type.");
+		}
 		
 		User preUser = userRepository.findOne(id);
 		user.setId(id);
@@ -82,7 +105,7 @@ public class UserController {
 			user.setCustomerId(preUser.getCustomerId());
 		} if(user.getUsername() == null){
 			user.setUsername(preUser.getUsername());
-		} if(user.getNewPassword() != null) {
+		} if(user.getNewPassword() != null && user.getConfirmPassword() != null && user.getNewPassword().equals(user.getConfirmPassword())) {
 			user.setPassword(encoder.encode(user.getNewPassword()));
 		} if(user.getNewPassword() == null) {
 			user.setPassword(preUser.getPassword());

@@ -23,10 +23,6 @@ public class User {
 	@NotNull(message = "Username should not be blank.")
 	private String username;
 	
-	@Transient
-	@JsonIgnore
-	private String newPassword;
-	
 	@NotNull(message = "Password should not be blank.")
 	@JsonIgnore
 	private String password;
@@ -52,8 +48,10 @@ public class User {
 	
 	private String role;
 	
-	@JsonIgnore
-	@NotNull(message = "Confirm Password should not be blank.")
+	@Transient
+	private String newPassword;
+	
+	@Transient
 	private String confirmPassword;
 
 	public String getId() {
@@ -70,14 +68,6 @@ public class User {
 
 	public void setUsername(String username) {
 		this.username = username;
-	}
-
-	public String getNewPassword() {
-		return newPassword;
-	}
-
-	public void setNewPassword(String newPassword) {
-		this.newPassword = newPassword;
 	}
 
 	public String getPassword() {
@@ -152,6 +142,14 @@ public class User {
 		this.role = role;
 	}
 
+	public String getNewPassword() {
+		return newPassword;
+	}
+
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
+	}
+
 	public String getConfirmPassword() {
 		return confirmPassword;
 	}
@@ -159,6 +157,5 @@ public class User {
 	public void setConfirmPassword(String confirmPassword) {
 		this.confirmPassword = confirmPassword;
 	}
-		
 
 }
