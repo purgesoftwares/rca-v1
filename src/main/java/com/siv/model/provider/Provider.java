@@ -34,7 +34,6 @@ public class Provider {
 	private String mainEmail;
 	
 	@Email
-	@Indexed(unique=true)
 	private String secondaryEmail;
 	
 	@NotBlank(message="User Id is required.")
