@@ -89,6 +89,7 @@ public class ProviderController {
 		user.setPassword(encoder.encode(providerRequest.getPassword()));
 		user.setEnabled(true);
 		user.setRole("SuperAdmin");
+		user.setIsActive(true);
 		userRepository.save(user);
 		
 		provider.setAddressId(address.getId());

@@ -9,13 +9,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
 @ComponentScan({ "com.siv.*" })
 @EnableWebMvc
-@EnableTransactionManagement
 @Import({ SecurityConfig.class, JerseyConfig.class })
 public class BaseConfig {
 
