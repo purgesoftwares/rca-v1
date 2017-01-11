@@ -136,12 +136,22 @@ public class ProviderController {
 		User preUser = userRepository.findOne(preProduct.getUserId());
 		Address address = addressRepository.findOne(preProduct.getAddressId());
 		
-		boolean isValid = checkStringIsEmamil(providerRequest.getMainEmail());
-		boolean isSecondayEmailValid = checkStringIsEmamil(providerRequest.getSecondaryEmail());
-		if(!isValid || !isSecondayEmailValid){
-			throw new UsernameIsNotAnEmailException("Please input correct email type.");
+		boolean isValid = false;
+		boolean isSecondayEmailValid = false;
+		if(providerRequest.getMainEmail() != null){
+			 isValid = checkStringIsEmamil(providerRequest.getMainEmail());
+			 if(!isValid){
+					throw new UsernameIsNotAnEmailException("Please input correct email type.");
+			}
 		}
 		
+		if(providerRequest.getSecondaryEmail() != null){
+			 isValid = checkStringIsEmamil(providerRequest.getSecondaryEmail());
+			 if(!isSecondayEmailValid){
+					throw new UsernameIsNotAnEmailException("Please input correct email type.");
+			}
+		}
+			
 		preProduct.setLastUpdate(new Date());
 
 		if(providerRequest.getAddress() != null){
