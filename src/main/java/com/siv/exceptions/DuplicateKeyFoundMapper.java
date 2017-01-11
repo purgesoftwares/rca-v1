@@ -14,7 +14,7 @@ public class DuplicateKeyFoundMapper implements ExceptionMapper<DuplicateKeyExce
 	public Response toResponse(DuplicateKeyException exception) {
 		
 		return Response.status(404).
-				entity(new ErrorResponseException(exception.getMessage(), "Duplicate Email found, please choose different one."))
+				entity(new ErrorResponseException("Duplicate Record found, please choose different one.", "Duplicate Email found, please choose different one."))
 			      .type(MediaType.APPLICATION_JSON)
 			      .build();
 	}

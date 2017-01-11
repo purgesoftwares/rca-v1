@@ -55,8 +55,8 @@ public class ProviderController {
 		
 		boolean isValid = checkStringIsEmamil(providerRequest.getMainEmail());
 		boolean isSecondayEmailValid = false;
-		
-		if(providerRequest.getSecondaryEmail() != null){
+
+		if(providerRequest.getSecondaryEmail() != null && providerRequest.getSecondaryEmail() != ""){
 			isSecondayEmailValid = checkStringIsEmamil(providerRequest.getSecondaryEmail());
 			if(!isSecondayEmailValid){
 				throw new UsernameIsNotAnEmailException("Please input correct email type.");
@@ -145,7 +145,7 @@ public class ProviderController {
 			}
 		}
 		
-		if(providerRequest.getSecondaryEmail() != null){
+		if(providerRequest.getSecondaryEmail() != null && providerRequest.getSecondaryEmail() != ""){
 			 isValid = checkStringIsEmamil(providerRequest.getSecondaryEmail());
 			 if(!isSecondayEmailValid){
 					throw new UsernameIsNotAnEmailException("Please input correct email type.");
