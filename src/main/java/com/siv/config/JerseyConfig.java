@@ -25,6 +25,12 @@ import com.siv.controllers.product.ProductController;
 import com.siv.controllers.product.ProductTypeController;
 import com.siv.controllers.provider.ProviderInformationController;
 import com.siv.controllers.user.UserController;
+import com.siv.exception.mapper.NoCurrentProviderMapper;
+import com.siv.exception.mapper.PasswordDidNotMatchMapper;
+import com.siv.exception.mapper.RequestedIdIsNotExistsMapper;
+import com.siv.exception.mapper.UserNotFoundMapper;
+import com.siv.exception.mapper.UsernameIsNotAnEmailMapper;
+import com.siv.exceptions.AllPropertyRequriedMapper;
 import com.siv.exceptions.DuplicateKeyFoundMapper;
 import com.siv.publicapi.PublicApiController;
 import com.siv.publicapi.PublicCustomerApiController;
@@ -56,7 +62,13 @@ public class JerseyConfig extends ResourceConfig {
         		ProductCategoryController.class,
         		CMSPagesController.class,
         		ContactUsEnquiryController.class,
-        		PublicCustomerApiController.class);
+        		PublicCustomerApiController.class,
+        		AllPropertyRequriedMapper.class,
+        		UsernameIsNotAnEmailMapper.class,
+        		PasswordDidNotMatchMapper.class,
+        		NoCurrentProviderMapper.class,
+        		RequestedIdIsNotExistsMapper.class,
+        		UserNotFoundMapper.class);
         
         register(JspMvcFeature.class);
         property(JspMvcFeature.TEMPLATES_BASE_PATH, "/WEB-INF/jsp");

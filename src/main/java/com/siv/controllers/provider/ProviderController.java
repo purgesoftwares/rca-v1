@@ -11,6 +11,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.common.exceptions.UserDeniedAuthorizationException;
 
+import com.siv.exceptions.AllPropertyRequiredException;
 import com.siv.exceptions.PasswordDidNotMatchException;
 import com.siv.exceptions.UsernameIsNotAnEmailException;
 import com.siv.model.address.Address;
@@ -50,7 +52,7 @@ public class ProviderController {
 				&& providerRequest.getPassword() != null && providerRequest.getContactName() !=null
 				&& providerRequest.getCountry() !=null && providerRequest.getProviderName() != null
 				&& providerRequest.getMainEmail() !=null)){
-			throw new UserDeniedAuthorizationException("Please fill all the required information.");
+			throw new AllPropertyRequiredException("Please fill all the required information.");
 		}
 		
 		boolean isValid = checkStringIsEmamil(providerRequest.getMainEmail());

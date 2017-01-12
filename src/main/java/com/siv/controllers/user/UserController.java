@@ -122,7 +122,7 @@ public class UserController {
 		User activeUser = userRepository.findByUsername(username);
 		Provider provider = null;
 
-		if(!username.equals("anonymousUser")) {
+		if(!username.equals("anonymousUser") && activeUser != null) {
 
 			provider = providerRepository.findByUserId(activeUser.getId());
 		} else {
