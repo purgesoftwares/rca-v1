@@ -12,6 +12,8 @@ import org.glassfish.jersey.servlet.ServletProperties;
 import org.springframework.stereotype.Component;
 
 import com.siv.controllers.address.AddressController;
+import com.siv.controllers.city.CityController;
+import com.siv.controllers.country.CountryController;
 import com.siv.controllers.coupon.CouponController;
 import com.siv.controllers.coupon.CollectedCouponController;
 import com.siv.controllers.customer.CustomerController;
@@ -68,7 +70,9 @@ public class JerseyConfig extends ResourceConfig {
         		PasswordDidNotMatchMapper.class,
         		NoCurrentProviderMapper.class,
         		RequestedIdIsNotExistsMapper.class,
-        		UserNotFoundMapper.class);
+        		UserNotFoundMapper.class,
+        		CountryController.class,
+        		CityController.class);
         
         register(JspMvcFeature.class);
         property(JspMvcFeature.TEMPLATES_BASE_PATH, "/WEB-INF/jsp");
