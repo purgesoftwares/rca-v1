@@ -17,8 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.common.exceptions.UserDeniedAuthorizationException;
-
 import com.siv.exceptions.AllPropertyRequiredException;
 import com.siv.exceptions.PasswordDidNotMatchException;
 import com.siv.exceptions.UsernameIsNotAnEmailException;

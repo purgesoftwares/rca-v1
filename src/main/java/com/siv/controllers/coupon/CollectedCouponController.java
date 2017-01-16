@@ -1,18 +1,13 @@
 package com.siv.controllers.coupon;
 
-import java.math.BigDecimal;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
-
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.siv.exceptions.NoCurrentProviderException;
 import com.siv.model.coupon.ProviderCollectedCouponResponse;
-import org.omg.CosNaming.NamingContextPackage.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -61,14 +56,7 @@ public class CollectedCouponController {
 	public Response checkCoupon(CollectedCoupon collectedCoupon) throws ParseException,CustomNotFoundException {
 		Coupon coupon = couponRepository.findByCouponCode(collectedCoupon.getCouponCode());
 
-		Date now = new Date();
-//		System.out.println(coupon.getAvailability());
-//		System.out.println(coupon.getProviderId());
-//		System.out.println(coupon.getEndTime());
-//		System.out.println(coupon.getStartTime());
-		if(coupon != null && coupon.getAvailability()!=0 && coupon.getProviderId().equals(collectedCoupon.getProviderId())
-			/*	&& (now.compareTo(coupon.getStartTime()) >= 0)
-				&& (now.compareTo(coupon.getEndTime()) <= 0)*/){
+		if(coupon != null && coupon.getAvailability()!=0 && coupon.getProviderId().equals(collectedCoupon.getProviderId())){
 			return Response.ok(coupon).build();
 		}else{
 			throw new NoCurrentProviderException("Coupon code is not valid.");
