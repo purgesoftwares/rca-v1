@@ -32,6 +32,7 @@ import com.siv.exception.mapper.UserNotFoundMapper;
 import com.siv.exception.mapper.UsernameIsNotAnEmailMapper;
 import com.siv.exceptions.AllPropertyRequriedMapper;
 import com.siv.exceptions.DuplicateKeyFoundMapper;
+import com.siv.publicapi.ProviderSignupController;
 import com.siv.publicapi.PublicApiController;
 import com.siv.publicapi.PublicCustomerApiController;
 
@@ -69,7 +70,8 @@ public class JerseyConfig extends ResourceConfig {
         		RequestedIdIsNotExistsMapper.class,
         		UserNotFoundMapper.class,
         		CountryController.class,
-        		CityController.class);
+        		CityController.class,
+        		ProviderSignupController.class);
         
         register(JspMvcFeature.class);
     }
