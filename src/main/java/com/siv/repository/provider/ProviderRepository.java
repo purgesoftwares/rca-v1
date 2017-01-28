@@ -13,4 +13,6 @@ public interface ProviderRepository extends CrudRepository<Provider, String>, Mo
 	@Transactional
 	public Provider findByUserId(String userId);
 	
+	@Transactional
+	public void deleteByUserId(String userId);
 }

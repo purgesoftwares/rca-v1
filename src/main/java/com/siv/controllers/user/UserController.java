@@ -139,6 +139,7 @@ public class UserController {
 	public User delete(@PathParam(value="id")String id){
 		User user = userRepository.findOne(id);
 		userRepository.delete(user);
+		providerRepository.deleteByUserId(id);
 		return user;
 	}
 
