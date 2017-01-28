@@ -4,6 +4,7 @@ import javax.annotation.PostConstruct;
 
 import com.arnav.controllers.provider.ExcludedTimeController;
 import com.arnav.controllers.provider.ProviderController;
+import com.arnav.oauth.OauthConfigurationController;
 import com.arnav.repository.opening.ExcludedTimeRepository;
 
 import org.glassfish.jersey.server.ResourceConfig;
@@ -71,7 +72,8 @@ public class JerseyConfig extends ResourceConfig {
         		UserNotFoundMapper.class,
         		CountryController.class,
         		CityController.class,
-        		ProviderSignupController.class);
+        		ProviderSignupController.class,
+				OauthConfigurationController.class);
         
         register(JspMvcFeature.class);
     }
