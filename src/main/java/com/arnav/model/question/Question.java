@@ -11,11 +11,13 @@ public class Question {
 	@Id
 	private String id;
 	
-	private String text;
+	private String title;
 	
 	private String description;
 	
-	private String productCategory;
+	private String type;
+	
+	private Boolean isDefault;
 	
 	private Date createDate;
 	
@@ -45,14 +47,6 @@ public class Question {
 		this.id = id;
 	}
 
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
-
 	public String getDescription() {
 		return description;
 	}
@@ -61,14 +55,28 @@ public class Question {
 		this.description = description;
 	}
 
-	public String getProductCategory() {
-		return productCategory;
+	public String getType() {
+		return type;
 	}
 
-	public void setProductCategory(String productCategory) {
-		this.productCategory = productCategory;
+	public void setType(String type) {
+		this.type = type;
 	}
-	
-	
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public Boolean getIsDefault() {
+		return isDefault;
+	}
+
+	public void setIsDefault(Boolean isDefault) {
+		this.isDefault = isDefault;
+	}
 
 }
