@@ -25,6 +25,7 @@ import com.arnav.controllers.payment.PaymentDetailsController;
 import com.arnav.controllers.product.ProductCategoryController;
 import com.arnav.controllers.product.ProductController;
 import com.arnav.controllers.provider.ProviderInformationController;
+import com.arnav.controllers.question.QuestionController;
 import com.arnav.controllers.user.UserController;
 import com.arnav.exception.mapper.NoCurrentProviderMapper;
 import com.arnav.exception.mapper.PasswordDidNotMatchMapper;
@@ -73,7 +74,8 @@ public class JerseyConfig extends ResourceConfig {
         		CountryController.class,
         		CityController.class,
         		ProviderSignupController.class,
-				OauthConfigurationController.class);
+				OauthConfigurationController.class,
+				QuestionController.class);
         
         register(JspMvcFeature.class);
     }
