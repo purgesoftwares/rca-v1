@@ -1,6 +1,6 @@
 package com.arnav.controllers.coupon;
 
-import java.util.Date;
+import java.util.UUID;
 
 import javax.validation.Valid;
 import javax.ws.rs.DELETE;
@@ -29,8 +29,9 @@ public class CouponController {
 	@POST
 	@Produces("application/json")
 	public Coupon create(Coupon coupon){
-		coupon.setStartTime(new Date());
-		coupon.setEndTime(new Date());		
+		
+		coupon.setCouponCode(UUID.randomUUID().toString());
+		coupon.setCouponNumber(UUID.randomUUID().node());
 		return couponRepository.save(coupon);		
 	}
 	
@@ -54,8 +55,6 @@ public class CouponController {
 	public Coupon update(@PathParam(value="id")String id, @Valid Coupon coupon){
 		Coupon preCoupon = couponRepository.findOne(id);
 		coupon.setId(id);
-		coupon.setStartTime(preCoupon.getStartTime());
-		coupon.setEndTime(new Date());
 		
 		if(coupon.getCouponCode() == null){
 			coupon.setCouponCode(preCoupon.getCouponCode());
@@ -69,6 +68,10 @@ public class CouponController {
 			coupon.setUsed(preCoupon.getUsed());
 		} if(coupon.getProviderId() == null){
 			coupon.setProviderId(preCoupon.getProviderId());
+		} if(coupon.getStartTime() == null) {
+			coupon.setStartTime(preCoupon.getStartTime());
+		} if(coupon.getEndTime() == null) {
+			coupon.setEndTime(preCoupon.getEndTime());
 		}
 		return couponRepository.save(coupon);	
 	}
