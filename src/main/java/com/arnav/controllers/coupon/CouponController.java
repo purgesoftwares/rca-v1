@@ -30,8 +30,8 @@ public class CouponController {
 	@Produces("application/json")
 	public Coupon create(Coupon coupon){
 		
-		coupon.setCouponCode(UUID.randomUUID().toString());
-		coupon.setCouponNumber(UUID.randomUUID().node());
+		//coupon.setCouponCode(UUID.randomUUID().toString());
+		//coupon.setCouponNumber(UUID.randomUUID().node());
 		return couponRepository.save(coupon);		
 	}
 	
