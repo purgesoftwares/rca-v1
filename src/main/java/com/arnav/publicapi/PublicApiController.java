@@ -1,8 +1,5 @@
 package com.arnav.publicapi;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.mail.MessagingException;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;

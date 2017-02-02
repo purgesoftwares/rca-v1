@@ -36,6 +36,7 @@ import com.arnav.exceptions.AllPropertyRequriedMapper;
 import com.arnav.exceptions.DuplicateKeyFoundMapper;
 import com.arnav.publicapi.ProviderSignupController;
 import com.arnav.publicapi.PublicApiController;
+import com.arnav.publicapi.PublicApiCustomerController;
 import com.arnav.publicapi.PublicCustomerApiController;
 
 @Component
@@ -75,7 +76,8 @@ public class JerseyConfig extends ResourceConfig {
         		CityController.class,
         		ProviderSignupController.class,
 				OauthConfigurationController.class,
-				QuestionController.class);
+				QuestionController.class,
+				PublicApiCustomerController.class);
         
         register(JspMvcFeature.class);
     }

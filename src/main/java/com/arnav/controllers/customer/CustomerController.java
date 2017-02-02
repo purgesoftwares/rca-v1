@@ -16,6 +16,8 @@ import javax.ws.rs.core.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.arnav.exceptions.AllPropertyRequiredException;
 import com.arnav.exceptions.UsernameIsNotAnEmailException;
@@ -39,6 +41,11 @@ public class CustomerController {
 		boolean isValid = checkStringIsEmail(customer.getMainEmail());
 		if(!isValid){
 			throw new UsernameIsNotAnEmailException("Please input correct email type.");
+		}
+		
+		PasswordEncoder encoder = new BCryptPasswordEncoder();
+		if(customer.getNewPassword() != null && customer.getConfirmPassword() != null && customer.getNewPassword().equals(customer.getConfirmPassword())) {
+			customer.setPassword(encoder.encode(customer.getNewPassword()));
 		}
 		
 		customer.setCreateDate(new Date());
@@ -73,6 +80,8 @@ public class CustomerController {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Customer update(@PathParam(value="id")String id, Customer customer){
+		PasswordEncoder encoder = new BCryptPasswordEncoder();
+		
 		Customer preCustomer = customerRepository.findOne(id);
 		customer.setId(id);
 		customer.setCreateDate(preCustomer.getCreateDate());
@@ -88,6 +97,10 @@ public class CustomerController {
 			customer.setFullName(preCustomer.getFullName());
 		} if(customer.getMainEmail() == null) {
 			customer.setMainEmail(preCustomer.getMainEmail());
+		} if(customer.getNewPassword() != null && customer.getConfirmPassword() != null && customer.getNewPassword().equals(customer.getConfirmPassword())) {
+			customer.setPassword(encoder.encode(customer.getNewPassword()));
+		} if(customer.getNewPassword() == null) {
+			customer.setPassword(preCustomer.getPassword());
 		}
 		
 		return customerRepository.save(customer);
