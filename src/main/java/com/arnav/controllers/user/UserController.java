@@ -54,7 +54,6 @@ public class UserController {
 		}
 		user.setEnabled(true);
 		user.setRole("SuperAdmin");
-		user.setIsActive(true);
 		
 		return userRepository.save(user);		
 	}
@@ -98,7 +97,6 @@ public class UserController {
 		user.setCreateDate(preUser.getCreateDate());
 		user.setLastUpdate(new Date());
 		user.setEnabled(true);
-		user.setIsActive(true);
 		user.setRole("SuperAdmin");
 		
 		if(user.getCustomerId() == null) {
@@ -109,6 +107,8 @@ public class UserController {
 			user.setPassword(encoder.encode(user.getNewPassword()));
 		} if(user.getNewPassword() == null) {
 			user.setPassword(preUser.getPassword());
+		} if(user.getIsActive() == null) {
+			user.setIsActive(false);
 		}
 		
 		return userRepository.save(user);
@@ -141,6 +141,16 @@ public class UserController {
 		userRepository.delete(user);
 		providerRepository.deleteByUserId(id);
 		return user;
+	}
+	
+	@GET
+	@Path("/is-active/{username}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public User isActive(@PathParam(value="username")String username){
+		User user = userRepository.findByUsername(username);
+		user.setIsActive(true);
+		
+		return userRepository.save(user);
 	}
 
 }
