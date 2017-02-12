@@ -11,6 +11,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.arnav.model.SignupRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -43,38 +44,82 @@ public class PublicCustomerApiController {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/signup")
-	public Customer create(CustomerRequest customerRequest) throws UsernameIsNotAnEmailException {
+	public Customer signup(SignupRequest signupRequest) throws UsernameIsNotAnEmailException {
+
+		if(!(signupRequest.getCpassword() != null
+				&& signupRequest.getPassword() != null && signupRequest.getUsername() !=null
+				&& signupRequest.getEmail() !=null)){
+			throw new AllPropertyRequiredException("Please fill all the required information.");
+		}
+
+		boolean isValid = checkStringIsEmail(signupRequest.getEmail());
+
+		if(!isValid){
+			throw new UsernameIsNotAnEmailException("Please input correct email type.");
+		}
+ 		Customer customer = new Customer();
+
+		User user = new User();
 		
-		if(!(customerRequest.getAddress() != null && customerRequest.getCity() != null 
+		user.setUsername(signupRequest.getEmail());
+		user.setCreateDate(new Date());
+		user.setLastUpdate(new Date());		
+		PasswordEncoder encoder = new BCryptPasswordEncoder();
+		
+		if(!signupRequest.getPassword().equals(signupRequest.getCpassword())) {
+			throw  new PasswordDidNotMatchException("Password not match.");
+		}
+		user.setPassword(encoder.encode(signupRequest.getPassword()));
+		user.setEnabled(true);
+		user.setRole("SuperAdmin");
+		user.setIsActive(true);
+		userRepository.save(user);
+
+		customer.setUserId(user.getId());
+		customer.setFirstName(signupRequest.getUsername());
+		customer.setFullName(signupRequest.getUsername());
+		customer.setMainEmail(signupRequest.getEmail());
+		customer.setCreateDate(new Date());
+		customer.setLastUpdate(new Date());
+		
+		return customerRepository.save(customer);
+	}
+
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/create")
+	public Customer create(CustomerRequest customerRequest) throws UsernameIsNotAnEmailException {
+
+		if(!(customerRequest.getAddress() != null && customerRequest.getCity() != null
 				&& customerRequest.getConfirmPassword() != null
 				&& customerRequest.getPassword() != null && customerRequest.getFirstName() !=null
 				&& customerRequest.getCountry() !=null
 				&& customerRequest.getMainEmail() !=null)){
 			throw new AllPropertyRequiredException("Please fill all the required information.");
 		}
-		
+
 		boolean isValid = checkStringIsEmail(customerRequest.getMainEmail());
 		if(!isValid){
 			throw new UsernameIsNotAnEmailException("Please input correct email type.");
 		}
- 		Customer customer = new Customer();
-		
+		Customer customer = new Customer();
+
 		Address address = new Address();
 		address.setAddress1(customerRequest.getAddress());
 		address.setCity(customerRequest.getCity());
 		address.setCountry(customerRequest.getCountry());
 		address.setCreateDate(new Date());
 		address.setLastUpdate(new Date());
-		
+
 		address = addressRepository.save(address);
-				
+
 		User user = new User();
-		
+
 		user.setUsername(customerRequest.getMainEmail());
 		user.setCreateDate(new Date());
-		user.setLastUpdate(new Date());		
+		user.setLastUpdate(new Date());
 		PasswordEncoder encoder = new BCryptPasswordEncoder();
-		
+
 		if(!customerRequest.getPassword().equals(customerRequest.getConfirmPassword())) {
 			throw  new PasswordDidNotMatchException("Password not match.");
 		}
@@ -83,7 +128,7 @@ public class PublicCustomerApiController {
 		user.setRole("SuperAdmin");
 		user.setIsActive(true);
 		userRepository.save(user);
-		
+
 		customer.setAddressId(address.getId());
 		customer.setUserId(user.getId());
 		customer.setFirstName(customerRequest.getFirstName());
@@ -92,7 +137,7 @@ public class PublicCustomerApiController {
 		customer.setMainEmail(customerRequest.getMainEmail());
 		customer.setCreateDate(new Date());
 		customer.setLastUpdate(new Date());
-		
+
 		return customerRepository.save(customer);
 	}
 	
