@@ -13,6 +13,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.arnav.model.SignupRequest;
+import com.arnav.model.user.User;
+import com.arnav.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +32,9 @@ public class CustomerController {
 	
 	@Autowired
 	private CustomerRepository customerRepository;
+
+	@Autowired
+	private UserRepository userRepository;
 	
 	@POST
 	@Produces("application/json")
@@ -103,6 +109,31 @@ public class CustomerController {
 			customer.setPassword(preCustomer.getPassword());
 		}
 		
+		return customerRepository.save(customer);
+	}
+
+	@PUT
+	@Path("/update/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Customer updateCustomer(@PathParam(value="id")String id, SignupRequest signupRequest){
+		PasswordEncoder encoder = new BCryptPasswordEncoder();
+
+		Customer customer = customerRepository.findOne(id);
+		customer.setLastUpdate(new Date());
+
+		if(signupRequest.getUsername() != null) {
+			customer.setFirstName(signupRequest.getUsername());
+			customer.setFullName(signupRequest.getUsername());
+		} if(signupRequest.getEmail() != null) {
+			customer.setMainEmail(signupRequest.getEmail());
+		} if(signupRequest.getPassword() != null && signupRequest.getCpassword() != null && signupRequest.getPassword()
+				.equals(signupRequest.getCpassword())) {
+			customer.setPassword(encoder.encode(signupRequest.getPassword()));
+			User user = userRepository.findOne(customer.getUserId());
+			user.setPassword(customer.getPassword());
+			userRepository.save(user);
+		}
+
 		return customerRepository.save(customer);
 	}
 

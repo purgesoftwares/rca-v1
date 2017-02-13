@@ -15,7 +15,9 @@ import javax.ws.rs.core.MediaType;
 
 import com.arnav.exceptions.NoCurrentProviderException;
 import com.arnav.exceptions.UsernameIsNotAnEmailException;
+import com.arnav.model.customer.Customer;
 import com.arnav.model.provider.Provider;
+import com.arnav.repository.customer.CustomerRepository;
 import com.arnav.repository.provider.ProviderRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,8 @@ public class UserController {
 
 	@Autowired
 	private ProviderRepository providerRepository;
+	@Autowired
+	private CustomerRepository customerRepository;
 	
 	@POST
 	@Produces("application/json")
@@ -131,6 +135,25 @@ public class UserController {
 
 
 		return provider;
+	}
+
+	@GET
+	@Path("/current-customer")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Customer findCurrentCustomer(){
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		User activeUser = userRepository.findByUsername(username);
+		Customer customer = null;
+
+		if(!username.equals("anonymousUser") && activeUser != null) {
+
+			customer = customerRepository.findByUserId(activeUser.getId());
+		} else {
+			throw new NoCurrentProviderException("There is no current provider, please first login.");
+		}
+
+
+		return customer;
 	}
 	
 	@DELETE
