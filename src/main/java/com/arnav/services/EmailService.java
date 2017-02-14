@@ -44,7 +44,8 @@ public class EmailService {
 			  message.setSubject(subject);
 			  message.setFrom(env.getProperty("support.email"));
 			  message.setTo(recipientEmail);
-			  message.setText("Hello are you ready change your password", true); // true = isHtml
+			  message.setText("Hello are you ready change your password = " + 
+			  ctx.getVariables().get("resetLink"), true); // true = isHtml
 			 
 		  } catch (javax.mail.MessagingException e) {
 			  e.printStackTrace();
