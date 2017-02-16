@@ -69,7 +69,6 @@ public class PublicApiController {
 		}
 		
 		return user;
-		
 	}
 	
 	@POST
@@ -120,7 +119,7 @@ public class PublicApiController {
 		System.out.println(processData.get("resetLink"));
 		
 		emailService.sendMailWithTemplate(user.getUsername(),
-		"mamta.soni@xtreemsolution.com",   //enter valid email like - "mamta.soni@xtreemsolution.com"
+		"sdpalsaniya@gmail.com",   //enter valid email like - "mamta.soni@xtreemsolution.com"
 		"Reset Password",
 		"ForgetPassword",
 		processData);
