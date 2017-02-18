@@ -176,7 +176,7 @@ public class PublicApiController {
 		System.out.println(processData.get("resetLink"));
 		
 		emailService.sendMailWithTemplate(user.getUsername(),
-		"sdpalsaniya@gmail.com",   //enter valid email like - "mamta.soni@xtreemsolution.com"
+				user.getUsername(),   //enter valid email like - "mamta.soni@xtreemsolution.com"
 		"Reset Password",
 		"ForgetPassword",
 		processData);
