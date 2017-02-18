@@ -58,7 +58,7 @@ public class PublicApiController {
 		        
 		        //url to change password of user.
 		        //final String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
-		        final String appUrl = "http://localhost:4200";
+		        final String appUrl = "http://54.161.216.233:4201";
 				sendResetTokenEmail(appUrl, token, user);
 			
 			} else {
