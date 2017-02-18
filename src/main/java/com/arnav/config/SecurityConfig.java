@@ -30,11 +30,11 @@ import com.arnav.dao.AuthenticationSuccessHandlerImpl;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-	
+
 	@Autowired
 	@Qualifier("userDetailsService")
 	UserDetailsService userDetailsService;
-	
+
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth, ApplicationContext context)
 			throws Exception {

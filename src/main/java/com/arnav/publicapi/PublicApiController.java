@@ -57,7 +57,8 @@ public class PublicApiController {
 		        createPasswordResetTokenForUser(user, token);
 		        
 		        //url to change password of user.
-		        final String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+		        //final String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+		        final String appUrl = "http://localhost:4200";
 				sendResetTokenEmail(appUrl, token, user);
 			
 			} else {
@@ -94,6 +95,7 @@ public class PublicApiController {
     					&& userRequest.getNewPassword().equals(userRequest.getConfirmPassword())) {
     				user.setPassword(encoder.encode(userRequest.getNewPassword()));
     				userRepository.save(user);
+					passwordTokenRepository.delete(passwordToken);
     			} else {
     				throw new PasswordDidNotMatchException("Password did not match.");
     			}
@@ -102,16 +104,71 @@ public class PublicApiController {
         }
 		return user;
 	}
-	
+
+	@GET
+	@Path("/check-token/{id}/{token}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public boolean checkToken(@PathParam("id") final String id,
+							  @PathParam("token") final String token){
+
+		PasswordResetToken passwordToken = passwordTokenRepository.findByToken(token);
+
+		if(passwordToken != null) {
+			User user = passwordToken.getUser();
+
+			if (user != null && user.getId().equals(id)) {
+
+				final Calendar cal = Calendar.getInstance();
+
+				if ((passwordToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
+					//token expire
+					return false;
+
+				} else {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	@GET
+	@Path("/check-account/{email}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Boolean checkAccount(@PathParam("email") final String email){
+
+		User user = userRepository.findByUsername(email);
+		if(user != null){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	@GET
+	@Path("/get-mail/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getEmail(@PathParam("id") final String id){
+
+		User user = userRepository.findOne(id);
+		if(user != null){
+			return user.getUsername();
+		}else{
+			return "";
+		}
+	}
+
 	private void sendResetTokenEmail(final String contextPath,
 			 final String token,
 			 final User user) throws MessagingException {
 
 		// URL to include into email sent to user for reset password
 		// Including API Version for the process change password token URL 
-		final String url = contextPath + "/public/user/change-password" + "?id=" +
+		//final String url = contextPath + "/public/user/change-password" + "?id=" +
+				//user.getId() + "&token=" + token;
+		final String url = contextPath + "/reset-password" + "?id=" +
 		  user.getId() + "&token=" + token;
-		
+
 		Map<String, String> processData = new HashMap<String, String>();
 		
 		processData.put("resetLink", url);
