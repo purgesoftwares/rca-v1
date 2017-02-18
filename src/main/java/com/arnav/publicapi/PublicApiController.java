@@ -185,6 +185,7 @@ public class PublicApiController {
 
 	public void createPasswordResetTokenForUser(final User user, final String token) {
 			final PasswordResetToken myToken = new PasswordResetToken(token, user);
+			passwordTokenRepository.deleteAll();
 			passwordTokenRepository.save(myToken);
 	}
 	
