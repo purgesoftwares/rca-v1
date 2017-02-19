@@ -39,6 +39,7 @@ import com.arnav.publicapi.PublicApiController;
 import com.arnav.publicapi.PublicApiCustomerController;
 import com.arnav.publicapi.PageController;
 import com.arnav.publicapi.PublicCustomerApiController;
+import com.arnav.controllers.coupon.CouponPackageController;
 
 @Component
 public class JerseyConfig extends ResourceConfig {
@@ -79,7 +80,8 @@ public class JerseyConfig extends ResourceConfig {
 				OauthConfigurationController.class,
 				QuestionController.class,
 				PublicApiCustomerController.class,
-				PageController.class);
+				PageController.class,
+				CouponPackageController.class);
         
         register(JspMvcFeature.class);
     }
