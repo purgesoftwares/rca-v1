@@ -2,6 +2,7 @@ package com.arnav.config;
 
 import javax.annotation.PostConstruct;
 
+import com.arnav.controllers.coupon.*;
 import com.arnav.controllers.provider.ExcludedTimeController;
 import com.arnav.controllers.provider.ProviderController;
 import com.arnav.oauth.OauthConfigurationController;
@@ -14,8 +15,6 @@ import org.springframework.stereotype.Component;
 import com.arnav.controllers.address.AddressController;
 import com.arnav.controllers.city.CityController;
 import com.arnav.controllers.country.CountryController;
-import com.arnav.controllers.coupon.CouponController;
-import com.arnav.controllers.coupon.CollectedCouponController;
 import com.arnav.controllers.customer.CustomerController;
 import com.arnav.controllers.enquiry.ContactUsEnquiryController;
 import com.arnav.controllers.opening.OpeningDaysController;
@@ -39,7 +38,6 @@ import com.arnav.publicapi.PublicApiController;
 import com.arnav.publicapi.PublicApiCustomerController;
 import com.arnav.publicapi.PageController;
 import com.arnav.publicapi.PublicCustomerApiController;
-import com.arnav.controllers.coupon.CouponPackageController;
 
 @Component
 public class JerseyConfig extends ResourceConfig {
@@ -81,7 +79,9 @@ public class JerseyConfig extends ResourceConfig {
 				QuestionController.class,
 				PublicApiCustomerController.class,
 				PageController.class,
-				CouponPackageController.class);
+				CouponPackageController.class,
+				PurchasedCouponController.class,
+				JoinedFriendController.class);
         
         register(JspMvcFeature.class);
     }
