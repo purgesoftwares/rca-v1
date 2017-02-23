@@ -40,7 +40,11 @@ public class Customer {
 	private Date lastUpdate;
 
 	private String userId;
-	
+
+	private String facebookId;
+
+	private String googleId;
+
 	@Transient
 	private String newPassword;
 	
@@ -144,6 +148,21 @@ public class Customer {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	
 
+
+	public String getFacebookId() {
+		return facebookId;
+	}
+
+	public void setFacebookId(String facebookId) {
+		this.facebookId = facebookId;
+	}
+
+	public String getGoogleId() {
+		return googleId;
+	}
+
+	public void setGoogleId(String googleId) {
+		this.googleId = googleId;
+	}
 }

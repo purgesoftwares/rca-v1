@@ -1,8 +1,12 @@
 package com.arnav.controllers.coupon;
 
 
+import com.arnav.model.coupon.Coupon;
+import com.arnav.model.coupon.CouponPackage;
 import com.arnav.model.coupon.JoinedFriend;
 import com.arnav.model.coupon.PurchasedCoupon;
+import com.arnav.model.provider.Provider;
+import com.arnav.repository.coupon.CouponRepository;
 import com.arnav.repository.coupon.JoinedFriendRepository;
 import com.arnav.repository.coupon.PurchasedCouponRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,16 +31,47 @@ public class PurchasedCouponController {
     @Autowired
     private JoinedFriendRepository joinedFriendRepository;
 
+    @Autowired
+    private CouponRepository couponRepository;
+
     @POST
     @Produces("application/json")
     public PurchasedCoupon create(PurchasedCoupon purchasedCoupon){
 
         List<JoinedFriend> joinedFriends = new ArrayList<JoinedFriend>();
 
-        if (!purchasedCoupon.getJoinedFriends().isEmpty()){
+        if (purchasedCoupon.getJoinedFriends() != null && !purchasedCoupon.getJoinedFriends().isEmpty()){
             joinedFriendRepository.save(purchasedCoupon.getJoinedFriends());
         }
-        return purchasedCouponRepository.save(purchasedCoupon);
+        purchasedCoupon = purchasedCouponRepository.save(purchasedCoupon);
+
+        CouponPackage couponPackage = purchasedCoupon.getCouponPackage();
+        if(couponPackage != null && !couponPackage.getProviders().isEmpty()){
+            for (Provider provider: couponPackage.getProviders()
+                 ) {
+                Coupon coupon  = new Coupon();
+                coupon.setCouponCode(String.valueOf(purchasedCoupon.getCouponNumber()));
+                coupon.setProviderId(provider.getId());
+                coupon.setCouponCode(this.randomCode());
+                coupon.setPrice(couponPackage.getPrice());
+                coupon.setEndTime(couponPackage.getEndTime());
+                coupon.setStartTime(couponPackage.getStartTime());
+                couponRepository.save(coupon);
+            }
+        }
+        return purchasedCoupon;
+    }
+
+    public String randomCode() {
+        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        StringBuilder salt = new StringBuilder();
+        Random rnd = new Random();
+        while (salt.length() < 6) {
+            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+            salt.append(SALTCHARS.charAt(index));
+        }
+        String saltStr = salt.toString();
+        return saltStr;
     }
 
     @GET
