@@ -5,15 +5,19 @@ import com.arnav.model.coupon.Coupon;
 import com.arnav.model.coupon.CouponPackage;
 import com.arnav.model.coupon.JoinedFriend;
 import com.arnav.model.coupon.PurchasedCoupon;
+import com.arnav.model.customer.Customer;
 import com.arnav.model.provider.Provider;
+import com.arnav.model.user.User;
 import com.arnav.repository.coupon.CouponRepository;
 import com.arnav.repository.coupon.JoinedFriendRepository;
 import com.arnav.repository.coupon.PurchasedCouponRepository;
+import com.arnav.services.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -26,6 +30,9 @@ import java.util.*;
 public class PurchasedCouponController {
 
     @Autowired
+    private EmailService emailService;
+
+    @Autowired
     private PurchasedCouponRepository purchasedCouponRepository;
 
     @Autowired
@@ -36,7 +43,7 @@ public class PurchasedCouponController {
 
     @POST
     @Produces("application/json")
-    public PurchasedCoupon create(PurchasedCoupon purchasedCoupon){
+    public PurchasedCoupon create(PurchasedCoupon purchasedCoupon) throws MessagingException {
 
         List<JoinedFriend> joinedFriends = new ArrayList<JoinedFriend>();
 
@@ -45,10 +52,17 @@ public class PurchasedCouponController {
         }
         purchasedCoupon = purchasedCouponRepository.save(purchasedCoupon);
 
+        String couponString = "Hello "
+                +purchasedCoupon.getCustomer().getFirstName()
+                +",<br/><br/><table><tr><td colspan='2' > <strong>Thanks for buying the Coupon Package with Coupon Number : "
+                +purchasedCoupon.getCouponNumber()
+                +"</strong></td></tr><tr><td colspan='2' > <br/><br/><b>Your Coupons : </b></td></tr>";
+
         CouponPackage couponPackage = purchasedCoupon.getCouponPackage();
         if(couponPackage != null && !couponPackage.getProviders().isEmpty()){
             for (Provider provider: couponPackage.getProviders()
                  ) {
+
                 Coupon coupon  = new Coupon();
                 coupon.setCouponNumber(purchasedCoupon.getCouponNumber());
                 coupon.setProviderId(provider.getId());
@@ -59,9 +73,32 @@ public class PurchasedCouponController {
                 coupon.setPurchasedCouponId(purchasedCoupon.getId());
                 coupon.setProvider(provider);
                 couponRepository.save(coupon);
+                couponString += "<tr><td>Coupon Code: "+coupon.getCouponCode()+ "</td><td> Provider Name: "
+                        + coupon.getProvider().getProvider_name() + "</td></tr>";
             }
         }
+        couponString += "</table> <br/><br/> Thanks <br/> Sales Team";
+        this.sendPurchasedCouponEmail(couponString, purchasedCoupon.getCustomer());
         return purchasedCoupon;
+    }
+
+    private void sendPurchasedCouponEmail(final String html,
+                                     final Customer customer) throws MessagingException {
+
+        // URL to include into email sent to user for reset password
+        // Including API Version for the process change password token URL
+
+
+        Map<String, String> processData = new HashMap<String, String>();
+
+        processData.put("html", html);
+
+        emailService.sendMailWithHtml(customer.getFullName(),
+                customer.getMainEmail(),   //enter valid email like - "mamta.soni@xtreemsolution.com"
+                "Your Coupon Package",
+                html,
+                processData);
+
     }
 
     public String randomCode() {
