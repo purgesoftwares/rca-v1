@@ -13,6 +13,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.arnav.model.address.Address;
+import com.arnav.repository.address.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -26,6 +28,9 @@ public class CouponController {
 	
 	@Autowired
 	private CouponRepository couponRepository;
+
+	@Autowired
+	private AddressRepository addressRepository;
 	
 	@POST
 	@Produces("application/json")
@@ -47,7 +52,16 @@ public class CouponController {
 	@Path("/find-by-purchased/{PurchasedId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Coupon> findByPurchasedId(@PathParam(value="PurchasedId")String id){
-		return couponRepository.findByPurchasedCouponId(id);
+		List<Coupon> coupons = couponRepository.findByPurchasedCouponId(id);
+
+		for (Coupon coupon: coupons
+			 ) {
+			if(coupon.getProvider() != null && coupon.getProvider().getAddressId() != null){
+				Address address = addressRepository.findOne(coupon.getProvider().getAddressId());
+				coupon.setAddress(address);
+			}
+		}
+		return coupons;
 	}
 
 	@GET
