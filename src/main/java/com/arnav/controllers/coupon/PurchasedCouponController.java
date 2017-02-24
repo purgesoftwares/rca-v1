@@ -78,23 +78,49 @@ public class PurchasedCouponController {
             }
         }
         couponString += "</table> <br/><br/> Thanks <br/> Sales Team";
-        this.sendPurchasedCouponEmail(couponString, purchasedCoupon.getCustomer());
+        this.sendPurchasedCouponEmail(couponString, purchasedCoupon.getCustomer(),
+                purchasedCoupon.getCustomer().getMainEmail());
         return purchasedCoupon;
     }
 
+
+    @GET
+    @Path("/{purchasedCouponId}/{email}")
+    @Produces("application/json")
+    public String create(@PathParam(value="purchasedCouponId") String purchasedCouponId,
+                         @PathParam(value="email") String email ) throws MessagingException {
+
+        PurchasedCoupon purchasedCoupon = purchasedCouponRepository.findOne(purchasedCouponId);
+
+        String couponString = "Hello "
+                +purchasedCoupon.getCustomer().getFirstName()
+                +",<br/><br/><table><tr><td colspan='2' > <strong>Thanks for buying the Coupon Package with Coupon Number : "
+                +purchasedCoupon.getCouponNumber()
+                +"</strong></td></tr><tr><td colspan='2' > <br/><br/><b>Your Coupons : </b></td></tr>";
+
+        CouponPackage couponPackage = purchasedCoupon.getCouponPackage();
+        if(couponPackage != null && !couponPackage.getProviders().isEmpty()){
+            List<Coupon> coupons = couponRepository.findByPurchasedCouponId(purchasedCouponId);
+            for (Coupon coupon: coupons
+                    ) {
+                couponString += "<tr><td>Coupon Code: "+coupon.getCouponCode()+ "</td><td> Provider Name: "
+                        + coupon.getProvider().getProvider_name() + "</td></tr>";
+            }
+        }
+        couponString += "</table> <br/><br/> Thanks <br/> Sales Team";
+        this.sendPurchasedCouponEmail(couponString, purchasedCoupon.getCustomer(), email);
+        return "success";
+    }
+
     private void sendPurchasedCouponEmail(final String html,
-                                     final Customer customer) throws MessagingException {
-
-        // URL to include into email sent to user for reset password
-        // Including API Version for the process change password token URL
-
+                                     final Customer customer, final String email) throws MessagingException {
 
         Map<String, String> processData = new HashMap<String, String>();
 
         processData.put("html", html);
 
         emailService.sendMailWithHtml(customer.getFullName(),
-                customer.getMainEmail(),   //enter valid email like - "mamta.soni@xtreemsolution.com"
+                email,   //enter valid email like - "mamta.soni@xtreemsolution.com"
                 "Your Coupon Package",
                 html,
                 processData);
