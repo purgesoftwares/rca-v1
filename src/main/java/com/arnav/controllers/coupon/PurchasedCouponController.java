@@ -1,6 +1,7 @@
 package com.arnav.controllers.coupon;
 
 
+import com.arnav.exceptions.NoCurrentProviderException;
 import com.arnav.model.coupon.Coupon;
 import com.arnav.model.coupon.CouponPackage;
 import com.arnav.model.coupon.JoinedFriend;
@@ -11,11 +12,14 @@ import com.arnav.model.user.User;
 import com.arnav.repository.coupon.CouponRepository;
 import com.arnav.repository.coupon.JoinedFriendRepository;
 import com.arnav.repository.coupon.PurchasedCouponRepository;
+import com.arnav.repository.customer.CustomerRepository;
+import com.arnav.repository.user.UserRepository;
 import com.arnav.services.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
@@ -40,6 +44,12 @@ public class PurchasedCouponController {
 
     @Autowired
     private CouponRepository couponRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private CustomerRepository customerRepository;
 
     @POST
     @Produces("application/json")
@@ -131,7 +141,7 @@ public class PurchasedCouponController {
         String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
         StringBuilder salt = new StringBuilder();
         Random rnd = new Random();
-        while (salt.length() < 6) {
+        while (salt.length() < 8) {
             int index = (int) (rnd.nextFloat() * SALTCHARS.length());
             salt.append(SALTCHARS.charAt(index));
         }
@@ -152,6 +162,31 @@ public class PurchasedCouponController {
 
         return new PageImpl<PurchasedCoupon>(purchasedCouponRepository.findAll(pageble)
                 .getContent(), pageble, 20);
+    }
+
+    @GET
+    @Path("/my")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Page<PurchasedCoupon> findAllCustomerPurchasedCoupon(Pageable pageble){
+
+        Customer customer = this.findCurrentCustomer();
+
+        return new PageImpl<PurchasedCoupon>(purchasedCouponRepository.findByCustomerId(customer.getId()), pageble, 20);
+    }
+
+    public Customer findCurrentCustomer(){
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User activeUser = userRepository.findByUsername(username);
+        Customer customer = null;
+
+        if(!username.equals("anonymousUser") && activeUser != null) {
+
+            customer = customerRepository.findByUserId(activeUser.getId());
+        } else {
+            throw new NoCurrentProviderException("There is no current provider, please first login.");
+        }
+
+        return customer;
     }
 
     @PUT
