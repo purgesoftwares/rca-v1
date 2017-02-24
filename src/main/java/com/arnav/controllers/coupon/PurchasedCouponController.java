@@ -56,6 +56,8 @@ public class PurchasedCouponController {
                 coupon.setPrice(couponPackage.getPrice());
                 coupon.setEndTime(couponPackage.getEndTime());
                 coupon.setStartTime(couponPackage.getStartTime());
+                coupon.setPurchasedCouponId(purchasedCoupon.getId());
+                coupon.setProvider(provider);
                 couponRepository.save(coupon);
             }
         }

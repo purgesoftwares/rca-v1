@@ -19,4 +19,6 @@ public interface CouponRepository extends MongoRepository<Coupon, String>, CrudR
 	@Transactional
 	public Coupon findByCouponCode(String couponCode);
 
+	@Transactional
+    public List<Coupon> findByPurchasedCouponId(String id);
 }

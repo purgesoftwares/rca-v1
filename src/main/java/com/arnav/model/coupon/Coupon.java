@@ -5,9 +5,11 @@ import java.util.Date;
 
 import javax.validation.constraints.NotNull;
 
+import com.arnav.model.provider.Provider;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
@@ -17,15 +19,20 @@ public class Coupon {
 	private String id;
 	
 	@NotNull(message="Coupon code should not be blank")
-	@Indexed(unique=true)
 	private String couponCode;
 	
 	@NotEmpty(message="Coupon Number is required.")
-	@Indexed(unique=true)
 	private Long couponNumber;
 	
 	@NotEmpty
 	private String providerId;
+
+	@NotEmpty
+	@DBRef
+	private Provider provider;
+
+	@NotEmpty
+	private String purchasedCouponId;
 	
 	@NotNull
 	private BigDecimal price;
@@ -121,7 +128,21 @@ public class Coupon {
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
 	}
-	
 
 
+	public String getPurchasedCouponId() {
+		return purchasedCouponId;
+	}
+
+	public void setPurchasedCouponId(String purchasedCouponId) {
+		this.purchasedCouponId = purchasedCouponId;
+	}
+
+	public Provider getProvider() {
+		return provider;
+	}
+
+	public void setProvider(Provider provider) {
+		this.provider = provider;
+	}
 }

@@ -1,5 +1,6 @@
 package com.arnav.controllers.coupon;
 
+import java.util.List;
 import java.util.UUID;
 
 import javax.validation.Valid;
@@ -34,14 +35,21 @@ public class CouponController {
 		//coupon.setCouponNumber(UUID.randomUUID().node());
 		return couponRepository.save(coupon);		
 	}
-	
+
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Coupon findOne(@PathParam(value="id")String id){
 		return couponRepository.findOne(id);
 	}
-	
+
+	@GET
+	@Path("/find-by-purchased/{PurchasedId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Coupon> findByPurchasedId(@PathParam(value="PurchasedId")String id){
+		return couponRepository.findByPurchasedCouponId(id);
+	}
+
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Page<Coupon> findAll(Pageable pageble){
