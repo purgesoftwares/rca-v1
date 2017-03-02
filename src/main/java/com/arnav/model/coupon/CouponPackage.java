@@ -1,13 +1,15 @@
 package com.arnav.model.coupon;
 
-import com.arnav.model.openings.OpeningTime;
+import com.arnav.model.product.Product;
 import com.arnav.model.provider.Provider;
+
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,6 +18,7 @@ import java.util.List;
 /**
  * Created by Shankar on 2/19/2017.
  */
+@Document
 public class CouponPackage {
 
     @Id
@@ -42,6 +45,9 @@ public class CouponPackage {
 
     @NotNull
     private BigDecimal redeemableTime;
+    
+    @NotEmpty
+    private List<Product> products = new ArrayList<Product>();
 
     public CouponPackage(){
 
@@ -115,4 +121,13 @@ public class CouponPackage {
     public void setRedeemableTime(BigDecimal redeemableTime) {
         this.redeemableTime = redeemableTime;
     }
+
+	public List<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(List<Product> products) {
+		this.products = products;
+	}
+    
 }
