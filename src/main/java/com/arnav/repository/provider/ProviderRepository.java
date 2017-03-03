@@ -1,5 +1,6 @@
 package com.arnav.repository.provider;
 
+import com.arnav.model.customer.Customer;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
@@ -15,4 +16,7 @@ public interface ProviderRepository extends CrudRepository<Provider, String>, Mo
 	
 	@Transactional
 	public void deleteByUserId(String userId);
+
+	@Transactional
+    public Provider findByMainEmail(String username);
 }

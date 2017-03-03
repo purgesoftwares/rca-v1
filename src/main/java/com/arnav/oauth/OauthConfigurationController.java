@@ -12,8 +12,10 @@ import javax.ws.rs.Path;
 
 import com.arnav.exceptions.UserNotFoundException;
 import com.arnav.model.customer.Customer;
+import com.arnav.model.provider.Provider;
 import com.arnav.model.user.SocialLoginRequest;
 import com.arnav.repository.customer.CustomerRepository;
+import com.arnav.repository.provider.ProviderRepository;
 import org.apache.http.HttpException;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -37,6 +39,9 @@ public class OauthConfigurationController {
 
 	@Autowired
 	private CustomerRepository customerRepository;
+
+	@Autowired
+	private ProviderRepository providerRepository;
 
 	@POST
 	public String getOauthAccessToken(UserLogin user) throws HttpException {
@@ -182,4 +187,55 @@ public class OauthConfigurationController {
 		return null;
 
 	}
+
+
+
+	@POST
+	@Path("/provider")
+	public String getProviderOauthAccessToken(UserLogin user) throws UserNotFoundException,HttpException {
+
+		HttpClient httpclient = new DefaultHttpClient();
+		HttpPost httppost = null;
+		JSONObject jsonData = null;
+
+		Provider provider = providerRepository.findByMainEmail(user.getUsername());
+		if(provider == null || provider.getId().isEmpty()){
+			throw new UserNotFoundException("User not found! Invalid Email or Password!");
+		}
+		try {
+
+			httppost = new HttpPost(new URL("http://54.161.216.233:8090" + "/oauth/token").toURI());
+			String encoding = Base64Coder.encodeString("test_client:12345");
+			httppost.setHeader("Authorization", "Basic " + encoding);
+
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+			nameValuePairs.add(new BasicNameValuePair("grant_type", "password"));
+			nameValuePairs.add(new BasicNameValuePair("client_id", "test_client"));
+			nameValuePairs.add(new BasicNameValuePair("client_secret", "12345"));
+			nameValuePairs.add(new BasicNameValuePair("username", user.getUsername()));
+			nameValuePairs.add(new BasicNameValuePair("password", user.getPassword()));
+
+			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			HttpResponse response = httpclient.execute(httppost);
+
+			String jsonString = EntityUtils.toString(response.getEntity());
+
+			jsonData = new JSONObject(jsonString);
+			return jsonData.get("access_token").toString();
+
+		} catch (URISyntaxException e1) {
+			e1.printStackTrace();
+		} catch (UnsupportedEncodingException e1) {
+			e1.printStackTrace();
+		} catch (JSONException e1) {
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
+		return null;
+
+	}
+
+
 }
