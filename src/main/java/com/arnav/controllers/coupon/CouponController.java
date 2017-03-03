@@ -13,8 +13,14 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.arnav.exceptions.NoCurrentProviderException;
 import com.arnav.model.address.Address;
+import com.arnav.model.coupon.CollectCouponRequest;
+import com.arnav.model.provider.Provider;
+import com.arnav.model.user.User;
 import com.arnav.repository.address.AddressRepository;
+import com.arnav.repository.provider.ProviderRepository;
+import com.arnav.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -22,12 +28,19 @@ import org.springframework.data.domain.Pageable;
 
 import com.arnav.model.coupon.Coupon;
 import com.arnav.repository.coupon.CouponRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 @Path("/secured/coupon")
 public class CouponController {
 	
 	@Autowired
 	private CouponRepository couponRepository;
+
+	@Autowired
+	UserRepository userRepository;
+
+	@Autowired
+	private ProviderRepository providerRepository;
 
 	@Autowired
 	private AddressRepository addressRepository;
@@ -39,6 +52,55 @@ public class CouponController {
 		//coupon.setCouponCode(UUID.randomUUID().toString());
 		//coupon.setCouponNumber(UUID.randomUUID().node());
 		return couponRepository.save(coupon);		
+	}
+
+	@POST
+	@Path("/collect-coupon")
+	@Produces("application/json")
+	public Coupon collectCoupon(CollectCouponRequest collectCouponRequest) throws CustomNotFoundException {
+
+		Coupon coupon = couponRepository.findByCouponCode(collectCouponRequest.getCouponCode());
+		if(coupon == null){
+			throw new CustomNotFoundException("Invalid Coupon Code!");
+		}
+
+		if(coupon.getUsed()!=0){
+			throw new CustomNotFoundException("This Coupon is Already Used or Expired!");
+		}
+
+		Provider provider = this.findCurrentProvider();
+
+		if(provider == null){
+			throw new CustomNotFoundException("Unauthorized!");
+		}
+
+		if(provider.getId() != collectCouponRequest.getProviderId()){
+			throw new CustomNotFoundException("Unauthorized!");
+		}
+
+		if(coupon.getProviderId() != collectCouponRequest.getProviderId()){
+			throw new CustomNotFoundException("Invalid Coupon Code!");
+		}
+
+		coupon.setUsed(1);
+
+		return couponRepository.save(coupon);
+	}
+
+	public Provider findCurrentProvider(){
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		User activeUser = userRepository.findByUsername(username);
+		Provider provider = null;
+
+		if(!username.equals("anonymousUser") && activeUser != null) {
+
+			provider = providerRepository.findByUserId(activeUser.getId());
+		} else {
+			throw new NoCurrentProviderException("There is no current provider, please first login.");
+		}
+
+
+		return provider;
 	}
 
 	@GET
