@@ -65,7 +65,7 @@ public class CouponController {
 			throw new UsernameIsNotAnEmailException("Invalid Coupon Code!");
 		}
 
-		if(coupon.getUsed()!=0){
+		if(coupon.getUsed() != null && coupon.getUsed()!=0){
 			throw new UsernameIsNotAnEmailException("This Coupon is Already Used or Expired!");
 		}
 
