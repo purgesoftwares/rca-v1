@@ -15,8 +15,8 @@ public class UsernameIsNotAnEmailMapper implements ExceptionMapper<UsernameIsNot
 	public Response toResponse(UsernameIsNotAnEmailException exception) {
 		
 		return Response.status(404).
-				entity(new ErrorResponseException("Please input correct email type.", 
-						"Input correct email type."))
+				entity(new ErrorResponseException(exception.getLocalizedMessage(),
+						exception.getMessage()))
 			      .type(MediaType.APPLICATION_JSON)
 			      .build();
 	}
