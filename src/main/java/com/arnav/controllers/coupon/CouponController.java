@@ -14,6 +14,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.arnav.exceptions.NoCurrentProviderException;
+import com.arnav.exceptions.UsernameIsNotAnEmailException;
 import com.arnav.model.address.Address;
 import com.arnav.model.coupon.CollectCouponRequest;
 import com.arnav.model.provider.Provider;
@@ -57,29 +58,29 @@ public class CouponController {
 	@POST
 	@Path("/collect-coupon")
 	@Produces("application/json")
-	public Coupon collectCoupon(CollectCouponRequest collectCouponRequest) throws CustomNotFoundException {
+	public Coupon collectCoupon(CollectCouponRequest collectCouponRequest) throws CustomNotFoundException, UsernameIsNotAnEmailException {
 
 		Coupon coupon = couponRepository.findByCouponCode(collectCouponRequest.getCouponCode());
 		if(coupon == null){
-			throw new CustomNotFoundException("Invalid Coupon Code!");
+			throw new UsernameIsNotAnEmailException("Invalid Coupon Code!");
 		}
 
 		if(coupon.getUsed()!=0){
-			throw new CustomNotFoundException("This Coupon is Already Used or Expired!");
+			throw new UsernameIsNotAnEmailException("This Coupon is Already Used or Expired!");
 		}
 
 		Provider provider = this.findCurrentProvider();
 
 		if(provider == null){
-			throw new CustomNotFoundException("Unauthorized!");
+			throw new UsernameIsNotAnEmailException("Unauthorized!");
 		}
 
 		if(provider.getId() != collectCouponRequest.getProviderId()){
-			throw new CustomNotFoundException("Unauthorized!");
+			throw new UsernameIsNotAnEmailException("Unauthorized!");
 		}
 
 		if(coupon.getProviderId() != collectCouponRequest.getProviderId()){
-			throw new CustomNotFoundException("Invalid Coupon Code!");
+			throw new UsernameIsNotAnEmailException("Invalid Coupon Code!");
 		}
 
 		coupon.setUsed(1);
