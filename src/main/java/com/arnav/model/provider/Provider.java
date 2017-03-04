@@ -114,8 +114,20 @@ public class Provider {
 	public void setLastUpdate(Date lastUpdate) {
 		this.lastUpdate = lastUpdate;
 	}
-	
-	
 
+	@Override
+	public String toString() {
+		return "Provider{" +
+				"id='" + id + '\'' +
+				", providerName='" + providerName + '\'' +
+				", addressId='" + addressId + '\'' +
+				", contactName='" + contactName + '\'' +
+				", mainEmail='" + mainEmail + '\'' +
+				", secondaryEmail='" + secondaryEmail + '\'' +
+				", userId='" + userId + '\'' +
+				", createDate=" + createDate +
+				", lastUpdate=" + lastUpdate +
+				'}';
+	}
 }
 
