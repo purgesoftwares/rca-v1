@@ -71,15 +71,16 @@ public class CouponController {
 
 		Provider provider = this.findCurrentProvider();
 		System.out.println(provider);
-		/*if(provider == null){
+		System.out.println(collectCouponRequest);
+		if(provider == null){
 			throw new UsernameIsNotAnEmailException("Unauthorized!");
 		}
 
-		if(provider.getId() != collectCouponRequest.getProviderId()){
+		if(!provider.getId().equals(collectCouponRequest.getProviderId())){
 			throw new UsernameIsNotAnEmailException("Unauthorized!");
-		}*/
+		}
 
-		if(coupon.getProviderId() != collectCouponRequest.getProviderId()){
+		if(!coupon.getProviderId().equals(collectCouponRequest.getProviderId())){
 			throw new UsernameIsNotAnEmailException("Invalid Coupon Code!");
 		}
 
