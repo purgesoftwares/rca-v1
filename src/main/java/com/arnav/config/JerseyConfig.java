@@ -2,6 +2,8 @@ package com.arnav.config;
 
 import javax.annotation.PostConstruct;
 
+import com.arnav.controller.rate.review.RateReviewController;
+import com.arnav.controller.rate.review.UploadedFileController;
 import com.arnav.controllers.coupon.*;
 import com.arnav.controllers.provider.ExcludedTimeController;
 import com.arnav.controllers.provider.ProviderController;
@@ -81,7 +83,9 @@ public class JerseyConfig extends ResourceConfig {
 				PageController.class,
 				CouponPackageController.class,
 				PurchasedCouponController.class,
-				JoinedFriendController.class);
+				JoinedFriendController.class,
+				RateReviewController.class,
+				UploadedFileController.class);
         
         register(JspMvcFeature.class);
     }
