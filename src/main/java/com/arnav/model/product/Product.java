@@ -2,6 +2,7 @@ package com.arnav.model.product;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
@@ -27,6 +28,10 @@ public class Product {
 	private BigDecimal price;
 
 	private String description;
+
+	private Date createDate;
+
+	private Date lastUpdate;
 
 	private List<String> productCategory = new ArrayList<String>();
 
@@ -98,5 +103,21 @@ public class Product {
 				", description='" + description + '\'' +
 				", productCategory=" + productCategory +
 				'}';
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+	public Date getLastUpdate() {
+		return lastUpdate;
+	}
+
+	public void setLastUpdate(Date lastUpdate) {
+		this.lastUpdate = lastUpdate;
 	}
 }

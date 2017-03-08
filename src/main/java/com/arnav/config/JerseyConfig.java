@@ -26,6 +26,7 @@ import com.arnav.controllers.product.ProductController;
 import com.arnav.controllers.provider.ProviderInformationController;
 import com.arnav.controllers.question.QuestionController;
 import com.arnav.controllers.user.UserController;
+import com.arnav.controllers.product.ProductTypesController;
 import com.arnav.exception.mapper.NoCurrentProviderMapper;
 import com.arnav.exception.mapper.PasswordDidNotMatchMapper;
 import com.arnav.exception.mapper.RequestedIdIsNotExistsMapper;
@@ -81,7 +82,8 @@ public class JerseyConfig extends ResourceConfig {
 				PageController.class,
 				CouponPackageController.class,
 				PurchasedCouponController.class,
-				JoinedFriendController.class);
+				JoinedFriendController.class,
+				ProductTypesController.class);
         
         register(JspMvcFeature.class);
     }

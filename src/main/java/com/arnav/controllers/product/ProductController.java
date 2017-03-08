@@ -17,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 import com.arnav.model.product.Product;
 import com.arnav.repository.product.ProductRepository;
 
+import java.util.Date;
+
 @Path("/secured/product")
 public class ProductController {
 	
@@ -26,7 +28,11 @@ public class ProductController {
 	@POST
 	@Produces("application/json")
 	public Product create(Product product){
-		return productRepository.save(product);		
+
+		product.setCreateDate(new Date());
+		product.setLastUpdate(new Date());
+
+		return productRepository.save(product);
 	}
 	
 	@GET
@@ -69,6 +75,9 @@ public class ProductController {
 		} if(product.getProductCategory() == null){
 			product.setProductCategory(preProduct.getProductCategory());
 		}
+		product.setCreateDate(preProduct.getCreateDate());
+		product.setLastUpdate(new Date());
+
 		return productRepository.save(product);
 	}
 	

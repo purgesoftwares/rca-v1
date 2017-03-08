@@ -73,6 +73,7 @@ public class PurchasedCouponController {
             for (Provider provider: couponPackage.getProviders()
                  ) {
 
+
                 Coupon coupon  = new Coupon();
                 coupon.setCouponNumber(purchasedCoupon.getCouponNumber());
                 coupon.setProviderId(provider.getId());
