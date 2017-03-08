@@ -68,9 +68,9 @@ public class CityController {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public City delete(@PathParam(value="id")String id){
-		City City = cityRepository.findOne(id);
-		cityRepository.delete(City);
-		return City;
+		City city = cityRepository.findOne(id);
+		cityRepository.delete(city);
+		return city;
 	}
 
 }
