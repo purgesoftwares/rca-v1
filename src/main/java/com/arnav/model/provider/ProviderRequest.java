@@ -101,7 +101,19 @@ public class ProviderRequest {
 	public void setCountry(String country) {
 		this.country = country;
 	}
-	
 
-
+	@Override
+	public String toString() {
+		return "ProviderRequest{" +
+				"providerName='" + providerName + '\'' +
+				", contactName='" + contactName + '\'' +
+				", mainEmail='" + mainEmail + '\'' +
+				", secondaryEmail='" + secondaryEmail + '\'' +
+				", password='" + password + '\'' +
+				", confirmPassword='" + confirmPassword + '\'' +
+				", address='" + address + '\'' +
+				", city='" + city + '\'' +
+				", country='" + country + '\'' +
+				'}';
+	}
 }

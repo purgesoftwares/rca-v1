@@ -55,6 +55,10 @@ public class Provider {
 		return providerName;
 	}
 
+	public String getProviderName() {
+		return providerName;
+	}
+
 	public void setProvider_name(String provider_name) {
 		this.providerName = provider_name;
 	}
