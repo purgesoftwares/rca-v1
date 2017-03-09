@@ -44,12 +44,12 @@ public class ProviderController {
 		return providerRepository.findAll(pageble);
 	}
 
-	private boolean checkStringIsEmamil(String username) {
+	private boolean checkStringIsEmail(String username) {
 		Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
 		Matcher m = p.matcher(username);
 		boolean matchFound = m.matches();
 		if (matchFound) {
-		    return true;
+			return true;
 		}
 		return false;
 	}
@@ -68,18 +68,20 @@ public class ProviderController {
 		Provider preProduct = providerRepository.findOne(id);
 		User preUser = userRepository.findOne(preProduct.getUserId());
 		Address address = addressRepository.findOne(preProduct.getAddressId());
-		
+
+		System.out.println(providerRequest);
+
 		boolean isValid = false;
 		boolean isSecondayEmailValid = false;
 		if(providerRequest.getMainEmail() != null){
-			 isValid = checkStringIsEmamil(providerRequest.getMainEmail());
+			 isValid = checkStringIsEmail(providerRequest.getMainEmail());
 			 if(!isValid){
 					throw new UsernameIsNotAnEmailException("Please input correct email type.");
 			}
 		}
 		
 		if(providerRequest.getSecondaryEmail() != null && providerRequest.getSecondaryEmail() != ""){
-			 isValid = checkStringIsEmamil(providerRequest.getSecondaryEmail());
+			isSecondayEmailValid = checkStringIsEmail(providerRequest.getSecondaryEmail());
 			 if(!isSecondayEmailValid){
 					throw new UsernameIsNotAnEmailException("Please input correct email type.");
 			}
