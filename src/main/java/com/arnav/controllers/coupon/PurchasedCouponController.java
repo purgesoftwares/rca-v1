@@ -79,6 +79,7 @@ public class PurchasedCouponController {
                 coupon.setProviderId(provider.getId());
                 coupon.setCouponCode(this.randomCode());
                 coupon.setPrice(couponPackage.getPrice());
+                coupon.setCouponPackageId(couponPackage.getId());
                 coupon.setEndTime(couponPackage.getEndTime());
                 coupon.setStartTime(couponPackage.getStartTime());
                 coupon.setPurchasedCouponId(purchasedCoupon.getId());

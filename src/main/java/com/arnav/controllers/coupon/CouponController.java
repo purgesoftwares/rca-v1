@@ -134,6 +134,14 @@ public class CouponController {
 		
 		return new PageImpl<Coupon>(couponRepository.findAll(pageble).getContent(), pageble, 20);
 	}
+
+	@GET
+	@Path("/by-coupon-package/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Page<Coupon> findAll(@PathParam(value="id")String id, Pageable pageble){
+
+		return new PageImpl<Coupon>(couponRepository.findByCouponPackageId(id), pageble, 20);
+	}
 	
 	@PUT
 	@Path("/{id}")

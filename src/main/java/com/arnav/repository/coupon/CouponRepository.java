@@ -2,6 +2,7 @@ package com.arnav.repository.coupon;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -21,4 +22,7 @@ public interface CouponRepository extends MongoRepository<Coupon, String>, CrudR
 
 	@Transactional
     public List<Coupon> findByPurchasedCouponId(String id);
+
+	@Transactional
+    public List<Coupon> findByCouponPackageId(String id);
 }

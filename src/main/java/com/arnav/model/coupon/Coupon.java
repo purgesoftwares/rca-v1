@@ -25,7 +25,10 @@ public class Coupon {
 	
 	@NotEmpty(message="Coupon Number is required.")
 	private Long couponNumber;
-	
+
+	@NotEmpty(message="Coupon Package ID is required.")
+	private String couponPackageId;
+
 	@NotEmpty
 	private String providerId;
 
@@ -36,27 +39,27 @@ public class Coupon {
 	@Transient
 	private Address address;
 
-
 	@NotEmpty
 	private String purchasedCouponId;
-	
+
+
 	@NotNull
 	private BigDecimal price;
-	
+
 	private Integer availability;
-	
+
 	private Integer used;
-	
+
 	@NotNull
 	private Date startTime;
-	
+
 	@NotNull
 	private Date endTime;
-	
+
 	public Coupon(){
-	    
+
 	}
-  
+
 	public Coupon (String id, String couponCode,Long couLong){
 		this.id = id;
 		this.couponCode = couponCode;
@@ -135,10 +138,10 @@ public class Coupon {
 		this.endTime = endTime;
 	}
 
-
 	public String getPurchasedCouponId() {
 		return purchasedCouponId;
 	}
+
 
 	public void setPurchasedCouponId(String purchasedCouponId) {
 		this.purchasedCouponId = purchasedCouponId;
@@ -158,5 +161,32 @@ public class Coupon {
 
 	public void setAddress(Address address) {
 		this.address = address;
+	}
+
+	public String getCouponPackageId() {
+		return couponPackageId;
+	}
+
+	public void setCouponPackageId(String couponPackageId) {
+		this.couponPackageId = couponPackageId;
+	}
+
+	@Override
+	public String toString() {
+		return "Coupon{" +
+				"id='" + id + '\'' +
+				", couponCode='" + couponCode + '\'' +
+				", couponNumber=" + couponNumber +
+				", couponPackageId='" + couponPackageId + '\'' +
+				", providerId='" + providerId + '\'' +
+				", provider=" + provider +
+				", address=" + address +
+				", purchasedCouponId='" + purchasedCouponId + '\'' +
+				", price=" + price +
+				", availability=" + availability +
+				", used=" + used +
+				", startTime=" + startTime +
+				", endTime=" + endTime +
+				'}';
 	}
 }
