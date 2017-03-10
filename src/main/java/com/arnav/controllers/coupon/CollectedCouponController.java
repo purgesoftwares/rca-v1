@@ -1,17 +1,26 @@
 package com.arnav.controllers.coupon;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.arnav.exceptions.NoCurrentProviderException;
 import com.arnav.model.coupon.ProviderCollectedCouponResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.arnav.model.coupon.CollectedCouponResponse;
 import com.arnav.model.coupon.Coupon;
 import com.arnav.model.coupon.CollectedCoupon;
 import com.arnav.repository.coupon.CollectedCouponRepository;
@@ -104,4 +113,52 @@ public class CollectedCouponController {
 		return collCouponRepository.save(previousCollectedCoupon);
 	}
 
+	@GET
+	@Path("/provider-total-coupons/{providerId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<CollectedCouponResponse> findCollectedCouponByProviderId(@PathParam("providerId")String providerId) throws ParseException{
+		
+		List<CollectedCoupon> listOfCollectedCoupons = collCouponRepository.findByProviderId(providerId);
+		
+		Map<String,BigDecimal> data = new TreeMap<String,BigDecimal>();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		
+		List<Coupon> coupons = couponRepository.
+				findByUsedAndProviderId(3, providerId);
+		
+		
+		for(CollectedCoupon collectedCoupon : listOfCollectedCoupons) {
+			for(Coupon coupon : coupons) {
+				if(coupon.getProviderId().equals(collectedCoupon.getProviderId())){
+					
+					Date createDate = collectedCoupon.getCreatedAt();
+					
+					if(!data.containsKey(dateFormat.format(createDate))) {
+						data.put(dateFormat.format(createDate), BigDecimal.ZERO);
+					}
+					
+					BigDecimal total = data.get(dateFormat.format(createDate));
+					
+					data.put(dateFormat.format(createDate), total.add(coupon.getPrice()));
+				}
+				
+			}		
+		}
+		
+		List<CollectedCouponResponse> collectedCoupons = new ArrayList<CollectedCouponResponse>();
+
+		
+		for (Object key : data.keySet()) {
+						
+			CollectedCouponResponse response = new CollectedCouponResponse();
+			response.setAmount(data.get(key));
+			response.setDate(key.toString());
+			response.setNumOfCoupons(coupons.size());
+			
+			collectedCoupons.add(response);
+			
+		}
+		
+		return collectedCoupons;
+	}
 }
