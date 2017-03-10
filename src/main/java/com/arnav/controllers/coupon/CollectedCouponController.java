@@ -117,33 +117,26 @@ public class CollectedCouponController {
 	@Path("/provider-total-coupons/{providerId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<CollectedCouponResponse> findCollectedCouponByProviderId(@PathParam("providerId")String providerId) throws ParseException{
-		
-		List<CollectedCoupon> listOfCollectedCoupons = collCouponRepository.findByProviderId(providerId);
 
 		Map<String,BigDecimal> data = new TreeMap<String,BigDecimal>();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		
 		List<Coupon> coupons = couponRepository.
-				findByUsedAndProviderId(3, providerId);
+				findByUsedAndProviderId(1, providerId);
 		
+		for(Coupon coupon : coupons) {
+			Date createDate = coupon.getCollectionDate();
+			
+			if(!data.containsKey(dateFormat.format(createDate))) {
+				data.put(dateFormat.format(createDate), BigDecimal.ZERO);
+			}
+			
+			BigDecimal total = data.get(dateFormat.format(createDate));
+			
+			data.put(dateFormat.format(createDate), total.add(coupon.getPrice()));
+			
+		}		
 		
-		for(CollectedCoupon collectedCoupon : listOfCollectedCoupons) {
-			for(Coupon coupon : coupons) {
-				if(coupon.getProviderId().equals(collectedCoupon.getProviderId())){
-					
-					Date createDate = collectedCoupon.getCreatedAt();
-					
-					if(!data.containsKey(dateFormat.format(createDate))) {
-						data.put(dateFormat.format(createDate), BigDecimal.ZERO);
-					}
-					
-					BigDecimal total = data.get(dateFormat.format(createDate));
-					
-					data.put(dateFormat.format(createDate), total.add(coupon.getPrice()));
-				}
-				
-			}		
-		}
 		
 		List<CollectedCouponResponse> collectedCoupons = new ArrayList<CollectedCouponResponse>();
 
