@@ -118,40 +118,43 @@ public class CollectedCouponController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<CollectedCouponResponse> findCollectedCouponByProviderId(@PathParam("providerId")String providerId) throws ParseException{
 
-		Map<String,BigDecimal> data = new TreeMap<String,BigDecimal>();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		
-		List<Coupon> coupons = couponRepository.
+		List<Coupon> collectedCoupons = couponRepository.
 				findByUsedAndProviderId(1, providerId);
-		
-		for(Coupon coupon : coupons) {
-			Date createDate = coupon.getCollectionDate();
-			
+
+		Map<String,BigDecimal> data = new TreeMap<String,BigDecimal>();
+		Map<String,Integer> couponNumbers = new TreeMap<String,Integer>();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+		for(Coupon collectedCoupon : collectedCoupons){
+			Date createDate = collectedCoupon.getCollectionDate();
+
 			if(!data.containsKey(dateFormat.format(createDate))) {
 				data.put(dateFormat.format(createDate), BigDecimal.ZERO);
+				couponNumbers.put(dateFormat.format(createDate), 0);
 			}
-			
-			BigDecimal total = data.get(dateFormat.format(createDate));
-			
-			data.put(dateFormat.format(createDate), total.add(coupon.getPrice()));
-			
-		}		
-		
-		
-		List<CollectedCouponResponse> collectedCoupons = new ArrayList<CollectedCouponResponse>();
 
-		
+			BigDecimal total = data.get(dateFormat.format(createDate));
+			Integer number = couponNumbers.get(dateFormat.format(createDate));
+
+			data.put(dateFormat.format(createDate), total.add(collectedCoupon.getPrice()));
+			couponNumbers.put(dateFormat.format(createDate), number + 1);
+
+		}
+
+		List<CollectedCouponResponse> allCollectedCoupons = new ArrayList<CollectedCouponResponse>();
+
+
 		for (Object key : data.keySet()) {
-						
+
 			CollectedCouponResponse response = new CollectedCouponResponse();
 			response.setAmount(data.get(key));
 			response.setDate(key.toString());
-			response.setNumOfCoupons(coupons.size());
-			
-			collectedCoupons.add(response);
-			
+			response.setNumOfCoupons(couponNumbers.get(key));
+
+			allCollectedCoupons.add(response);
+
 		}
-		
-		return collectedCoupons;
+
+		return allCollectedCoupons;
 	}
 }
