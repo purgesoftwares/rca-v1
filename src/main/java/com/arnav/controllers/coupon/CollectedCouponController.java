@@ -154,7 +154,6 @@ public class CollectedCouponController {
 			allCollectedCoupons.add(response);
 
 		}
-
 		return allCollectedCoupons;
 	}
 }
