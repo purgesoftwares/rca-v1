@@ -119,7 +119,7 @@ public class CollectedCouponController {
 	public List<CollectedCouponResponse> findCollectedCouponByProviderId(@PathParam("providerId")String providerId) throws ParseException{
 		
 		List<CollectedCoupon> listOfCollectedCoupons = collCouponRepository.findByProviderId(providerId);
-		
+
 		Map<String,BigDecimal> data = new TreeMap<String,BigDecimal>();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		

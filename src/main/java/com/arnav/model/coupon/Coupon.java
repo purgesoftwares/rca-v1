@@ -50,6 +50,8 @@ public class Coupon {
 
 	private Integer used;
 
+	private Date collectionDate;
+
 	@NotNull
 	private Date startTime;
 
@@ -188,5 +190,13 @@ public class Coupon {
 				", startTime=" + startTime +
 				", endTime=" + endTime +
 				'}';
+	}
+
+	public Date getCollectionDate() {
+		return collectionDate;
+	}
+
+	public void setCollectionDate(Date collectionDate) {
+		this.collectionDate = collectionDate;
 	}
 }

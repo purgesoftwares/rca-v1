@@ -1,5 +1,6 @@
 package com.arnav.controllers.coupon;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -58,7 +59,8 @@ public class CouponController {
 	@POST
 	@Path("/collect-coupon")
 	@Produces("application/json")
-	public Coupon collectCoupon(CollectCouponRequest collectCouponRequest) throws CustomNotFoundException, UsernameIsNotAnEmailException {
+	public Coupon collectCoupon(CollectCouponRequest collectCouponRequest)
+			throws CustomNotFoundException, UsernameIsNotAnEmailException {
 
 		Coupon coupon = couponRepository.findByCouponCode(collectCouponRequest.getCouponCode());
 		if(coupon == null){
@@ -84,6 +86,7 @@ public class CouponController {
 			throw new UsernameIsNotAnEmailException("Invalid Coupon Code!");
 		}
 
+		coupon.setCollectionDate(new Date());
 		coupon.setUsed(1);
 
 		return couponRepository.save(coupon);
