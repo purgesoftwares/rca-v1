@@ -6,6 +6,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
@@ -33,6 +34,8 @@ public class Address {
 	private String homePhone;
 	
 	private String country;
+
+	private GeoJsonPoint location;
 	
 	@NotEmpty
 	private Date createDate;
@@ -127,5 +130,12 @@ public class Address {
 	public void setCountry(String country) {
 		this.country = country;
 	}
-	
+
+	public GeoJsonPoint getLocation() {
+		return location;
+	}
+
+	public void setLocation(GeoJsonPoint location) {
+		this.location = location;
+	}
 }
