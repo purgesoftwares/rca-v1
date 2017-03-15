@@ -108,6 +108,9 @@ public class ProviderController {
 			PasswordEncoder encoder = new BCryptPasswordEncoder();
 			preUser.setPassword(encoder.encode(providerRequest.getPassword()));
 		}
+		if(providerRequest.getLocation()!=null){
+			address.setLocation(providerRequest.getLocation());
+		}
 		
 		addressRepository.save(address);
 		userRepository.save(preUser);

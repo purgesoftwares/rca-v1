@@ -68,7 +68,11 @@ public class ProviderSignupController {
 		address.setCountry(providerRequest.getCountry());
 		address.setCreateDate(new Date());
 		address.setLastUpdate(new Date());
-		
+
+		if(providerRequest.getLocation()!=null){
+			address.setLocation(providerRequest.getLocation());
+		}
+
 		address = addressRepository.save(address);
 				
 		User user = new User();

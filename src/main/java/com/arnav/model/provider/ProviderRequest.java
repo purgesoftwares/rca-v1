@@ -1,6 +1,7 @@
 package com.arnav.model.provider;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 
 public class ProviderRequest {
 
@@ -23,6 +24,8 @@ public class ProviderRequest {
 	
 	@NotBlank
 	private String address;
+
+	private GeoJsonPoint location;
 	
 	@NotBlank
 	private String city;
@@ -100,6 +103,14 @@ public class ProviderRequest {
 
 	public void setCountry(String country) {
 		this.country = country;
+	}
+
+	public GeoJsonPoint getLocation() {
+		return location;
+	}
+
+	public void setLocation(GeoJsonPoint location) {
+		this.location = location;
 	}
 
 	@Override
