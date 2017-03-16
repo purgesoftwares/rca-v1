@@ -56,7 +56,10 @@ public class AddressController {
 			Address address = addressRequest.getAddress();
 			address.setCreateDate(new Date());
 			address.setLastUpdate(new Date());
-			return addressRepository.save(address);
+			address = addressRepository.save(address);
+			customer.setAddressId(address.getId());
+			customerRepository.save(customer);
+			return address;
 
 		}else{
 
