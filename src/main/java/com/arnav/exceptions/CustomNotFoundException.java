@@ -1,4 +1,4 @@
-package com.arnav.controllers.coupon;
+package com.arnav.exceptions;
 
 /**
  * Created by Shankar on 1/8/2017.

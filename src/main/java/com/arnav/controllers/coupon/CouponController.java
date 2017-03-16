@@ -2,7 +2,6 @@ package com.arnav.controllers.coupon;
 
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import javax.validation.Valid;
 import javax.ws.rs.DELETE;
@@ -14,6 +13,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.arnav.exceptions.CustomNotFoundException;
 import com.arnav.exceptions.NoCurrentProviderException;
 import com.arnav.exceptions.UsernameIsNotAnEmailException;
 import com.arnav.model.address.Address;

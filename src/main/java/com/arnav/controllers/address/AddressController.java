@@ -11,6 +11,10 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.arnav.exceptions.CustomNotFoundException;
+import com.arnav.model.address.CustomerAddressRequest;
+import com.arnav.model.customer.Customer;
+import com.arnav.repository.customer.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +26,9 @@ public class AddressController {
 	
 	@Autowired
 	private AddressRepository addressRepository;
+
+	@Autowired
+	private CustomerRepository customerRepository;
 	
 	@POST
 	@Produces("application/json")
@@ -30,7 +37,50 @@ public class AddressController {
 		address.setLastUpdate(new Date());
 		return addressRepository.save(address);		
 	}
-	
+
+	@POST
+	@Path("/update-customer-location")
+	@Produces("application/json")
+	public Address updateCustomerLocation(CustomerAddressRequest addressRequest) throws CustomNotFoundException {
+
+		if(addressRequest.getCustomerId() == null || addressRequest.getAddress() == null)
+			throw new CustomNotFoundException("All Proper values not found!");
+
+		Customer customer = customerRepository.findOne(addressRequest.getCustomerId());
+
+		if(customer == null)
+			throw new CustomNotFoundException("Not a valid request!");
+
+		if(customer.getAddressId()==null){
+
+			Address address = addressRequest.getAddress();
+			address.setCreateDate(new Date());
+			address.setLastUpdate(new Date());
+			return addressRepository.save(address);
+
+		}else{
+
+			Address address = addressRepository.findOne(customer.getAddressId());
+
+			if(addressRequest.getAddress().getCity() != null)
+				address.setCity(addressRequest.getAddress().getCity());
+
+			if(addressRequest.getAddress().getLocation() != null)
+				address.setLocation(addressRequest.getAddress().getLocation());
+
+			if(addressRequest.getAddress().getAddress1() != null)
+				address.setAddress1(addressRequest.getAddress().getAddress1());
+
+			if(addressRequest.getAddress().getCountry() != null)
+				address.setCountry(addressRequest.getAddress().getCountry());
+
+			address.setCreateDate(new Date());
+			address.setLastUpdate(new Date());
+			return addressRepository.save(address);
+		}
+
+	}
+
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)

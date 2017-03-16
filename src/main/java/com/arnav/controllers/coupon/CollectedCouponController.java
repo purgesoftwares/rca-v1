@@ -13,6 +13,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.arnav.exceptions.CustomNotFoundException;
 import com.arnav.exceptions.NoCurrentProviderException;
 import com.arnav.model.coupon.ProviderCollectedCouponResponse;
 
