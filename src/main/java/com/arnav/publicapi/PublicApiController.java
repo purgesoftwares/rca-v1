@@ -1,9 +1,8 @@
 package com.arnav.publicapi;
 
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,13 +15,13 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import com.arnav.exceptions.*;
+import com.arnav.model.enquiry.ContactUsEnquiry;
+import com.arnav.repository.enquiry.ContactUsEnquiryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.arnav.exceptions.PasswordDidNotMatchException;
-import com.arnav.exceptions.TokenExpiredException;
-import com.arnav.exceptions.UserNotFoundException;
 import com.arnav.model.user.User;
 import com.arnav.model.user.UserRequest;
 import com.arnav.repository.token.PasswordResetTokenRepository;
@@ -41,6 +40,9 @@ public class PublicApiController {
 	
 	@Autowired
 	private PasswordResetTokenRepository passwordTokenRepository;
+
+	@Autowired
+	private ContactUsEnquiryRepository enquiryRepository;
 	
 	@GET
 	@Path("/reset-password/{email:.+}")
@@ -214,6 +216,42 @@ public class PublicApiController {
 		}
 		
 		return user;
+	}
+
+
+	@POST
+	@Path("/contact-us")
+	@Produces("application/json")
+	public ContactUsEnquiry create(ContactUsEnquiry enquiry) throws UsernameIsNotAnEmailException {
+
+		if(enquiry.getContactName() == null || enquiry.getUserEmail() == null || enquiry.getMessage() == null){
+			throw new AllPropertyRequiredException("Contact name, email and message is required.");
+		}
+
+		boolean isValid = checkStringIsEmail(enquiry.getUserEmail());
+
+		if(!isValid ){
+			throw new UsernameIsNotAnEmailException("Please input correct email type.");
+		}
+
+		User user = userRepository.findByUsername(enquiry.getUserEmail());
+
+		if(user == null) {
+			throw new UserNotFoundException("This email is not exists");
+		}
+		enquiry.setCreateDate(new Date());
+		enquiry.setLastUpdate(new Date());
+		return enquiryRepository.save(enquiry);
+	}
+
+	private boolean checkStringIsEmail(String username) {
+		Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
+		Matcher m = p.matcher(username);
+		boolean matchFound = m.matches();
+		if (matchFound) {
+			return true;
+		}
+		return false;
 	}
 
 }
