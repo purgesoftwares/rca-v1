@@ -9,6 +9,8 @@ import java.util.List;
 
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 import com.arnav.exceptions.UserNotFoundException;
 import com.arnav.model.customer.Customer;
@@ -69,7 +71,7 @@ public class OauthConfigurationController {
 			
 			jsonData = new JSONObject(jsonString);
 			return jsonData.get("access_token").toString();
-			
+
 		} catch (URISyntaxException e1) {
 			e1.printStackTrace();
 		} catch (UnsupportedEncodingException e1) {
@@ -239,7 +241,8 @@ public class OauthConfigurationController {
 
 	@POST
 	@Path("/app/provider")
-	public HttpResponse getAppProviderOauthAccessToken(UserLogin user) throws UserNotFoundException,HttpException {
+	@Produces(MediaType.APPLICATION_JSON)
+	public OauthResponse getAppProviderOauthAccessToken(UserLogin user) throws UserNotFoundException,HttpException {
 
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpPost httppost = null;
@@ -265,7 +268,20 @@ public class OauthConfigurationController {
 			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 			HttpResponse response = httpclient.execute(httppost);
 
-			return response;
+
+			String jsonString = EntityUtils.toString(response.getEntity());
+
+			jsonData = new JSONObject(jsonString);
+
+			OauthResponse oauthResponse = new OauthResponse();
+
+			oauthResponse.setAccess_token(jsonData.get("access_token").toString());
+			oauthResponse.setScope(jsonData.getString("scope"));
+			oauthResponse.setExpires_in((int)jsonData.get("expires_in"));
+			oauthResponse.setToken_type(jsonData.getString("token_type"));
+
+			return oauthResponse;
+
 
 		} catch (URISyntaxException e1) {
 			e1.printStackTrace();
