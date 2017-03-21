@@ -1,8 +1,11 @@
 package com.arnav.controllers.coupon;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -18,11 +21,16 @@ import com.arnav.exceptions.NoCurrentProviderException;
 import com.arnav.exceptions.UsernameIsNotAnEmailException;
 import com.arnav.model.address.Address;
 import com.arnav.model.coupon.CollectCouponRequest;
+import com.arnav.model.coupon.PurchasedCoupon;
+import com.arnav.model.customer.Customer;
 import com.arnav.model.provider.Provider;
 import com.arnav.model.user.User;
 import com.arnav.repository.address.AddressRepository;
+import com.arnav.repository.coupon.PurchasedCouponRepository;
+import com.arnav.repository.customer.CustomerRepository;
 import com.arnav.repository.provider.ProviderRepository;
 import com.arnav.repository.user.UserRepository;
+import com.arnav.services.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -46,7 +54,17 @@ public class CouponController {
 
 	@Autowired
 	private AddressRepository addressRepository;
-	
+
+	@Autowired
+	private PurchasedCouponRepository purchasedCouponRepository;
+
+	@Autowired
+	private CustomerRepository customerRepository;
+
+	@Autowired
+	private EmailService emailService;
+
+
 	@POST
 	@Produces("application/json")
 	public Coupon create(Coupon coupon){
@@ -60,7 +78,7 @@ public class CouponController {
 	@Path("/collect-coupon")
 	@Produces("application/json")
 	public Coupon collectCoupon(CollectCouponRequest collectCouponRequest)
-			throws CustomNotFoundException, UsernameIsNotAnEmailException {
+			throws CustomNotFoundException, UsernameIsNotAnEmailException, MessagingException {
 
 		Coupon coupon = couponRepository.findByCouponCode(collectCouponRequest.getCouponCode());
 		if(coupon == null){
@@ -89,7 +107,46 @@ public class CouponController {
 		coupon.setCollectionDate(new Date());
 		coupon.setUsed(1);
 
+		PurchasedCoupon purchasedCoupon = purchasedCouponRepository.findOne(coupon.getPurchasedCouponId());
+		if(purchasedCoupon != null){
+			Customer customer = customerRepository.findOne(purchasedCoupon.getCustomerId());
+
+			if(customer != null){
+
+				String feedbackUrl = "http://localhost:4200/feedback/" + coupon.getId();
+
+				String emailString = "Hello "
+						+customer.getFirstName()
+						+",<br/><br/><table><tr><td colspan='2' > <strong>Your coupon is redeemed at : "
+						+provider.getProvider_name()
+						+"</strong></td></tr><tr><td colspan='2' > <br/><br/><b>So Please Provide Your Feedback to this provider"
+						+"</b></td></tr><tr><td colspan='2' > <br/><br/><b>Click on this link or open in URL in browser to submit your feedback." +
+						"<a href='" + feedbackUrl + "'>" + feedbackUrl + "</a>"
+						+"</b></td></tr>";
+
+				emailString += "</table> <br/><br/> Thanks <br/> Sales Team";
+				this.sendEmailToInviteForRateReview(emailString, customer, customer.getMainEmail());;
+
+			}
+		}
+
 		return couponRepository.save(coupon);
+	}
+
+	private void sendEmailToInviteForRateReview(final String html,
+												final Customer customer,
+												final String email) throws MessagingException {
+
+		Map<String, String> processData = new HashMap<String, String>();
+
+		processData.put("html", html);
+
+		emailService.sendMailWithHtml(customer.getFullName(),
+				email,
+				"You are Invited to give Feedback",
+				html,
+				processData);
+
 	}
 
 	public Provider findCurrentProvider(){

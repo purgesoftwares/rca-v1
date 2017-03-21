@@ -28,7 +28,6 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
 import com.arnav.publicapi.Base64Coder;
 import com.arnav.model.user.UserLogin;
 
@@ -222,6 +221,51 @@ public class OauthConfigurationController {
 
 			jsonData = new JSONObject(jsonString);
 			return jsonData.get("access_token").toString();
+
+		} catch (URISyntaxException e1) {
+			e1.printStackTrace();
+		} catch (UnsupportedEncodingException e1) {
+			e1.printStackTrace();
+		} catch (JSONException e1) {
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
+		return null;
+
+	}
+
+
+	@POST
+	@Path("/app/provider")
+	public HttpResponse getAppProviderOauthAccessToken(UserLogin user) throws UserNotFoundException,HttpException {
+
+		HttpClient httpclient = new DefaultHttpClient();
+		HttpPost httppost = null;
+		JSONObject jsonData = null;
+
+		Provider provider = providerRepository.findByMainEmail(user.getUsername());
+		if(provider == null || provider.getId().isEmpty()){
+			throw new UserNotFoundException("User not found! Invalid Email or Password!");
+		}
+		try {
+
+			httppost = new HttpPost(new URL("http://54.161.216.233:8090" + "/oauth/token").toURI());
+			String encoding = Base64Coder.encodeString("test_client:12345");
+			httppost.setHeader("Authorization", "Basic " + encoding);
+
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+			nameValuePairs.add(new BasicNameValuePair("grant_type", "password"));
+			nameValuePairs.add(new BasicNameValuePair("client_id", "test_client"));
+			nameValuePairs.add(new BasicNameValuePair("client_secret", "12345"));
+			nameValuePairs.add(new BasicNameValuePair("username", user.getUsername()));
+			nameValuePairs.add(new BasicNameValuePair("password", user.getPassword()));
+
+			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			HttpResponse response = httpclient.execute(httppost);
+
+			return response;
 
 		} catch (URISyntaxException e1) {
 			e1.printStackTrace();

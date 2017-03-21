@@ -79,6 +79,9 @@ public class CustomerController {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Page<Customer> findAll(Pageable pageble){
+
+		//System.out.println(pageble.getPageNumber());
+		System.out.println(pageble.getSort());
 		return customerRepository.findAll(pageble);
 	}
 	
