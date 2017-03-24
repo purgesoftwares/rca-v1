@@ -1,7 +1,9 @@
 package com.arnav.controllers.coupon;
 
+import com.arnav.model.coupon.Coupon;
 import com.arnav.model.coupon.CouponPackage;
 import com.arnav.repository.coupon.CouponPackageRepository;
+import com.arnav.repository.coupon.CouponRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -20,6 +22,9 @@ public class CouponPackageController {
     @Autowired
     private CouponPackageRepository couponPackageRepository;
 
+    @Autowired
+    private CouponRepository couponRepository;
+
     @POST
     @Produces("application/json")
     public CouponPackage create(CouponPackage couponPackage){
@@ -32,6 +37,18 @@ public class CouponPackageController {
     public CouponPackage findOne(@PathParam(value="id")String id){
         return couponPackageRepository.findOne(id);
     }
+
+    @GET
+    @Path("/get-by-coupon-id/{couponId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public CouponPackage findByCouponId(@PathParam(value="couponId")String couponId){
+
+        Coupon coupon = couponRepository.findOne(couponId);
+
+
+        return couponPackageRepository.findOne(coupon.getCouponPackageId());
+    }
+
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

@@ -21,10 +21,12 @@ import com.arnav.exceptions.UserNotFoundException;
 import com.arnav.model.coupon.Coupon;
 import com.arnav.model.coupon.CouponPackage;
 import com.arnav.model.coupon.PurchasedCoupon;
+import com.arnav.model.provider.Provider;
 import com.arnav.model.user.User;
 import com.arnav.repository.coupon.CouponPackageRepository;
 import com.arnav.repository.coupon.CouponRepository;
 import com.arnav.repository.coupon.PurchasedCouponRepository;
+import com.arnav.repository.provider.ProviderRepository;
 import com.arnav.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -62,6 +64,9 @@ public class RateReviewController {
 
 	@Autowired
 	private PurchasedCouponRepository purchasedCouponRepository;
+
+	@Autowired
+	private ProviderRepository providerRepository;
 	
 	@POST
 	@Produces("application/json")
@@ -75,14 +80,16 @@ public class RateReviewController {
 		rateReview.setLastUpdate(new Date());
 		rateReview.setCustomer(customerRepository.findOne(rateReview.getCustomerId()));
 		rateReviewRepository.save(rateReview);
+
+		Provider provider = providerRepository.findOne(rateReview.getProviderId());
 		
 		String rateReviewString = "Hello "
                 +rateReview.getCustomer().getFirstName()
-                +",<br/><br/><table><tr><td colspan='2' > <strong>Thanks for giving the Rating with Your Feedback : "
-                +rateReview.getRank()
-                +"</strong></td></tr><tr><td colspan='2' > <br/><br/><b>Your Feedback : "
-                +rateReview.getFeedback()
-                +"</b></td></tr>";
+                +",<br/><br/><table><tr><td colspan='2' > <strong>Thanks for giving Rating and Feedback to "
+                + provider.getProvider_name()
+                +".</strong></td></tr>";
+
+		rateReviewString += "</table> <br/><br/> Thanks <br/> Sales Team";
 		
 		this.sendEmailForCreatingRateReview(rateReviewString, rateReview.getCustomer(), rateReview.getCustomer().getMainEmail());;
 		return rateReview;		
