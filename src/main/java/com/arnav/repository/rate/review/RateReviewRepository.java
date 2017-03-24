@@ -8,4 +8,5 @@ import com.arnav.model.rate.review.RateReview;
 @RepositoryRestResource
 public interface RateReviewRepository extends MongoRepository<RateReview, String>, CrudRepository<RateReview, String>{
 
+    public RateReview findByCustomerIdAndCouponPackageIdAndProviderId(String id, String purchasedCouponId, String providerId);
 }

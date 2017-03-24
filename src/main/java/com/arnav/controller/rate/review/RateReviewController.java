@@ -15,6 +15,17 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.arnav.exceptions.CustomNotFoundException;
+import com.arnav.exceptions.NoCurrentProviderException;
+import com.arnav.exceptions.UserNotFoundException;
+import com.arnav.model.coupon.Coupon;
+import com.arnav.model.coupon.CouponPackage;
+import com.arnav.model.coupon.PurchasedCoupon;
+import com.arnav.model.user.User;
+import com.arnav.repository.coupon.CouponPackageRepository;
+import com.arnav.repository.coupon.CouponRepository;
+import com.arnav.repository.coupon.PurchasedCouponRepository;
+import com.arnav.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -26,6 +37,7 @@ import com.arnav.model.rate.review.RateReview;
 import com.arnav.repository.customer.CustomerRepository;
 import com.arnav.repository.rate.review.RateReviewRepository;
 import com.arnav.services.EmailService;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 @Path("/secured/rate-review")
 public class RateReviewController {
@@ -38,7 +50,18 @@ public class RateReviewController {
 	
 	@Autowired
 	private EmailService emailService;
-	
+
+	@Autowired
+	private CouponRepository couponRepository;
+
+	@Autowired
+	private UserRepository userRepository;
+
+	@Autowired
+	private CouponPackageRepository couponPackageRepository;
+
+	@Autowired
+	private PurchasedCouponRepository purchasedCouponRepository;
 	
 	@POST
 	@Produces("application/json")
@@ -86,7 +109,62 @@ public class RateReviewController {
 	public RateReview findOne(@PathParam(value="id")String id){
 		return rateReviewRepository.findOne(id);
 	}
-	
+
+	@GET
+	@Path("/get-feedback/{couponId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Boolean findFeedbackByCouponId(
+			@PathParam(value="couponId")String couponId)
+			throws CustomNotFoundException {
+
+		Coupon coupon = couponRepository.findOne(couponId);
+
+		if(coupon == null){
+			throw new CustomNotFoundException("Not a valid request. May be URL expired.");
+		}
+
+		Customer customer = this.findCurrentCustomer();
+
+		if(customer == null){
+			throw new UserNotFoundException("Invalid access or Session expired");
+		}
+
+		PurchasedCoupon couponPackage = purchasedCouponRepository.findOne(coupon.getPurchasedCouponId());
+
+		if(couponPackage == null || !couponPackage.getCustomerId().equals(customer.getId())){
+			throw new CustomNotFoundException("Not a valid request now!");
+		}
+
+		RateReview rateReview = rateReviewRepository.findByCustomerIdAndCouponPackageIdAndProviderId(
+				customer.getId(),
+				coupon.getPurchasedCouponId(),
+				coupon.getProviderId()
+		);
+
+
+		if(rateReview == null){
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	public Customer findCurrentCustomer(){
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		User activeUser = userRepository.findByUsername(username);
+		Customer customer = null;
+
+		if(!username.equals("anonymousUser") && activeUser != null) {
+
+			customer = customerRepository.findByUserId(activeUser.getId());
+		} else {
+			throw new NoCurrentProviderException("There is no current provider, please first login.");
+		}
+
+
+		return customer;
+	}
+
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Page<RateReview> findAll(Pageable pageble){
