@@ -6,6 +6,7 @@ import com.arnav.model.provider.Provider;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
@@ -28,6 +29,7 @@ public class CouponPackage {
     @Indexed(unique=true)
     private Long couponNumber;
 
+    @DBRef
     @NotEmpty
     private List<Provider> providers = new ArrayList<Provider>();
 
