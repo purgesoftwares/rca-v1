@@ -17,6 +17,7 @@ import javax.ws.rs.core.MediaType;
 import com.arnav.exceptions.CustomNotFoundException;
 import com.arnav.exceptions.NoCurrentProviderException;
 import com.arnav.exceptions.UsernameIsNotAnEmailException;
+import com.arnav.model.CouponCollectedResponse;
 import com.arnav.model.address.Address;
 import com.arnav.model.coupon.CollectCouponRequest;
 import com.arnav.model.coupon.CouponPackage;
@@ -156,6 +157,28 @@ public class CouponController {
 		}
 
 		return couponRepository.save(coupon);
+	}
+
+
+	@GET
+	@Path("/get-collect-coupon-details/{couponId}")
+	@Produces("application/json")
+	public CouponCollectedResponse getCollectCouponDetails(@PathParam(value="couponId")String couponId)
+			throws CustomNotFoundException, UsernameIsNotAnEmailException, MessagingException {
+
+		Coupon coupon = couponRepository.findOne(couponId);
+		if(coupon == null){
+			throw new UsernameIsNotAnEmailException("Invalid Coupon!");
+		}
+
+
+		PurchasedCoupon purchasedCoupon = purchasedCouponRepository.findOne(coupon.getPurchasedCouponId());
+
+		Customer customer = customerRepository.findOne(purchasedCoupon.getCustomerId());
+		Address address = addressRepository.findOne(customer.getAddressId());
+		CouponCollectedResponse couponCollectedResponse = new CouponCollectedResponse(customer, address);
+
+		return couponCollectedResponse;
 	}
 
 	private void sendEmailToInviteForRateReview(final String html,
