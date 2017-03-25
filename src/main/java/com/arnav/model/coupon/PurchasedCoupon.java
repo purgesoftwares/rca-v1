@@ -34,6 +34,10 @@ public class PurchasedCoupon {
     @NotNull
     private Customer customer;
 
+    private Date startTime;
+
+    private Date endTime;
+
     @NotNull
     private Date createdAt;
 
@@ -103,5 +107,21 @@ public class PurchasedCoupon {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
     }
 }

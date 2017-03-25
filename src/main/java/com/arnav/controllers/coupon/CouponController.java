@@ -1,9 +1,7 @@
 package com.arnav.controllers.coupon;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.math.BigDecimal;
+import java.util.*;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
@@ -21,11 +19,13 @@ import com.arnav.exceptions.NoCurrentProviderException;
 import com.arnav.exceptions.UsernameIsNotAnEmailException;
 import com.arnav.model.address.Address;
 import com.arnav.model.coupon.CollectCouponRequest;
+import com.arnav.model.coupon.CouponPackage;
 import com.arnav.model.coupon.PurchasedCoupon;
 import com.arnav.model.customer.Customer;
 import com.arnav.model.provider.Provider;
 import com.arnav.model.user.User;
 import com.arnav.repository.address.AddressRepository;
+import com.arnav.repository.coupon.CouponPackageRepository;
 import com.arnav.repository.coupon.PurchasedCouponRepository;
 import com.arnav.repository.customer.CustomerRepository;
 import com.arnav.repository.provider.ProviderRepository;
@@ -57,6 +57,9 @@ public class CouponController {
 
 	@Autowired
 	private PurchasedCouponRepository purchasedCouponRepository;
+
+	@Autowired
+	private CouponPackageRepository couponPackageRepository;
 
 	@Autowired
 	private CustomerRepository customerRepository;
@@ -128,6 +131,28 @@ public class CouponController {
 				this.sendEmailToInviteForRateReview(emailString, customer, customer.getMainEmail());;
 
 			}
+
+			if(purchasedCoupon.getStartTime() == null || purchasedCoupon.getStartTime().equals("")){
+
+				CouponPackage couponPackage = couponPackageRepository.findOne(coupon.getCouponPackageId());
+
+				if(couponPackage != null){
+
+					if(couponPackage.getRedeemableTime() == null || couponPackage.getRedeemableTime().equals("")
+							|| couponPackage.getRedeemableTime().equals(0))
+						couponPackage.setRedeemableTime(BigDecimal.valueOf(1.00));
+					purchasedCoupon.setStartTime(new Date());
+
+					Calendar c = Calendar.getInstance(); // starts with today's date and time
+					c.add(Calendar.DAY_OF_YEAR, couponPackage.getRedeemableTime().intValue());  // advances day by 2
+					Date date = c.getTime(); // gets modified time
+
+					purchasedCoupon.setEndTime(date);
+
+					purchasedCouponRepository.save(purchasedCoupon);
+				}
+			}
+
 		}
 
 		return couponRepository.save(coupon);
