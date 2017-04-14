@@ -57,9 +57,12 @@ public class PurchasedCouponController {
 
         List<JoinedFriend> joinedFriends = new ArrayList<JoinedFriend>();
 
+        String code = this.randomCode();
+
         if (purchasedCoupon.getJoinedFriends() != null && !purchasedCoupon.getJoinedFriends().isEmpty()){
             joinedFriendRepository.save(purchasedCoupon.getJoinedFriends());
         }
+        purchasedCoupon.setCouponCode(code);
         purchasedCoupon = purchasedCouponRepository.save(purchasedCoupon);
 
         String couponString = "Hello "
@@ -77,7 +80,7 @@ public class PurchasedCouponController {
                 Coupon coupon  = new Coupon();
                 coupon.setCouponNumber(purchasedCoupon.getCouponNumber());
                 coupon.setProviderId(provider.getId());
-                coupon.setCouponCode(this.randomCode());
+                coupon.setCouponCode(code);
                 coupon.setPrice(couponPackage.getPrice());
                 coupon.setCouponPackageId(couponPackage.getId());
                 coupon.setEndTime(couponPackage.getEndTime());

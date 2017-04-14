@@ -22,6 +22,9 @@ public class PurchasedCoupon {
     @NotEmpty(message="Coupon Number is required.")
     private Long couponNumber;
 
+    @NotNull(message="Coupon code should not be blank")
+    private String couponCode;
+
     @NotEmpty
     private List<JoinedFriend> joinedFriends = new ArrayList<JoinedFriend>();
 
@@ -123,5 +126,13 @@ public class PurchasedCoupon {
 
     public void setStartTime(Date startTime) {
         this.startTime = startTime;
+    }
+
+    public String getCouponCode() {
+        return couponCode;
+    }
+
+    public void setCouponCode(String couponCode) {
+        this.couponCode = couponCode;
     }
 }
