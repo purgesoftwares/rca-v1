@@ -84,8 +84,10 @@ public class CouponController {
 	public Coupon collectCoupon(CollectCouponRequest collectCouponRequest)
 			throws CustomNotFoundException, UsernameIsNotAnEmailException, MessagingException {
 
-		Coupon coupon = couponRepository.findByCouponCode(collectCouponRequest.getCouponCode());
+		Coupon coupon = couponRepository.findByCouponCodeAndProviderId(collectCouponRequest.getCouponCode(),
+				collectCouponRequest.getProviderId());
 		if(coupon == null){
+			System.out.print("coupon null");
 			throw new UsernameIsNotAnEmailException("Invalid Coupon Code!");
 		}
 
@@ -96,6 +98,9 @@ public class CouponController {
 		Provider provider = this.findCurrentProvider();
 		System.out.println(provider);
 		System.out.println(collectCouponRequest);
+
+		PurchasedCoupon purchasedCoupon = purchasedCouponRepository.findOne(coupon.getPurchasedCouponId());
+
 		if(provider == null){
 			throw new UsernameIsNotAnEmailException("Unauthorized!");
 		}
@@ -111,7 +116,7 @@ public class CouponController {
 		coupon.setCollectionDate(new Date());
 		coupon.setUsed(1);
 
-		PurchasedCoupon purchasedCoupon = purchasedCouponRepository.findOne(coupon.getPurchasedCouponId());
+
 		if(purchasedCoupon != null){
 			Customer customer = customerRepository.findOne(purchasedCoupon.getCustomerId());
 
