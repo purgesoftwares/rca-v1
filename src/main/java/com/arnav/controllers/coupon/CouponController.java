@@ -122,7 +122,7 @@ public class CouponController {
 
 			if(customer != null){
 
-				String feedbackUrl = "http://54.161.216.233:4201/feedback/" + coupon.getId();
+				String feedbackUrl = "http://54.161.216.233:4201/dashboard/feedback/" + coupon.getId();
 
 				String emailString = "Hello "
 						+customer.getFirstName()
