@@ -179,6 +179,47 @@ public class PurchasedCouponController {
         return new PageImpl<PurchasedCoupon>(purchasedCouponRepository.findByCustomerId(customer.getId()), pageble, 20);
     }
 
+    @GET
+    @Path("/active")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Page<PurchasedCoupon> findAllActiveCustomerPurchasedCoupon(Pageable pageble){
+
+        Customer customer = this.findCurrentCustomer();
+
+        List<PurchasedCoupon> purchasedCoupons = purchasedCouponRepository.findByCustomerId(customer.getId());
+
+        List<PurchasedCoupon> activePurchasedCoupons = new ArrayList<PurchasedCoupon>();
+
+        for (PurchasedCoupon purchasedCoupon: purchasedCoupons){
+            if(purchasedCoupon.getEndTime() == null || purchasedCoupon.getEndTime().after(new Date())){
+                activePurchasedCoupons.add(purchasedCoupon);
+            }
+        }
+
+
+        return new PageImpl<PurchasedCoupon>(activePurchasedCoupons, pageble, 20);
+    }
+
+    @GET
+    @Path("/previous")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Page<PurchasedCoupon> findAllPreviousCustomerPurchasedCoupon(Pageable pageble){
+
+        Customer customer = this.findCurrentCustomer();
+
+        List<PurchasedCoupon> purchasedCoupons = purchasedCouponRepository.findByCustomerId(customer.getId());
+
+        List<PurchasedCoupon> previousPurchasedCoupons = new ArrayList<PurchasedCoupon>();
+
+        for (PurchasedCoupon purchasedCoupon: purchasedCoupons){
+            if(purchasedCoupon.getEndTime() != null && purchasedCoupon.getEndTime().before(new Date())){
+                previousPurchasedCoupons.add(purchasedCoupon);
+            }
+        }
+
+        return new PageImpl<PurchasedCoupon>(previousPurchasedCoupons, pageble, 20);
+    }
+
     public Customer findCurrentCustomer(){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User activeUser = userRepository.findByUsername(username);
