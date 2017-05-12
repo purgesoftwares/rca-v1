@@ -1,7 +1,6 @@
 package com.arnav.controllers.question;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -14,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import com.arnav.exceptions.AllPropertyRequiredException;
@@ -89,7 +89,9 @@ public class QuestionController {
 	@GET
 	@Path("/type/{type}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Question> findByType(@PathParam(value="type")String type){
-		return questionRepository.findByType(type);
+	public Page<Question> findByType(@PathParam(value="type")String type, Pageable pageble){
+		
+		return new PageImpl<Question>(questionRepository.findByType(type), pageble, 20);
+		
 	}
 }
