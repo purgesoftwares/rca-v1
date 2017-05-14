@@ -11,21 +11,26 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import com.arnav.model.SignupRequest;
-import com.arnav.model.user.User;
-import com.arnav.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.arnav.exceptions.AllPropertyRequiredException;
 import com.arnav.exceptions.UsernameIsNotAnEmailException;
+import com.arnav.model.SignupRequest;
 import com.arnav.model.customer.Customer;
+import com.arnav.model.user.User;
 import com.arnav.repository.customer.CustomerRepository;
+import com.arnav.repository.user.UserRepository;
 
 @Path("/secured/customer")
 public class CustomerController {
@@ -78,7 +83,16 @@ public class CustomerController {
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Page<Customer> findAll(Pageable pageble){
+	public Page<Customer> findAll(Pageable pageble,@QueryParam("page") int page,
+			@QueryParam("sort") String sort, @QueryParam("size") int size){
+		System.out.println(page + sort + size);	
+		
+		if(page != 0 && !sort.isEmpty() && size != 0 && !sort.equals("")){
+			final PageRequest page1 = new PageRequest(
+					  page, size, new Sort(
+							    new Order(Direction.ASC, sort)));
+			return customerRepository.findAll(page1);
+		}
 		return customerRepository.findAll(pageble);
 	}
 	
