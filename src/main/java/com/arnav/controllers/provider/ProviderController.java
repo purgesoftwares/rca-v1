@@ -4,15 +4,21 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -39,9 +45,12 @@ public class ProviderController {
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Page<Provider> findAll(Pageable pageble){
-		
-		return providerRepository.findAll(pageble);
+	public Page<Provider> findAll(Pageable pageble,@DefaultValue("0") @QueryParam("page") int page,
+			@DefaultValue("id") @QueryParam("sort") String sort, @DefaultValue("20") @QueryParam("size") int size){
+		final PageRequest page1 = new PageRequest(
+				  page, size, new Sort(
+						    new Order(sort.equals("id")? Direction.DESC : Direction.ASC, sort)));
+		return providerRepository.findAll(page1);
 	}
 
 	private boolean checkStringIsEmail(String username) {

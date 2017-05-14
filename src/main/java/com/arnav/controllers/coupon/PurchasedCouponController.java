@@ -1,6 +1,36 @@
 package com.arnav.controllers.coupon;
 
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
+import javax.mail.MessagingException;
+import javax.validation.Valid;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import com.arnav.exceptions.NoCurrentProviderException;
 import com.arnav.model.coupon.Coupon;
 import com.arnav.model.coupon.CouponPackage;
@@ -15,17 +45,6 @@ import com.arnav.repository.coupon.PurchasedCouponRepository;
 import com.arnav.repository.customer.CustomerRepository;
 import com.arnav.repository.user.UserRepository;
 import com.arnav.services.EmailService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
-
-import javax.mail.MessagingException;
-import javax.validation.Valid;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import java.util.*;
 
 /**
  * Created by Shankar on 2/19/2017.
@@ -163,10 +182,14 @@ public class PurchasedCouponController {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Page<PurchasedCoupon> findAll(Pageable pageble){
+    public Page<PurchasedCoupon> findAll(Pageable pageble,@DefaultValue("0") @QueryParam("page") int page,
+			@DefaultValue("id") @QueryParam("sort") String sort, 
+			@DefaultValue("20") @QueryParam("size") int size){
 
-        return new PageImpl<PurchasedCoupon>(purchasedCouponRepository.findAll(pageble)
-                .getContent(), pageble, 20);
+    	final PageRequest page1 = new PageRequest(
+				  page, size, new Sort(
+						    new Order(sort.equals("id")? Direction.DESC : Direction.ASC, sort)));
+        return purchasedCouponRepository.findAll(page1);
     }
 
     @GET

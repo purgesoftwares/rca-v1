@@ -1,17 +1,29 @@
 package com.arnav.controllers.coupon;
 
+import javax.validation.Valid;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
+
 import com.arnav.model.coupon.Coupon;
 import com.arnav.model.coupon.CouponPackage;
 import com.arnav.repository.coupon.CouponPackageRepository;
 import com.arnav.repository.coupon.CouponRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-
-import javax.validation.Valid;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
 
 /**
  * Created by Shankar on 2/19/2017.
@@ -52,10 +64,13 @@ public class CouponPackageController {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Page<CouponPackage> findAll(Pageable pageble){
-
-        return new PageImpl<CouponPackage>(couponPackageRepository.findAll(pageble)
-                .getContent(), pageble, 20);
+    public Page<CouponPackage> findAll(Pageable pageble,@DefaultValue("0") @QueryParam("page") int page,
+			@DefaultValue("id") @QueryParam("sort") String sort, @DefaultValue("20") @QueryParam("size") int size){
+    	
+    	final PageRequest page1 = new PageRequest(
+				  page, size, new Sort(
+						    new Order(sort.equals("id")? Direction.DESC : Direction.ASC, sort)));
+        return couponPackageRepository.findAll(page1);
     }
 
     @PUT

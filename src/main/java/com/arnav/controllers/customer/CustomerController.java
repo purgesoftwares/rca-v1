@@ -5,6 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -83,17 +84,14 @@ public class CustomerController {
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Page<Customer> findAll(Pageable pageble,@QueryParam("page") int page,
-			@QueryParam("sort") String sort, @QueryParam("size") int size){
-		System.out.println(page + sort + size);	
-		
-		if(page != 0 && !sort.isEmpty() && size != 0 && !sort.equals("")){
-			final PageRequest page1 = new PageRequest(
-					  page, size, new Sort(
-							    new Order(Direction.ASC, sort)));
-			return customerRepository.findAll(page1);
-		}
-		return customerRepository.findAll(pageble);
+	public Page<Customer> findAll(Pageable pageble,@DefaultValue("0") @QueryParam("page") int page,
+				@DefaultValue("id") @QueryParam("sort") String sort, 
+				@DefaultValue("20") @QueryParam("size") int size){
+		final PageRequest page1 = new PageRequest(
+				  page, size, new Sort(
+						    new Order(sort.equals("id")? Direction.DESC : Direction.ASC, sort)));
+		return customerRepository.findAll(page1);
+
 	}
 	
 	@PUT

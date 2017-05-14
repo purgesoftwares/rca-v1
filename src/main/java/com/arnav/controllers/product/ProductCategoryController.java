@@ -1,17 +1,23 @@
 package com.arnav.controllers.product;
 
 import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 
 import com.arnav.exceptions.AllPropertyRequiredException;
 import com.arnav.model.product.ProductCategory;
@@ -42,8 +48,13 @@ public class ProductCategoryController {
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Page<ProductCategory> findAll(Pageable pageble){
-		return productCategoryRepository.findAll(pageble);
+	public Page<ProductCategory> findAll(Pageable pageble,@DefaultValue("0") @QueryParam("page") int page,
+			@DefaultValue("id") @QueryParam("sort") String sort, 
+			@DefaultValue("20") @QueryParam("size") int size){
+		final PageRequest page1 = new PageRequest(
+				  page, size, new Sort(
+						    new Order(sort.equals("id")? Direction.DESC : Direction.ASC, sort)));
+		return productCategoryRepository.findAll(page1);
 	}
 	
 	@PUT
